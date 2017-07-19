@@ -17,7 +17,12 @@ class CreateTablePrivilege extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('description');
+            $table->unsignedInteger('role_id');
             $table->timestamps();
+        });
+
+        Schema::table('privileges', function (Blueprint $table) {
+            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 

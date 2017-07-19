@@ -10,11 +10,25 @@
                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
 
+                        <div class="form-group{{ $errors->has('id') ? ' has-error' : '' }}">
+                            <label for="id" class="col-md-4 control-label">Id</label>
+
+                            <div class="col-md-6">
+                                <input id="id" type="text" class="form-control" name="id" value="{{ old('id') }}" required autofocus>
+
+                                @if ($errors->has('id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('login') ? ' has-error' : '' }}">
                             <label for="login" class="col-md-4 control-label">Login</label>
 
                             <div class="col-md-6">
-                                <input id="login" type="text" class="form-control" name="login" value="{{ old('login') }}" required autofocus>
+                                <input id="login" type="text" class="form-control" name="login" value="{{ old('login') }}" required>
 
                                 @if ($errors->has('login'))
                                     <span class="help-block">

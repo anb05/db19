@@ -8,13 +8,18 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-
+                    <ul class="btn-group" role="group">
+                        <li class="btn btn-default">
+                            <a href="{{ route('register') }}">
+                                New User
+                            </a>
+                        </li>
+                    </ul>
                     @if (session('status'))
                         <div class="alert alert-success">
                             {{ session('status') }}
                         </div>
                     @endif
-                    You are logged in!
                 </div>
             </div>
         </div>

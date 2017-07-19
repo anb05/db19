@@ -14,7 +14,10 @@ class CreateAdmin extends Seeder
         $data[] = 'admin';
         $password = '_admin_';
         $data[] = bcrypt($password);
+//        $data[] = time();
+//        $data[] = time();
+        $data[] = 100;
 
-        DB::insert('insert into users (login, password) values (?, ?)', $data);
+        DB::insert('insert into users (login, password, group_id) values (?, ?, ?)', $data);
     }
 }

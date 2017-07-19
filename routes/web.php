@@ -16,24 +16,18 @@
 //    return view('welcome');
 //});
 
-Route::get('/',  ['middleware' => 'web', 'uses' => 'Auth\LoginController@showLoginForm']);
+Route::get('/', ['middleware' => 'web', 'uses' => 'Auth\LoginController@showLoginForm']);
 Route::post('/', ['middleware' => 'web',
     'uses' => 'Auth\LoginController@login',
     'as'   => 'login']);
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth']],
-    function()
-    {
+Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth']], function () {
         Route::get('/', 'HomeController@index')->name('home');
         Route::get('/register', 'Admin\RegisterController@showRegistrationForm')->name('register');
         Route::post('/register', 'Admin\RegisterController@register');
-
-//        Auth::routes();
-    });
-
-Route::any('/{home?}', function()
-{
-    return redirect('/admin');
 });
 
+Route::any('/{somePrefix?}', function () {
+    return redirect('/other');
+});
