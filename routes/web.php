@@ -23,7 +23,7 @@ Route::post('/', ['middleware' => 'web',
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth']], function () {
-        Route::get('/', 'HomeController@index')->name('home');
+        Route::get('/', 'Admin\HomeController@index')->name('admin');
         Route::get('/register', 'Admin\RegisterController@showRegistrationForm')->name('register');
         Route::post('/register', 'Admin\RegisterController@register');
 });
