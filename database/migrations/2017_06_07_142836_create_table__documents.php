@@ -100,6 +100,11 @@ class CreateTableDocuments extends Migration
              * If this document is response, this column store information about parent document.
              */
             $table->string('output_document')->nullable();
+
+            /**
+             * This column caters soft deleting
+             */
+            $table->softDeletes();
         });
 
         /**

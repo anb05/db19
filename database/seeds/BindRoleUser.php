@@ -11,6 +11,11 @@ class BindRoleUser extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('user_roles')->insert(
+            [
+                'user_id' => '1000000000',
+                'role_id' => '100',
+            ]
+        );
     }
 }

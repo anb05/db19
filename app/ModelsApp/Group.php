@@ -18,7 +18,17 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ModelsApp\Group whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ModelsApp\Group whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users
  */
 class Group extends Model
 {
+    protected $fillable = ['name', 'description'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function users()
+    {
+        return $this->hasMany('App\User');
+    }
 }

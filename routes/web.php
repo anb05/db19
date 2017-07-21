@@ -29,5 +29,5 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth']], function ()
 });
 
 Route::any('/{somePrefix?}', function () {
-    return redirect('/other');
+    return view('errors.404');
 });
