@@ -25,12 +25,21 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data = $this->getUsers();
+        $data['users'] = $this->getUsers();
+//        dd($data);
         return view('admin.home', $data);
     }
 
     public function getUsers()
     {
-        return $users = User::all();
+        $users = User::all();
+        $users->transform(function ($item, $key) {
+            $group = $item->group;
+            $name = $group->name;
+            unset($item->group_id);
+            $item->group = $name;
+            return $item;
+        });
+        return $users;
     }
 }
