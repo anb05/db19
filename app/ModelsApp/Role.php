@@ -25,7 +25,7 @@ class Role extends Model
 
     public function users()
     {
-        $this->hasMany(
+        return $this->hasMany(
             'Db19\User',
             'role_name',
             'name'
@@ -34,7 +34,7 @@ class Role extends Model
 
     public function privileges()
     {
-        $this->belongsToMany(
+        return $this->belongsToMany(
             'Db19\ModelsApp\Privilege',
             'privilege_role',
             'role_name',

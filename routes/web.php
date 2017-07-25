@@ -16,6 +16,8 @@
 //    return view('welcome');
 //});
 
+Artisan::call('view:clear');
+
 Route::get('/', ['middleware' => 'web', 'uses' => 'Auth\LoginController@showLoginForm']);
 Route::post('/', ['middleware' => 'web',
     'uses' => 'Auth\LoginController@login',

@@ -2,6 +2,7 @@
 
 namespace Db19\Http\Controllers\Admin;
 
+use Db19\Repositories\MenuRepository;
 use Db19\User;
 use Illuminate\Http\Request;
 use Db19\Http\Controllers\MainController;
@@ -14,28 +15,39 @@ class HomeController extends MainController
     /**
      * Create a new controller instance.
      */
-    public function __construct()
+    public function __construct(MenuRepository $menu_rep)
     {
         $this->middleware('auth');
 
         $this->template = 'admin.home';
+
+        $this->menu_rep = $menu_rep;
     }
 
     /**
      * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
+        $menu = $this->getMenu();
         $this->data['users'] = $this->getUsers();
 //        dd($data);
         return $this->render();
     }
 
+    /**
+     * This method returns a collection of all users except for oneself
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
     public function getUsers()
     {
-        $users = User::all();
+        $oneself_id = \Auth::user()->id;
+        $users = User::all()->where('id', '!=', $oneself_id);
         return $users;
+    }
+
+    protected function getMenu()
+    {
+        $menu = $this->menu_rep->get();
     }
 }
