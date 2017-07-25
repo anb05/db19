@@ -18,7 +18,7 @@ class SeedingGroupsTable extends Seeder
         DB::table('groups')->insert(
             [
                 [
-                    'id' => 1,
+//                    'id' => 1,
                     'name' => 'guest',
                     'description' => 'Начальная группа. Присваивается при регистрации
                      пользователя в системе. Пользователи этой группы не имеют
@@ -28,128 +28,128 @@ class SeedingGroupsTable extends Seeder
                 ],
 
                 [
-                    'id' => 2,
+//                    'id' => 2,
                     'name' => 'section_11',
                     'description' => 'Группа пользователей 11 отдела'
                 ],
 
                 [
-                    'id' => 3,
+//                    'id' => 3,
                     'name' => 'section_12',
                     'description' => 'Группа пользователей 12 отдела'
                 ],
 
                 [
-                    'id' => 4,
+//                    'id' => 4,
                     'name' => 'section_13',
                     'description' => 'Группа пользователей 13 отдела'
                 ],
 
                 [
-                    'id' => 5,
+//                    'id' => 5,
                     'name' => 'section_21',
                     'description' => 'Группа пользователей 21 отдела'
                 ],
 
                 [
-                    'id' => 6,
+//                    'id' => 6,
                     'name' => 'section_22',
                     'description' => 'Группа пользователей 22 отдела'
                 ],
 
                 [
-                    'id' => 7,
+//                    'id' => 7,
                     'name' => 'section_23',
                     'description' => 'Группа пользователей 23 отдела'
                 ],
 
                 [
-                    'id' => 8,
+//                    'id' => 8,
                     'name' => 'section_31',
                     'description' => 'Группа пользователей 31 отдела'
                 ],
 
                 [
-                    'id' => 9,
+//                    'id' => 9,
                     'name' => 'section_32',
                     'description' => 'Группа пользователей 32 отдела'
                 ],
 
                 [
-                    'id' => 10,
+//                    'id' => 10,
                     'name' => 'section_33',
                     'description' => 'Группа пользователей 33 отдела'
                 ],
 
                 [
-                    'id' => 11,
+//                    'id' => 11,
                     'name' => 'section_so',
                     'description' => 'Группа пользователей научно-организационного отдела'
                 ],
 
                 [
-                    'id' => 12,
+//                    'id' => 12,
                     'name' => 'section_fin',
                     'description' => 'Группа пользователей финансового отдела'
                 ],
 
                 [
-                    'id' => 13,
+//                    'id' => 13,
                     'name' => 'section_g',
                     'description' => 'Группа пользователей секретной части'
                 ],
 
                 [
-                    'id' => 14,
+//                    'id' => 14,
                     'name' => 'section_adm',
                     'description' => 'Группа пользователей административного отдела'
                 ],
 
                 [
-                    'id' => 15,
+//                    'id' => 15,
                     'name' => 'section_mt',
                     'description' => 'Группа пользователей материально-технического обеспечения'
                 ],
 
                 [
-                    'id' => 16,
+//                    'id' => 16,
                     'name' => 'section_ch',
                     'description' => 'Группа пользователей дежурной службы'
                 ],
 
                 [
-                    'id' => 17,
-                    'name' => 'unit',
-                    'description' => 'Группа начальников управлений'
-                ],
-
-                [
-                    'id' => 18,
+//                    'id' => 17,
                     'name' => 'unit_1',
                     'description' => 'Начальник 1 управления'
                 ],
 
                 [
-                    'id' => 19,
+//                    'id' => 18,
                     'name' => 'unit_2',
                     'description' => 'Начальник 2 управления'
                 ],
 
                 [
-                    'id' => 20,
+//                    'id' => 19,
                     'name' => 'unit_3',
                     'description' => 'Начальник 3 управления'
                 ],
 
                 [
-                    'id' => 21,
+//                    'id' => 20,
                     'name' => 'leadership',
                     'description' => 'Руководство'
                 ],
 
+                /*[
+                    'id' => 21,
+                    'name' => 'unit',
+                    'description' => 'Группа начальников управлений'
+                ],*/
+
                 [
-                    'id' => 100,
-                    'name' => 'admin',
+//                    'id' => 100,
+                    'name' =>'admin',
                     'description' => 'Группа администраторов приложения'
                 ],
             ]

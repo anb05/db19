@@ -1,42 +1,44 @@
 <?php
 
-namespace App\ModelsApp;
+namespace Db19\ModelsApp;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\ModelsApp\Role
+ * Db19\ModelsApp\Role
  *
- * @property int $id
  * @property string $name
  * @property string $description
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ModelsApp\Role whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ModelsApp\Role whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ModelsApp\Role whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ModelsApp\Role whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ModelsApp\Role whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsApp\Role whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsApp\Role whereName($value)
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\ModelsApp\Privilege[] $privileges
  */
 class Role extends Model
 {
-    protected $fillable = ['id', 'name', 'description'];
+    public $timestamps = false;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function privileges()
-    {
-        return $this->hasMany('App\ModelsApp\Privilege');
-    }
+    public $incrementing = false;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
+    protected $primaryKey = 'name';
+
+    protected $fillable = ['name', 'description'];
+
     public function users()
     {
-        return $this->belongsToMany('App\User', 'user_roles', 'role_id', 'user_id');
+        $this->hasMany(
+            'Db19\User',
+            'role_name',
+            'name'
+        );
+    }
+
+    public function privileges()
+    {
+        $this->belongsToMany(
+            'Db19\ModelsApp\Privilege',
+            'privilege_role',
+            'role_name',
+            'privilege_name'
+        );
     }
 }

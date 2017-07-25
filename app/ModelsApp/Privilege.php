@@ -1,35 +1,35 @@
 <?php
 
-namespace App\ModelsApp;
+namespace Db19\ModelsApp;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\ModelsApp\Privilege
+ * Db19\ModelsApp\Privilege
  *
- * @property int $id
  * @property string $name
  * @property string $description
- * @property int $role_id
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ModelsApp\Privilege whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ModelsApp\Privilege whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ModelsApp\Privilege whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ModelsApp\Privilege whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ModelsApp\Privilege whereRoleId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ModelsApp\Privilege whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsApp\Privilege whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsApp\Privilege whereName($value)
  * @mixin \Eloquent
  */
 class Privilege extends Model
 {
-    protected $fillable = ['id', 'name', 'description',];
+    public $timestamps = false;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function role()
+    public $incrementing = false;
+
+    protected $primaryKey = 'name';
+
+    protected $fillable = ['name', 'description'];
+
+    public function roles()
     {
-        return $this->belongsTo('App\ModelsApp\Role');
+        $this->belongsToMany(
+            'Db19\ModelsApp\Role',
+            'privilege_role',
+            'privilege_name',
+            'role_name'
+        );
     }
 }

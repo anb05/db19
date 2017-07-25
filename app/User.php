@@ -1,13 +1,13 @@
 <?php
 
-namespace App;
+namespace Db19;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
- * App\User
+ * Db19\User
  *
  * @property int $id
  * @property string $login
@@ -16,23 +16,28 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereLogin($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\User whereLogin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\User whereUpdatedAt($value)
  * @mixin \Eloquent
  * @property int $group_id
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereGroupId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\User whereGroupId($value)
  * @property \Carbon\Carbon|null $deleted_at
  * @method bool|null forceDelete()
- * @method static \Illuminate\Database\Query\Builder|\App\User onlyTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\Db19\User onlyTrashed()
  * @method static bool|null restore()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereDeletedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\User withTrashed()
- * @method static \Illuminate\Database\Query\Builder|\App\User withoutTrashed()
- * @property-read \App\ModelsApp\Group $group
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\User whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Db19\User withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\Db19\User withoutTrashed()
+ * @property string $group_name
+ * @property string $role_name
+ * @property-read \Db19\ModelsApp\Group $group
+ * @property-read \Db19\ModelsApp\Role $role
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\User whereGroupName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\User whereRoleName($value)
  */
 class User extends Authenticatable
 {
@@ -45,7 +50,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
 //        'name', 'email', 'password',
-        'id','login', 'password', 'group_id'
+        'id','login', 'password', 'group_name', 'role_name'
     ];
 
     /**
@@ -65,20 +70,26 @@ class User extends Authenticatable
     protected $dates = ['deleted_at'];
 
     /**
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function group()
     {
-        return $this->belongsTo('App\ModelsApp\Group');
+        return $this->belongsTo(
+            'Db19\ModelsApp\Group',
+            'group_name',
+            'name'
+        );
     }
 
-    public function roles()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function role()
     {
-        return $this->belongsToMany(
-            'App\ModelsApp\Role',
-            'user_roles',
-            'user_id',
-            'role_id'
+        return $this->belongsTo(
+            'Db19\ModelsApp\Role',
+            'role_name',
+            'name'
         );
     }
 }

@@ -171,11 +171,11 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        Db19\Providers\AppServiceProvider::class,
+        Db19\Providers\AuthServiceProvider::class,
+        // Db19\Providers\BroadcastServiceProvider::class,
+        Db19\Providers\EventServiceProvider::class,
+        Db19\Providers\RouteServiceProvider::class,
         
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 

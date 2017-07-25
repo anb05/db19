@@ -14,16 +14,16 @@ class CreateTablePrivilege extends Migration
     public function up()
     {
         Schema::create('privileges', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name')->unique();
+//            $table->increments('id');
+            $table->string('name')->primary();
             $table->text('description');
-            $table->unsignedInteger('role_id');
-            $table->timestamps();
+//            $table->unsignedInteger('role_id');
+//            $table->timestamps();
         });
 
-        Schema::table('privileges', function (Blueprint $table) {
-            $table->foreign('role_id')->references('id')->on('roles');
-        });
+//        schema::table('privileges', function (blueprint $table) {
+//            $table->foreign('role_id')->references('id')->on('roles');
+//        });
     }
 
     /**

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Db19\Http\Middleware;
 
-use App\User;
+use Db19\User;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 

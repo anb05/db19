@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Db19\Http\Controllers;
 
 use Illuminate\Http\Request;
 

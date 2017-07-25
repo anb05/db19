@@ -14,7 +14,9 @@ class CreateForeingKey extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreign('group_id')->references('id')->on('groups');
+            $table->foreign('group_name')->references('name')->on('groups');
+
+            $table->foreign('role_name')->references('name')->on('roles');
         });
     }
 
@@ -26,7 +28,8 @@ class CreateForeingKey extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['group_id']);
+            $table->dropForeign(['group_name']);
+            $table->dropForeign(['role_name']);
         });
     }
 }

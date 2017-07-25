@@ -48,8 +48,8 @@
                             <tr>
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->login }}</td>
-                                <td>{{ $user->group }}</td>
-                                <td>{{ $user->role }}</td>
+                                <td>{{ $user->group_name }}</td>
+                                <td>{{ $user->role_name }}</td>
                                 <td>{{ 'delete' }}</td>
 
                             </tr>

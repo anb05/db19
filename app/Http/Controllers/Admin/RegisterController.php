@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Db19\Http\Controllers\Admin;
 
-use App\User;
+use Db19\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Db19\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;

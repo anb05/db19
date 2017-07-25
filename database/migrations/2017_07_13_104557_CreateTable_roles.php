@@ -14,18 +14,18 @@ class CreateTableRoles extends Migration
     public function up()
     {
         Schema::create('roles', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 50)->unique();
+//            $table->increments('id');
+            $table->string('name', 50)->primary();
             $table->text('description');
-            $table->timestamps();
+//            $table->timestamps();
         });
 
-        DB::unprepared('ALTER TABLE roles 
-                       MODIFY COLUMN updated_at 
-                       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
-        DB::unprepared('ALTER TABLE roles 
-                       MODIFY COLUMN created_at 
-                       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
+//        DB::unprepared('ALTER TABLE roles
+//                       MODIFY COLUMN updated_at
+//                       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
+//        DB::unprepared('ALTER TABLE roles
+//                       MODIFY COLUMN created_at
+//                       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
     }
 
     /**

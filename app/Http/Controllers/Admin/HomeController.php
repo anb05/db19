@@ -1,21 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Db19\Http\Controllers\Admin;
 
-use App\User;
+use Db19\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Db19\Http\Controllers\MainController;
 
-class HomeController extends Controller
+/**
+ * @property string template
+ */
+class HomeController extends MainController
 {
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
         $this->middleware('auth');
+
+        $this->template = 'admin.home';
     }
 
     /**
@@ -25,21 +28,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data['users'] = $this->getUsers();
+        $this->data['users'] = $this->getUsers();
 //        dd($data);
-        return view('admin.home', $data);
+        return $this->render();
     }
 
     public function getUsers()
     {
         $users = User::all();
-        $users->transform(function ($item, $key) {
-            $group = $item->group;
-            $name = $group->name;
-            unset($item->group_id);
-            $item->group = $name;
-            return $item;
-        });
         return $users;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions;
+namespace Db19\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
