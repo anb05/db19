@@ -1,18 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Styles -->
-    <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('main_head')
 </head>
 <body>
     <div id="app">
@@ -31,13 +20,14 @@
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
                         {{ config('app.name', 'Laravel') }}
+                        {{--<img src="{{ asset('assets/images/Logo_100.png') }}" class="img-thumbnail">--}}
                     </a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                        &nbsp;@yield('main_menu')
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -71,6 +61,7 @@
                 </div>
             </div>
         </nav>
+
 
         @yield('content')
     </div>

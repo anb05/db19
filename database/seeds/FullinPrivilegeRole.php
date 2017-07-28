@@ -66,7 +66,7 @@ class FullinPrivilegeRole extends Seeder
 
                 [
                     'role_name'      => 'writer',
-                    'privilege_name' => 'create',
+                    'privilege_name' => 'create_doc',
                 ],
 
 
@@ -88,17 +88,17 @@ class FullinPrivilegeRole extends Seeder
 
                 [
                     'role_name'      => 'moderator',
-                    'privilege_name' => 'create',
+                    'privilege_name' => 'create_doc',
                 ],
 
                 [
                     'role_name'      => 'moderator',
-                    'privilege_name' => 'redact',
+                    'privilege_name' => 'redact_doc',
                 ],
 
                 [
                     'role_name'      => 'moderator',
-                    'privilege_name' => 'drop',
+                    'privilege_name' => 'drop_doc',
                 ],
 
 

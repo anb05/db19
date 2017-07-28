@@ -28,7 +28,12 @@ class MenuRepository extends Repository
 
     public function get()
     {
-        $privilege = $this->getPrivilege();
+        $privileges = $this->getPrivilege();
+        $actions = $this->selectAction($privileges);
+
+        $menu = view('common.main_menu', ['mainMenu' => $actions])->render();
+
+        return $menu;
     }
 
     /**
@@ -40,11 +45,53 @@ class MenuRepository extends Repository
     {
         $role_name = \Auth::user()->role_name;
         $privileges = Role::find($role_name)->privileges;
+//        dd($privileges);
         $vars = [];
         $privileges->transform(function ($item, $key) use (&$vars) {
             $vars[] = $item->name;
         });
 
         return $vars;
+    }
+
+    /**
+     * This method transforms the input array into an array with privileges
+     *
+     * @param $privileges array
+     *
+     * @return array
+     */
+    private function selectAction($privileges)
+    {
+        $mainMenu = [];
+
+        foreach ($privileges as $privilege) {
+            switch ($privilege) {
+                case 'read_open':
+                    $mainMenu['Відкриті документи'] = 'openDoc';
+                    break;
+
+                case 'read_mi':
+                    $mainMenu['Перегляд номерів'] = 'metaData';
+                    break;
+
+                case 'read_doc':
+                    $mainMenu['Перегляд документів'] = 'viewDoc';
+                    break;
+
+                case 'create_doc':
+                    $mainMenu['Створити документ'] = 'createDoc';
+                    break;
+
+                case 'read_user':
+                    $mainMenu['Перегляд коритувачів'] = 'viewUser';
+                    break;
+
+                case 'create_user':
+                    $mainMenu['Новий користувач'] = 'register';
+                    break;
+            }
+        }
+        return $mainMenu;
     }
 }

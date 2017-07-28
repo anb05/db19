@@ -29,9 +29,18 @@ class HomeController extends MainController
      */
     public function index()
     {
-        $menu = $this->getMenu();
-        $this->data['users'] = $this->getUsers();
+        $this->data['mainMenu'] = $this->getMenu();
+//        $menu = $this->getMenu();
+//        dd($menu);
+//        $this->data['users'] = $this->getUsers();
 //        dd($data);
+        return $this->render();
+    }
+
+    public function showUsers()
+    {
+        $this->data['mainMenu'] = $this->getMenu();
+        $this->data['users'] = $this->getUsers();
         return $this->render();
     }
 
@@ -49,5 +58,7 @@ class HomeController extends MainController
     protected function getMenu()
     {
         $menu = $this->menu_rep->get();
+
+        return $menu;
     }
 }

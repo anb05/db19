@@ -34,6 +34,9 @@ class MainController extends Controller
 
     protected $menu_rep;
 
+    protected $group_rep;
+
+    protected $role_rep;
 
     /**
      * MainController constructor.

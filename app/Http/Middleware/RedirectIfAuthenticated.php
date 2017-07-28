@@ -20,8 +20,9 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
 
-            $user = Auth::user()->id;
-            $group = User::find($user)->group->name;
+//            $user = Auth::user()->id;
+//            $group = User::find($user)->group->name;
+            $group = Auth::user()->group_name;
 
             return redirect('/' . $group);
         }

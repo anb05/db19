@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('main_head')
+    @include('common.main_head')
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">
