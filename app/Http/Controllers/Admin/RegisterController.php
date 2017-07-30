@@ -2,14 +2,14 @@
 
 namespace Db19\Http\Controllers\Admin;
 
+use Db19\Http\Controllers\MainController;
 use Db19\User;
 use Illuminate\Http\Request;
-use Db19\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 
-class RegisterController extends Controller
+class RegisterController extends MainController
 {
     use RegistersUsers;
 
@@ -64,6 +64,6 @@ class RegisterController extends Controller
 
 //        $this->guard()->login($user);
 
-        return redirect($this->redirectPath())->with('status', 'New user has been registered');
+    return redirect($this->redirectPath())->with('status', trans('ua.new user registered'));
     }
 }

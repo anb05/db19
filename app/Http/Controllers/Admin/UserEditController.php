@@ -36,6 +36,11 @@ class UserEditController extends MainController
     {
         $oldUserData = $user->toArray();
 
+        if ($request->isMethod('delete')) {
+            $user->delete();
+            return redirect()->route('admin')->with('status', trans('ua.user deleted'));
+        }
+
         if ($request->isMethod('post')) {
             dd($request->except('_token'));
         }

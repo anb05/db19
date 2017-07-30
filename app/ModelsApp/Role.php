@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsApp\Role whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsApp\Role whereName($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Db19\ModelsApp\Privilege[] $privileges
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Db19\User[] $users
  */
 class Role extends Model
 {

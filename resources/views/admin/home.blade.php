@@ -7,8 +7,14 @@
 
 @section('status')
     @if (session('status'))
-        <div class="alert alert-success" style="display: inline-block; height: 21px; margin: 0; padding: 0;">
-            {{ session('status') }}
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
+                </div>
+            </div>
         </div>
     @endif
 @endsection

@@ -90,3 +90,7 @@
         </div>
     @endif
 @endsection
+
+@section('main_menu')
+    {!! $mainMenu !!}
+@endsection

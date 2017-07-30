@@ -2,7 +2,9 @@
 
 namespace Db19\Http\Controllers;
 
+use Db19\ModelsApp\Privilege;
 use Illuminate\Http\Request;
+use Db19\Repositories\MenuRepository;
 
 /**
  * Class MainController
@@ -41,8 +43,10 @@ class MainController extends Controller
     /**
      * MainController constructor.
      */
-    public function __construct()
+    public function __construct(/*MenuRepository $menu_rep*/)
     {
+//        $this->menu_rep = $menu_rep;
+        $this->menu_rep = new MenuRepository(new Privilege());
     }
 
     /**
@@ -50,6 +54,15 @@ class MainController extends Controller
      */
     public function render()
     {
+        $this->data['mainMenu'] = $this->getMenu();
+
         return view($this->template, $this->data);
+    }
+
+    protected function getMenu()
+    {
+        $menu = $this->menu_rep->get();
+
+        return $menu;
     }
 }
