@@ -20,6 +20,24 @@ class RegisterController extends MainController
      */
     protected $redirectTo = '/admin';
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->template = 'auth.register';
+    }
+
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+//        return view('auth.register');
+        return $this->render();
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *

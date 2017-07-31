@@ -1,17 +1,18 @@
-<div class="row">
-    <div class="col-lg-12">
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>{{ trans('ua.id') }}</th>
-                <th>{{ trans('ua.Login') }}</th>
-                <th>{{ trans('ua.Group') }}</th>
-                <th>{{ trans('ua.Roles') }}</th>
-                <th>{{ trans('ua.Delete') }}</th>
-            </tr>
-            </thead>
+<div class="container">
+    <div class="row">
+        {{--<div class="col-lg-12">--}}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th class="col-md-3">{{ trans('ua.id') }}</th>
+                    <th class="col-md-3">{{ trans('ua.Login') }}</th>
+                    <th class="col-md-2">{{ trans('ua.Group') }}</th>
+                    <th class="col-md-2">{{ trans('ua.Roles') }}</th>
+                    <th class="col-md-2">{{ trans('ua.Delete') }}</th>
+                </tr>
+                </thead>
 
-{{--            @if($users)--}}
+                {{--            @if($users)--}}
                 @foreach($users as $user)
                     <tr>
                         <td><a href="{{ route('userEdit', ['user' => $user->id]) }}">{{ $user->id }}</a></td>
@@ -30,7 +31,8 @@
 
                     </tr>
                 @endforeach
-            {{--@endif--}}
-        </table>
+                {{--@endif--}}
+            </table>
+        {{--</div>--}}
     </div>
 </div>
