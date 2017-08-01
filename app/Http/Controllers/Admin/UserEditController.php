@@ -42,7 +42,35 @@ class UserEditController extends MainController
         }
 
         if ($request->isMethod('post')) {
-            dd($request->except('_token'));
+            $status = '';
+            $inputData = $request->except('_token');
+            if (isset($inputData['password'])) {
+                if ($this->changeAppPassword($request, $user, $inputData)) {
+                    $status = trans('ua.changed App password');
+                }
+            }
+//
+            if (($inputData['group'] === 'guest') || ($inputData['role'] === 'guest')) {
+                $status .= trans('ua.Other users data was not changing');
+            } elseif (($inputData['group'] ===  'admin') && ($inputData['role'] === 'admin')) {
+
+
+                $this->createNewCustomer($inputData['group'], $inputData['role']);
+
+
+                $status .= 'change to admin';
+            }
+
+
+
+
+//            dd($inputData);
+
+
+
+
+            $request->session()->flash('status', $status);
+            return redirect('/admin');
         }
 
         if (view()->exists($this->template)) {
@@ -60,4 +88,23 @@ class UserEditController extends MainController
         }
         abort(404);
     }
+
+    private function changeAppPassword(Request $request, User $user, $inputData)
+    {
+        $this->validate($request, [
+            'password' => 'required|string|min:6|confirmed'
+        ]);
+
+        $user->password = bcrypt($inputData['password']);
+        return $user->save();
+    }
+
+    private function createNewCustomer($group, $role)
+    {
+//        $privileges = Role::find($role)->privileges;
+        $privileges = $this->role_rep->privileges;
+        dd($privileges);
+    }
+
+
 }
