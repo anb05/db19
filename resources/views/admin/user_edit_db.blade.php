@@ -54,7 +54,7 @@
         </div>
 
 
-        <div class="form-group{{ $errors->has('passwordDb') ? ' has-errorDb' : '' }}">
+        <div class="form-group{{ $errors->has('passwordDb') ? ' has-error' : '' }}">
             <label for="passwordDb" class="col-md-4 control-label">@lang('ua.Password')</label>
 
             <div class="col-md-6">
@@ -69,10 +69,10 @@
         </div>
 
         <div class="form-group">
-            <label for="password-confirmDb" class="col-md-4 control-label">@lang('ua.Confirm Password')</label>
+            <label for="passwordDb-confirm" class="col-md-4 control-label">@lang('ua.Confirm Password')</label>
 
             <div class="col-md-6">
-                <input id="password-confirmDb" type="password" class="form-control" name="password_confirmationDb">
+                <input id="passwordDb-confirm" type="password" class="form-control" name="passwordDb_confirmation">
             </div>
         </div>
     </div>

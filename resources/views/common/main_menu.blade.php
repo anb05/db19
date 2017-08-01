@@ -3,7 +3,9 @@
         <li>
             <a href="{{ route($path) }}"
                class="btn btn-default
-                {{ (URL::current() == route($path)) ? 'active' : '' }}">{{ $name }}</a>
+                {{ (URL::current() == route($path)) ? 'active' : '' }}">
+                {{ $name }}
+            </a>
         </li>
     @endforeach
 @endif

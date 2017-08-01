@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Db19\Http\Controllers\MainController;
 use Db19\Repositories\MenuRepository;
 use Db19\User;
+use Db19\ModelsApp\Role;
 
 class UserEditController extends MainController
 {
@@ -53,12 +54,16 @@ class UserEditController extends MainController
             if (($inputData['group'] === 'guest') || ($inputData['role'] === 'guest')) {
                 $status .= trans('ua.Other users data was not changing');
             } elseif (($inputData['group'] ===  'admin') && ($inputData['role'] === 'admin')) {
+                $this->validate($request, [
+                    'passwordDb' => 'required|string|min:6|confirmed'
+                ]);
 
 
                 $this->createNewCustomer($inputData['group'], $inputData['role']);
 
 
                 $status .= 'change to admin';
+            } else {
             }
 
 
@@ -101,8 +106,7 @@ class UserEditController extends MainController
 
     private function createNewCustomer($group, $role)
     {
-//        $privileges = Role::find($role)->privileges;
-        $privileges = $this->role_rep->privileges;
+        $privileges = Role::find($role)->privileges;
         dd($privileges);
     }
 
