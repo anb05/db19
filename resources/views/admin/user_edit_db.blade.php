@@ -7,9 +7,12 @@
 
             @if(!empty($groups))
                 <div class="col-md-6">
-                    <select id="group" name="group" class="input-group dropdown-menu dropdown-menu-righ">
+                    <select id="group" name="group" class="form-control">
                         @foreach($groups as $group)
-                            <option {{ ($oldUserData['group_name'] == $group) ? 'selected' : '' }}>{{ trans('ua.' . $group) }}</option>
+                            <option value="{{ $group }}"
+                                    {{ ($oldUserData['group_name'] == $group) ? 'selected' : '' }}>
+                                {{ trans('ua.' . $group) }}
+                            </option>
                         @endforeach
                     </select>
                     {{--<input id="id" type="text" class="form-control" name="id" value="{{ $oldUserData['id'] }}">--}}
@@ -28,9 +31,12 @@
 
             @if(!empty($roles))
                 <div class="col-md-6">
-                    <select id="role" name="role" class="input-group dropdown-menu dropdown-menu-righ">
+                    <select id="role" name="role" class="form-control">
                         @foreach($roles as $role)
-                            <option {{ ($oldUserData['role_name'] == $role) ? 'selected' : '' }}>{{ trans('ua.' . $role) }}</option>
+                            <option value = {{ $role }}
+                                    {{ ($oldUserData['role_name'] == $role) ? 'selected' : '' }}>
+                                {{ trans('ua.' . $role) }}
+                            </option>
                         @endforeach
                     </select>
                 </div>

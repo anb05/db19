@@ -41,5 +41,6 @@ return [
     'delete' => 'видалити',
     'user deleted' => 'коритувача видалено',
     'new user registered' => 'нового користувача зареєстровано',
+    'changed App password' => 'пароль для входу в додаток змінено',
+    'Other users data was not changing' => '   відомості про користувача зміні не полягають',
 ];
-
