@@ -29,9 +29,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth']], function ()
     Route::get('/', 'Admin\HomeController@index')->name('admin');
     Route::get('/register', 'Admin\RegisterController@showRegistrationForm')->name('register');
     Route::post('/register', 'Admin\RegisterController@register');
-    Route::get('/show', 'Admin\HomeController@showUsers')->name('viewUser');
+    Route::get('/show/{withDelete?}', 'Admin\HomeController@showUsers')->name('viewUser');
     Route::match(
-        ['get', 'post', 'delete'],
+        ['get', 'post', 'delete', 'restore'],
         '/edit/{user}',
         ['uses' => 'Admin\UserEditController@execute', 'as' => 'userEdit']
     );

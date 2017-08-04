@@ -41,4 +41,14 @@ abstract class Repository
         });
         return $items;
     }
+
+    public function setInstance(Model $model)
+    {
+        $this->model = $model;
+    }
+
+    public function getInstance()
+    {
+        return $this->model;
+    }
 }

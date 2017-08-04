@@ -10,7 +10,14 @@
                     <select id="group" name="group" class="form-control">
                         @foreach($groups as $group)
                             <option value="{{ $group }}"
-                                    {{ ($oldUserData['group_name'] == $group) ? 'selected' : '' }}>
+                            @if(old('group') == $group)
+                                {{ 'selected' }}
+                            @elseif(empty(old('group')) && ($oldUserData['group_name'] == $group))
+                                {{ 'selected' }}
+                            @else
+                                {{ '' }}
+                            @endif
+                                    {{-- ($oldUserData['group_name'] == $group) ? 'selected' : '' --}}>
                                 {{ trans('ua.' . $group) }}
                             </option>
                         @endforeach
@@ -34,7 +41,14 @@
                     <select id="role" name="role" class="form-control">
                         @foreach($roles as $role)
                             <option value = {{ $role }}
-                                    {{ ($oldUserData['role_name'] == $role) ? 'selected' : '' }}>
+                            @if(old('role') == $role)
+                                {{ 'selected' }}
+                                    @elseif(empty(old('role')) && ($oldUserData['role_name'] == $role))
+                                {{ 'selected' }}
+                                    @else
+                                {{ '' }}
+                                    @endif
+                                    {{-- ($oldUserData['role_name'] == $role) ? 'selected' : '' --}}>
                                 {{ trans('ua.' . $role) }}
                             </option>
                         @endforeach

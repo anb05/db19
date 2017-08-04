@@ -11,7 +11,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="alert alert-success">
-                        {{ session('status') }}
+                        {!! session('status') !!}
                     </div>
                 </div>
             </div>

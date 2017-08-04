@@ -39,8 +39,13 @@ return [
     'viewer' => 'оглядач',
     'writer' => 'письме́нник',
     'delete' => 'видалити',
+    'restore' => 'відновити',
     'user deleted' => 'коритувача видалено',
     'new user registered' => 'нового користувача зареєстровано',
     'changed App password' => 'пароль для входу в додаток змінено',
     'Other users data was not changing' => '   відомості про користувача зміні не полягають',
+    'viewDelete' => 'Показувати з видаленими',
+    'User was restored' => 'Користувача відновленно',
+    'User recovery failed' => 'Помилка відновлення користувача',
+    'The user must first be recovered' => 'Спочатку необхідно відновити користувача',
 ];
