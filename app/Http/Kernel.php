@@ -56,5 +56,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \Db19\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'db19' => \Db19\Http\Middleware\CheckEntranceDb::class,
+        'guest19' => \Db19\Http\Middleware\RedirectIfEntranceDb::class,
     ];
 }

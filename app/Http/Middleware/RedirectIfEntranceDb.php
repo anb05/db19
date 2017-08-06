@@ -3,8 +3,9 @@
 namespace Db19\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
-class CheckEntranceDb
+class RedirectIfEntranceDb
 {
     /**
      * Handle an incoming request.
@@ -16,11 +17,10 @@ class CheckEntranceDb
     public function handle($request, Closure $next)
     {
         if($request->session()->has('login_db') && $request->session()->has('password_db')) {
-            \Config::set('database.connections.mysql_input_doc.username', session('login_db'));
-            \Config::set('database.connections.mysql_input_doc.password', session('password_db'));
+            $group = Auth::user()->group_name;
 
-            return $next($request);
+            return redirect('/' . $group);
         }
-        return redirect('/entrance');
+        return $next($request);
     }
 }

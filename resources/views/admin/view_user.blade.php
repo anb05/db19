@@ -1,5 +1,10 @@
 <div class="container">
+    {{--<div class="row">--}}
+    {{--</div>--}}
     <div class="row">
+        <ul class="pager">
+            <li class="next"><a href="{{ route('viewUser', ['withDelete' => true]) }}"><span aria-hidden="true">@lang('ua.viewDelete')</span> </a></li>
+        </ul>
         {{--<div class="col-lg-12">--}}
         <table class="table table-hover">
             <thead>
@@ -45,9 +50,6 @@
         <nav aria-label="Page navigation" class="navbar navbar-fixed-bottom">
             <div class="container">
                 {{ $users->links() }}
-                <ul class="pager">
-                    <li class="next"><a href="{{ route('viewUser', ['withDelete' => true]) }}"><span aria-hidden="true">@lang('ua.viewDelete')</span> </a></li>
-                </ul>
             </div>
         </nav>
 

@@ -25,32 +25,55 @@ Route::post('/', ['middleware' => 'web',
 
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
+
+
+Route::get('/entrance', ['middleware' => ['web', 'auth', 'guest19'],
+    'uses' => 'Common\EntranceDb19@showLoginForm']);
+
+Route::post('/entrance', ['middleware' => ['web', 'auth', 'guest19'],
+    'uses' => 'Common\EntranceDb19@login',
+    'as' => 'login19']);
+
+
+
+
 Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth']], function () {
     Route::get('/', 'Admin\HomeController@index')->name('admin');
-    Route::get('/register', 'Admin\RegisterController@showRegistrationForm')->name('register');
-    Route::post('/register', 'Admin\RegisterController@register');
-    Route::get('/show/{withDelete?}', 'Admin\HomeController@showUsers')->name('viewUser');
-    Route::match(
-        ['get', 'post', 'delete', 'restore'],
-        '/edit/{user}',
-        ['uses' => 'Admin\UserEditController@execute', 'as' => 'userEdit']
-    );
+
+    // This Route group was defined to protect the general database.
+    Route::group(['middleware' => 'db19'], function() {
+        Route::get('/register', 'Admin\RegisterController@showRegistrationForm')->name('register');
+        Route::post('/register', 'Admin\RegisterController@register');
+        Route::get('/show/{withDelete?}', 'Admin\HomeController@showUsers')->name('viewUser');
+        Route::match(
+            ['get', 'post', 'delete', 'restore'],
+            '/edit/{user}',
+            ['uses' => 'Admin\UserEditController@execute', 'as' => 'userEdit']
+        );
+    });
 });
 
-Route::get('/open', function () {
-    return url('/open/index.html');
-})->name('viewDoc');
 
-Route::get('/open/{mi?}', function () {
-    return url('/open/index.html');
-})->name('metaData');
 
-Route::get('/open/{open?}', function () {
-    return url('/open/index.html');
-})->name('openDoc');
 
-Route::get('/guest', function () {
-    return redirect('/open');
+
+Route::group(['prefix' => 'open', 'middleware' => ['auth',]], function () {
+    Route::get('/open', 'Open\OpenResources@execute')->name('viewDoc');
+    /* Route::get('/open', function () { */
+    /*     return url('/open/index.html'); */
+    /* })->name('viewDoc'); */
+
+    Route::get('/open/{mi?}', function () {
+        return url('/open/index.html');
+    })->name('metaData');
+
+    Route::get('/open/{open?}', function () {
+        return url('/open/index.html');
+    })->name('openDoc');
+
+    Route::get('/guest', function () {
+        return redirect('/open');
+    });
 });
 
 

@@ -5,4 +5,5 @@
 
 return [
     'paginate' => 10,
+    'attemptDb' => 5,
 ];

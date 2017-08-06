@@ -32,26 +32,17 @@ class UserRepository extends Repository
 
     public function changeGroupAndRole(Request $request, User $user)
     {
-        \Config::set('database.connections.mysql_input_doc.username', 'db19');
-        \Config::set('database.connections.mysql_input_doc.password', 'db19');
         if (isset($request->passwordDb)) {
+            echo '<pre>';
+            echo "<h3> просмотр username:  " . \Config::get('database.connections.mysql_input_doc.username') . "</h3>";
+            echo "<h3> просмотр password:  " . \Config::get('database.connections.mysql_input_doc.password') . "</h3>";
+            echo '</pre>';
             $this->validate($request, [
                 'passwordDb' => 'required|string|min:6|confirmed'
             ]);
 
             if ($objectUser = UserDb::find($user->id)) {
-                echo '<pre>';
-                echo \Config::get('database.connections.mysql_input_doc.username');
-                echo \Config::get('database.connections.mysql_input_doc.password');
-                echo '</pre>';
-                echo "<h1> Меняем значения</h1>";
-                \Config::set('database.connections.mysql_input_doc.username', 'lalalala');
-                \Config::set('database.connections.mysql_input_doc.password', '1234567');
-                echo '<pre>';
-                echo \Config::get('database.connections.mysql_input_doc.username');
-                echo \Config::get('database.connections.mysql_input_doc.password');
-                echo '</pre>';
-                echo "<h1> Меняем значения</h1>";
+                //
             }
             die();
             $userData = ['id' => $user->id, 'name' => $user->login];
