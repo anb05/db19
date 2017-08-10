@@ -38,8 +38,8 @@ class CreateTableCorrespondents extends Migration
         /**
          * In these two lines change type of data in columns updated_at and created_at.
          */
-        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE correspondents MODIFY COLUMN updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ');
-        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE correspondents MODIFY COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ');
+//        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE correspondents MODIFY COLUMN updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ');
+//        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE correspondents MODIFY COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ');
     }
 
     /**

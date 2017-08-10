@@ -53,52 +53,6 @@ class UserEditController extends MainController
         $result = $this->$action();
 
         return $result;
-
-
-
-
-
-
-
-
-
-/*
-        if ($request->isMethod('post')) {
-            $status = '';
-            $inputData = $request->except('_token');
-            if (isset($inputData['password'])) {
-                if ($this->changeAppPassword($request, $user, $inputData)) {
-                    $status = trans('ua.changed App password');
-                }
-            }
-//
-            if (($inputData['group'] === 'guest') || ($inputData['role'] === 'guest')) {
-                $status .= trans('ua.Other users data was not changing');
-            } elseif (($inputData['group'] ===  'admin') && ($inputData['role'] === 'admin')) {
-                $this->validate($request, [
-                    'passwordDb' => 'required|string|min:6|confirmed'
-                ]);
-
-
-                $this->createNewCustomer($inputData['group'], $inputData['role']);
-
-
-                $status .= 'change to admin';
-            } else {
-            }
-
-
-
-
-            dd($inputData);
-
-
-
-
-            $request->session()->flash('status', $status);
-            return redirect('/admin');
-        }
-*/
     }
 
     private function postAction()
@@ -118,31 +72,6 @@ class UserEditController extends MainController
         } else {
             $status .= "<br>\n" . trans('ua.user data has not been changed');
         }
-
-
-
-
-
-
-//        dump($inputData);
-//        echo "<h1>oldData</h1>";
-//        dd($oldData);
-
-/*
-        if (($oldData['group_name'] == $inputData['group']) && ($oldData['role_name'] == $inputData['role'])) {
-            $status .= trans('ua.Other users data was not changing');
-        } else {
-            $this->validate($this->request, [
-                'passwordDb' => 'required|string|min:6|confirmed'
-            ]);
-
-            // Вызываем метод формирования запроса на смену группы и роли в db19.users
-
-//            $this->changeGroupAndRole();
-        }
-*/
-
-//        dd("<h1>Password changing</h1>");
 
         $this->request->session()->flash('status', $status);
         return redirect('/admin');
@@ -182,12 +111,4 @@ class UserEditController extends MainController
         }
         abort(404);
     }
-
-    private function createNewCustomer($group, $role)
-    {
-        $privileges = Role::find($role)->privileges;
-        dd($privileges);
-    }
-
-
 }

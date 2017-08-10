@@ -31,14 +31,14 @@ class CreateTableTypesOfDocuments extends Migration
              * First column call create_at.
              * Second column call update_at.
              */
-            $table->timestamps();
+//            $table->timestamps();
         });
 
         /**
          * In these two lines change type of data in columns updated_at and created_at.
          */
-        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE types_of_documents MODIFY COLUMN updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ');
-        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE types_of_documents MODIFY COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ');
+//        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE types_of_documents MODIFY COLUMN updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ');
+//        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE types_of_documents MODIFY COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ');
     }
 
     /**

@@ -37,7 +37,7 @@ class CreateTableDocuments extends Migration
              * This method is building column for keeping in store of date outside of registration.
              * But it does not work. For created this column used method placed below.
              */
-//            $table->timestamp('outside_date');
+            $table->timestamp('outside_date')->nullable();
 
             /**
              * This method is building column for keeping in store information about author of document.
@@ -110,14 +110,13 @@ class CreateTableDocuments extends Migration
         /**
          * In these two lines change type of data in columns updated_at and created_at.
          */
-        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE documents MODIFY COLUMN updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ');
-        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE documents MODIFY COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ');
+//        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE documents MODIFY COLUMN updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ');
+//        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE documents MODIFY COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ');
 
         /**
          * It is create column "outside_date".
          */
-        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE documents ADD COLUMN outside_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER outside_serial');
-
+//        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE documents ADD COLUMN outside_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER outside_serial');
     }
 
     /**

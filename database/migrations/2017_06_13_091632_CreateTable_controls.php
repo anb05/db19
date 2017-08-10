@@ -35,12 +35,12 @@ class CreateTableControls extends Migration
             /**
              * This column contains the time when the work should be completed
              */
-//            $table->timestamp('check_time');
+            $table->timestamp('check_time')->nullable();
 
             /**
              * External key. Contains the primary key of the "documents" table.
              */
-            $table->integer('document_id', false, true)->unique();
+            $table->integer('document_id', false, true);
             $table->foreign('document_id')->references('id')->on('documents');
 
             /**
@@ -53,13 +53,13 @@ class CreateTableControls extends Migration
         /**
          * In these two lines change type of data in columns updated_at and created_at.
          */
-        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE controls MODIFY COLUMN updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ');
-        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE controls MODIFY COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ');
+//        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE controls MODIFY COLUMN updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ');
+//        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE controls MODIFY COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ');
 
         /**
          * It is create column "outside_date".
          */
-        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE controls ADD COLUMN check_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER control_number');
+//        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE controls ADD COLUMN check_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER control_number');
     }
 
     /**

@@ -4,17 +4,16 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableSerialNumbersConfidential extends Migration
+class CreateTableNoConfidentialOutput extends Migration
 {
     /**
      * Run the migrations.
-     * This migration creates table to keep in store information about incoming number.
      *
      * @return void
      */
     public function up()
     {
-        Schema::connection("mysql_input_doc")->create('confidential_numbers', function (Blueprint $table) {
+        Schema::connection("mysql_input_doc")->create('no_confidential_output', function (Blueprint $table) {
             /**
              * Primary key
              */
@@ -41,17 +40,7 @@ class CreateTableSerialNumbersConfidential extends Migration
             $table->timestamps();
         });
 
-        /**
-         * In these two lines change type of data in columns updated_at and created_at.
-         */
-//        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE confidential_numbers MODIFY COLUMN updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ');
-//        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE confidential_numbers MODIFY COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ');
-
-//        Schema::connection("mysql_input_documents")->table('confidential_numbers', function (Blueprint $table) {
-//            $table->index(['id', 'created_at']);
-//        });
-
-        DB::connection('mysql_input_doc')->unprepared('ALTER TABLE confidential_numbers ADD UNIQUE (num, created_at)');
+        DB::connection('mysql_input_doc')->unprepared('ALTER TABLE no_confidential_output ADD UNIQUE (num, created_at)');
     }
 
     /**
@@ -61,6 +50,6 @@ class CreateTableSerialNumbersConfidential extends Migration
      */
     public function down()
     {
-        Schema::connection("mysql_input_doc")->dropIfExists('confidential_numbers');
+        Schema::connection("mysql_input_doc")->dropIfExists('no_confidential_output');
     }
 }

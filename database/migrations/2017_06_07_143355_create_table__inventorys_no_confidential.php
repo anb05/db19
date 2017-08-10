@@ -16,11 +16,26 @@ class CreateTableInventorysNoConfidential extends Migration
     {
         Schema::connection("mysql_input_doc")->create('no_confidential_inventorys', function (Blueprint $table) {
             /**
-             * This is the first part of the primary key
+             * Primary key
+             */
+            $table->increments('id');
+
+            /**
+             * This column contain full inventory number of document
+             */
+            $table->string('full_inventory', 255);
+//
+            /**
+             * External key. Contains the primary key of the "documents" table.
+             */
+            $table->integer('document_id', false, true);
+
+            /**
+             * This is the first part of the unique key
              * The second part is the column created_at
              * This primary key is not an autoincrement.
              */
-            $table->unsignedInteger('id');
+//            $table->unsignedInteger('num');
 
             /**
              * Date of registration and modification of documents.
@@ -28,28 +43,18 @@ class CreateTableInventorysNoConfidential extends Migration
              * First column call create_at.
              * Second column call update_at.
              */
-            $table->timestamps();
-
-            /**
-             * This column contain full inventory number of document
-             */
-            $table->string('full_inventory', 255);
-
-            /**
-             * External key. Contains the primary key of the "documents" table.
-             */
-            $table->integer('document_id', false, true);
+//            $table->timestamps();
         });
 
         /**
          * In these two lines change type of data in columns updated_at and created_at.
          */
-        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE no_confidential_inventorys MODIFY COLUMN updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ');
-        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE no_confidential_inventorys MODIFY COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ');
+//        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE no_confidential_inventorys MODIFY COLUMN updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ');
+//        DB::connection("mysql_input_doc")->unprepared('ALTER TABLE no_confidential_inventorys MODIFY COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ');
 
-        Schema::connection("mysql_input_doc")->table('no_confidential_inventorys', function (Blueprint $table) {
-            $table->unique(['id', 'created_at']);
-        });
+//        Schema::connection("mysql_input_doc")->table('no_confidential_inventorys', function (Blueprint $table) {
+//            $table->unique(['id', 'created_at']);
+//        });
     }
 
     /**

@@ -5,19 +5,37 @@
 namespace Db19\Repositories;
 
 use Db19\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Db19\ModelsDb\UserDb;
 
+/**
+ * Class UserRepository
+ * This class is designed to manage users
+ *
+ * @package Db19\Repositories
+ */
 class UserRepository extends Repository
 {
     use ValidatesRequests;
 
+    /**
+     * Repository constructor.
+     *
+     * @param User $user active user
+     */
     public function __construct(User $user)
     {
         parent::__construct($user);
     }
 
+    /**
+     * This method checks two passwords and changes the old password in the application.
+     * @param Request $request
+     *
+     * @return bool
+     */
     public function changeAppPassword(Request $request)
     {
         if (isset($request->password)) {   // (isset($request->input('password' {
@@ -30,28 +48,132 @@ class UserRepository extends Repository
         }
     }
 
+    /**
+     * This method takes data from the database and from the query and creates a new USER in the DBMS.
+     * This new USER given GROUP and ROLE. His permissions accord his role for his group.
+     * Each group has its own table(view) in db19_input_doc
+     *
+     * @param Request $request
+     * @param User    $user
+     *
+     * @return bool
+     */
     public function changeGroupAndRole(Request $request, User $user)
     {
-        if (isset($request->passwordDb)) {
-            echo '<pre>';
-            echo "<h3> просмотр username:  " . \Config::get('database.connections.mysql_input_doc.username') . "</h3>";
-            echo "<h3> просмотр password:  " . \Config::get('database.connections.mysql_input_doc.password') . "</h3>";
-            echo '</pre>';
-            $this->validate($request, [
-                'passwordDb' => 'required|string|min:6|confirmed'
-            ]);
+        try {
+            if (isset($request->passwordDb)) {
+                $this->validate($request, [
+                    'passwordDb' => 'required|string|min:6|confirmed'
+                ]);
 
-            if ($objectUser = UserDb::find($user->id)) {
-                //
+                if ($userApp = User::find($user->id)) {
+                    if (($request->group == 'guest') || ($request->role == 'guest')) {
+                        $userApp->group_name = 'guest';
+                        $userApp->role_name = 'guest';
+                    } else {
+                        $userApp->group_name = $request->group;
+                        $userApp->role_name = $request->role;
+                    }
+                    $userApp->save();
+                }
+
+                if ($objectUser = UserDb::find($user->id)) {
+                    $this->deleteUserDb($objectUser);
+                }
+
+                $userData = ['id' => $user->id, 'name' => $user->login];
+                $objectUser = new UserDb($userData);
+                $objectUser->save();
+
+                $query = "CREATE USER '" . $objectUser->name . "'@'localhost' IDENTIFIED BY '" . $request->passwordDb . "'";
+                \DB::connection("mysql_input_doc")->unprepared($query);
+
+                return $this->createQueryPrivilege($request, $objectUser);
             }
-            die();
-            $userData = ['id' => $user->id, 'name' => $user->login];
-            $objectUser = new UserDb($userData);
-            $objectUser->save();
+        } catch (QueryException $exception) {
+            $userApp->group_name = 'guest';
+            $userApp->role_name = 'guest';
+            $userApp->save();
 
-            dump($user);
-            dd($objectUser);
+            $objectUser->delete();
+            $this->deleteUserDb($objectUser);
+            return false;
         }
-        return false;
+    }
+
+    private function createQueryPrivilege(Request $request, UserDb $objectUser)
+    {
+        $role = ($request->group == 'guest') ? 'guest' : $request->role;
+        switch ($role) {
+            case 'guest':
+                $query = "GRANT USAGE ON *.* TO '" . $objectUser->name . "'@'localhost'";
+                \DB::connection("mysql_input_doc")->unprepared($query);
+                break;
+
+            case 'viewer':
+                $query = "GRANT SELECT ON confidential_inventorys TO '" . $objectUser->name . "'@'localhost'";
+                \DB::connection("mysql_input_doc")->unprepared($query);
+
+                $query = "GRANT SELECT ON no_confidential_inventorys TO '" . $objectUser->name . "'@'localhost'";
+                \DB::connection("mysql_input_doc")->unprepared($query);
+
+                $query = "GRANT SELECT ON no_confidential_output TO '" . $objectUser->name . "'@'localhost'";
+                \DB::connection("mysql_input_doc")->unprepared($query);
+
+                $query = "GRANT SELECT ON confidential_output TO '" . $objectUser->name . "'@'localhost'";
+                \DB::connection("mysql_input_doc")->unprepared($query);
+
+                $query = "GRANT SELECT ON no_confidential_numbers TO '" . $objectUser->name . "'@'localhost'";
+                \DB::connection("mysql_input_doc")->unprepared($query);
+
+                $query = "GRANT SELECT ON confidential_numbers TO '" . $objectUser->name . "'@'localhost'";
+                \DB::connection("mysql_input_doc")->unprepared($query);
+
+                $query = "GRANT SELECT ON no_confidential_disks TO '" . $objectUser->name . "'@'localhost'";
+                \DB::connection("mysql_input_doc")->unprepared($query);
+
+                $query = "GRANT SELECT ON confidential_disks TO '" . $objectUser->name . "'@'localhost'";
+                \DB::connection("mysql_input_doc")->unprepared($query);
+
+                $query = "GRANT SELECT (header) ON documents TO '" . $objectUser->name . "'@'localhost'";
+                \DB::connection("mysql_input_doc")->unprepared($query);
+                break;
+
+            case 'regular':
+                $query = "GRANT SELECT ON db19_input_doc.* TO '" . $objectUser->name . "'@'localhost'";
+                \DB::connection("mysql_input_doc")->unprepared($query);
+                break;
+
+            case 'write':
+                $query = "GRANT SELECT, INSERT ON db19_input_doc.* TO '" . $objectUser->name . "'@'localhost'";
+                \DB::connection("mysql_input_doc")->unprepared($query);
+                break;
+
+            case 'moderator':
+                $query  = "GRANT SELECT, INSERT, UPDATE, DELETE ON db19_input_doc.* TO '";
+                $query .= $objectUser->name . "'@'localhost'";
+                \DB::connection("mysql_input_doc")->unprepared($query);
+                break;
+
+            case 'admin':
+                $query  = "GRANT ALL PRIVILEGES ON db19_input_doc.* TO '";
+                $query .= $objectUser->name . "'@'localhost'";
+                \DB::connection("mysql_input_doc")->unprepared($query);
+
+                $query = "GRANT CREATE USER ON *.* TO '" . $objectUser->name . "'@'localhost' WITH GRANT OPTION";
+                \DB::connection("mysql_input_doc")->unprepared($query);
+        }
+        return true;
+    }
+
+    private function deleteUserDb(UserDb $userDb)
+    {
+        /*
+         * This strings intend for MySQL
+         */
+        $query = "DROP USER '". $userDb->name . "'@'localhost'";
+        \DB::connection("mysql_input_doc")->unprepared($query);
+        //************************************************************
+        $userDb->delete();
     }
 }

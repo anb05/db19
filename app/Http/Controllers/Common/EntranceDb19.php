@@ -16,8 +16,7 @@ class EntranceDb19 extends Controller
     public function login(Request $request)
     {
         $this->validateLogin($request);
-        if ($this->attemptEntrance($request))
-        {
+        if ($this->attemptEntrance($request)) {
             $request->session()->put('login_db', $request->login);
             $request->session()->put('password_db', $request->password);
 
@@ -39,6 +38,10 @@ class EntranceDb19 extends Controller
     {
         $activeUser = \Auth::user();
         $login = $activeUser->login;
+        if ($login != $request->login) {
+            return false;
+        }
+
         \Config::set('database.connections.mysql_input_doc.username', $login);
         \Config::set('database.connections.mysql_input_doc.password', $request->password);
         try {
