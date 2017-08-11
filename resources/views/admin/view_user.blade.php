@@ -3,16 +3,18 @@
     {{--</div>--}}
     <div class="row">
         <ul class="pager">
-            <li class="next"><a href="{{ route('viewUser', ['withDelete' => true]) }}"><span aria-hidden="true">@lang('ua.viewDelete')</span> </a></li>
+            <li class="next"><a href="{{ route('read_user', ['withDelete' => true]) }}"><span aria-hidden="true">@lang('ua.viewDelete')</span> </a></li>
         </ul>
         {{--<div class="col-lg-12">--}}
         <table class="table table-hover">
             <thead>
             <tr>
-                <th class="col-md-3">{{ trans('ua.id') }}</th>
-                <th class="col-md-3">{{ trans('ua.Login') }}</th>
-                <th class="col-md-2">{{ trans('ua.Group') }}</th>
-                <th class="col-md-2">{{ trans('ua.Roles') }}</th>
+                <th class="col-md-2">{{ trans('ua.id') }}</th>
+                <th class="col-md-2">{{ trans('ua.Login') }}</th>
+                <th class="col-md-1">{{ trans('ua.Group') }}</th>
+                <th class="col-md-1">{{ trans('ua.Roles') }}</th>
+                <th class="col-md-2">{{ trans('ua.Registered') }}</th>
+                <th class="col-md-2">{{ trans('ua.Updated') }}</th>
                 <th class="col-md-2">{{ trans('ua.Delete') }}</th>
             </tr>
             </thead>
@@ -24,6 +26,8 @@
                     <td><a href="{{ route('userEdit', ['user' => $user->id]) }}">{{ $user->login }}</a></td>
                     <td>{{ $user->group_name }}</td>
                     <td>{{ $user->role_name }}</td>
+                    <td>{{ $user->created_at }}</td>
+                    <td>{{ $user->updated_at }}</td>
                     <td>
                         <form action="{{ route('userEdit', ['user' => $user->id]) }}"
                               method="post"

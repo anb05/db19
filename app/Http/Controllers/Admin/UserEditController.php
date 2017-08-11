@@ -102,7 +102,7 @@ class UserEditController extends MainController
             $this->data['groups'] = $this->group_rep->getAll();
             $this->data['roles'] = $this->role_rep->getAll();
 
-            $usersGroup = \Auth::user()->group_name;
+            $usersGroup = \Auth::user()->role_name;
             if ($usersGroup === 'admin') {
                 $formRedactUser = view('admin.user_edit_db', $this->data)->render();
                 $this->data['userDataFromDB'] = $formRedactUser;

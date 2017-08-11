@@ -24,6 +24,8 @@ class HomeController extends MainController
         $this->middleware('auth');
 
         $this->template = 'admin.home';
+
+        $this->title = 'Admin';
     }
 
     /**
@@ -47,6 +49,7 @@ class HomeController extends MainController
 
     /**
      * This method returns a collection of all users except for oneself
+     *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function getUsers($withDelete = false)

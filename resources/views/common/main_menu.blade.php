@@ -4,7 +4,7 @@
             <a href="{{ route($path) }}"
                class="btn btn-default
                 {{ (URL::current() == route($path)) ? 'active' : '' }}">
-                {{ $name }}
+                @lang('ua.' . $path)
             </a>
         </li>
     @endforeach

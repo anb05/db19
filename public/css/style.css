@@ -1,0 +1,12 @@
+.db-brand {
+    background-image: url("/assets/images/Logo_100.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 50px;
+    margin-right: 15px;
+}
+
+.db-background {
+    background: linear-gradient(to bottom, lightblue, lightgoldenrodyellow) no-repeat fixed;
+}

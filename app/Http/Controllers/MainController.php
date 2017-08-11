@@ -43,9 +43,8 @@ class MainController extends Controller
     /**
      * MainController constructor.
      */
-    public function __construct(/*MenuRepository $menu_rep*/)
+    public function __construct()
     {
-//        $this->menu_rep = $menu_rep;
         $this->menu_rep = new MenuRepository(new Privilege());
     }
 
@@ -55,6 +54,7 @@ class MainController extends Controller
     public function render()
     {
         $this->data['mainMenu'] = $this->getMenu();
+        \Config::set('app.name', $this->title);
 
         return view($this->template, $this->data);
     }

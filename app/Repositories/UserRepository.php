@@ -144,7 +144,7 @@ class UserRepository extends Repository
                 \DB::connection("mysql_input_doc")->unprepared($query);
                 break;
 
-            case 'write':
+            case 'writer':
                 $query = "GRANT SELECT, INSERT ON db19_input_doc.* TO '" . $objectUser->name . "'@'localhost'";
                 \DB::connection("mysql_input_doc")->unprepared($query);
                 break;

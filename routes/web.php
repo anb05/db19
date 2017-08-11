@@ -41,10 +41,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth']], function ()
     Route::get('/', 'Admin\HomeController@index')->name('admin');
 
     // This Route group was defined to protect the general database.
-    Route::group(['middleware' => 'db19'], function() {
-        Route::get('/register', 'Admin\RegisterController@showRegistrationForm')->name('register');
+    Route::group(['middleware' => 'db19'], function () {
+        Route::get('/register', 'Admin\RegisterController@showRegistrationForm')->name('create_user');
         Route::post('/register', 'Admin\RegisterController@register');
-        Route::get('/show/{withDelete?}', 'Admin\HomeController@showUsers')->name('viewUser');
+        Route::get('/show/{withDelete?}', 'Admin\HomeController@showUsers')->name('read_user');
         Route::match(
             ['get', 'post', 'delete', 'restore'],
             '/edit/{user}',
@@ -53,24 +53,29 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth']], function ()
     });
 });
 
+Route::group(['prefix' => 'writer', 'middleware' => 'auth'], function () {
+    Route::get('/', 'Writer\HomeController@index')->name('writer');
+
+    Route::group(['middleware' => 'db19'], function () {
+        Route::get('/create', 'Writer\CreateDocument@index')->name('create_doc');
+    });
+});
 
 
 
 
-Route::group(['prefix' => 'open', 'middleware' => ['auth',]], function () {
-    Route::get('/open', 'Open\OpenResources@execute')->name('viewDoc');
-    /* Route::get('/open', function () { */
-    /*     return url('/open/index.html'); */
-    /* })->name('viewDoc'); */
 
-    Route::get('/open/{mi?}', function () {
+Route::group(['prefix' => 'guest', 'middleware' => ['auth',]], function () {
+    Route::get('/', 'Open\OpenResources@execute')->name('read_open');
+
+    Route::get('/{mi?}', function () {
         return url('/open/index.html');
-    })->name('metaData');
+    })->name('read_mi');
 
-    Route::get('/open/{open?}', function () {
+    Route::get('/{open?}', function () {
         return url('/open/index.html');
-    })->name('openDoc');
-
+    })->name('read_doc');
+//
     Route::get('/guest', function () {
         return redirect('/open');
     });

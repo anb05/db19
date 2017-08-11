@@ -19,10 +19,7 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-
-//            $user = Auth::user()->id;
-//            $group = User::find($user)->group->name;
-            $group = Auth::user()->group_name;
+            $group = Auth::user()->role_name;
 
             return redirect('/' . $group);
         }

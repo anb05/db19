@@ -2,16 +2,28 @@
 
 namespace Db19\Http\Controllers\Common;
 
+use Db19\Http\Controllers\MainController;
 use Illuminate\Http\Request;
-use Db19\Http\Controllers\Controller;
 use Db19\ModelsDb\UserDb;
+use \Illuminate\Database\QueryException;
 
-class EntranceDb19 extends Controller
+class EntranceDb19 extends MainController
 {
+    /**
+     * MainController constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->title = 'Entrance to Information Recourse';
+    }
+
     /**
      * Handle a login request to the application.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @return string
      */
     public function login(Request $request)
     {
@@ -20,7 +32,7 @@ class EntranceDb19 extends Controller
             $request->session()->put('login_db', $request->login);
             $request->session()->put('password_db', $request->password);
 
-            $group = \Auth::user()->group_name;
+            $group = \Auth::user()->role_name;
             return redirect('/' . $group)->with('status', 'You were entered');
         }
 
@@ -49,8 +61,7 @@ class EntranceDb19 extends Controller
             $activeUser->attempt = 0;
             $activeUser->save();
             return (isset($userDb) ? $userDb : true);
-        } catch (\Illuminate\Database\QueryException $exception) {
-
+        } catch (QueryException $exception) {
             \Config::set('database.connections.mysql_input_doc.username', '');
             \Config::set('database.connections.mysql_input_doc.password', '');
             $activeUser->attempt += 1;

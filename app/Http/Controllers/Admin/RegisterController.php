@@ -25,6 +25,8 @@ class RegisterController extends MainController
         parent::__construct();
 
         $this->template = 'auth.register';
+
+        $this->title = 'Register';
     }
 
     /**

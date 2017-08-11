@@ -11,7 +11,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Register</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" method="POST" action="{{ route('register') }}">
+                        <form class="form-horizontal" method="POST" action="{{ route('create_user') }}">
                             {{ csrf_field() }}
 
                             <div class="form-group{{ $errors->has('id') ? ' has-error' : '' }}">

@@ -30,7 +30,6 @@ class MenuRepository extends Repository
     {
         $privileges = $this->getPrivilege();
         $actions = $this->selectAction($privileges);
-
         $menu = view('common.main_menu', ['mainMenu' => $actions])->render();
 
         return $menu;
@@ -68,30 +67,31 @@ class MenuRepository extends Repository
         foreach ($privileges as $privilege) {
             switch ($privilege) {
                 case 'read_open':
-                    $mainMenu['Відкриті документи'] = 'openDoc';
+                    $mainMenu[2] = $privilege;
                     break;
 
                 case 'read_mi':
-                    $mainMenu['Перегляд номерів'] = 'metaData';
+                    $mainMenu[3] = $privilege;
                     break;
 
                 case 'read_doc':
-                    $mainMenu['Перегляд документів'] = 'viewDoc';
+                    $mainMenu[4] = $privilege;
                     break;
 
                 case 'create_doc':
-                    $mainMenu['Створити документ'] = 'createDoc';
+                    $mainMenu[5] = $privilege;
                     break;
 
                 case 'read_user':
-                    $mainMenu['Перегляд коритувачів'] = 'viewUser';
+                    $mainMenu[0] = $privilege;
                     break;
 
                 case 'create_user':
-                    $mainMenu['Новий користувач'] = 'register';
+                    $mainMenu[1] = $privilege;
                     break;
             }
         }
+        ksort($mainMenu);
         return $mainMenu;
     }
 }

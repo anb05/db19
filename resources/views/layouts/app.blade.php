@@ -3,7 +3,7 @@
 <head>
     @yield('main_head')
 </head>
-<body>
+<body class="db-background">
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container-fluid">
@@ -18,9 +18,8 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                        {{--<img src="{{ asset('assets/images/Logo_100.png') }}" class="img-thumbnail">--}}
+                    <a class="navbar-brand db-brand" href="{{ url('/') }}">
+                        {{--{{ config('app.name', 'Laravel') }}--}}
                     </a>
                 </div>
 
