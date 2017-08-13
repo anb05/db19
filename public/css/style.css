@@ -10,3 +10,20 @@
 .db-background {
     background: linear-gradient(to bottom, lightblue, lightgoldenrodyellow) no-repeat fixed;
 }
+
+.left-aside, .create-doc-panel {
+    background: rgba(255, 255, 255, 0.5);
+    border: white solid 1px;
+    border-radius: 10px;
+    margin: -15px -10px;
+    padding: 0 5px;
+}
+
+.context-panel {
+    background-color: #f5f8fa;
+    padding: 1px 5px 0 5px;
+}
+
+.add-space-top {
+    margin-top: 15px;
+}

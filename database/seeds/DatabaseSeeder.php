@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CreateRoles::class);
         $this->call(FullinPrivilegeRole::class);
         $this->call(CreateAdmin::class);
-
         $this->call(SeedingGroupTableDb19::class);
     }
 }

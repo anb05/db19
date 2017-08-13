@@ -2,7 +2,6 @@
 
 @section('main_head')
     @include('common.main_head')
-    <link href="{{ asset('css/background.css') }}" rel="stylesheet">
 @endsection
 
 @section('main_menu')

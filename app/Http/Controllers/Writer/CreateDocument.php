@@ -14,7 +14,7 @@ class CreateDocument extends MainController
     {
         parent::__construct();
 
-        $this->template = 'writer.home';
+        $this->template = 'writer.create';
 
         $this->title = 'Новий документ';
     }
