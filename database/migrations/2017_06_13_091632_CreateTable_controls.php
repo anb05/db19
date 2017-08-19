@@ -30,12 +30,17 @@ class CreateTableControls extends Migration
              * First column call create_at.
              * Second column call update_at.
              */
-            $table->timestamps();
+//            $table->timestamps();
 
             /**
-             * This column contains the time when the work should be completed
+             * This column contains the date when the work should be completed
              */
-            $table->timestamp('check_time')->nullable();
+            $table->date('check_time')->nullable();
+
+            /**
+             * This column contains the date when the work was been completed
+             */
+            $table->date('executed_time')->nullable();
 
             /**
              * External key. Contains the primary key of the "documents" table.

@@ -30,6 +30,18 @@ class UserRepository extends Repository
         parent::__construct($user);
     }
 
+    public function changeFullName(Request $request)
+    {
+//        dump($this->model);
+//        echo "<h2>REQUEST</h2>";
+//        dd($request);
+        if ($this->model->full_name != $request->full_name) {
+            $this->model->full_name = $request->full_name;
+
+            return $this->model->save();
+        }
+    }
+
     /**
      * This method checks two passwords and changes the old password in the application.
      * @param Request $request

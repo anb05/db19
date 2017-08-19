@@ -11,6 +11,7 @@
             <tr>
                 <th class="col-md-2">{{ trans('ua.id') }}</th>
                 <th class="col-md-2">{{ trans('ua.Login') }}</th>
+                <th class="col-md-2">{{ trans('ua.FullName') }}</th>
                 <th class="col-md-1">{{ trans('ua.Group') }}</th>
                 <th class="col-md-1">{{ trans('ua.Roles') }}</th>
                 <th class="col-md-2">{{ trans('ua.Registered') }}</th>
@@ -20,10 +21,12 @@
             </thead>
 
             {{--            @if($users)--}}
+            {{-- dump($users) --}}
             @foreach($users as $user)
                 <tr>
                     <td><a href="{{ route('userEdit', ['user' => $user->id]) }}">{{ $user->id }}</a></td>
                     <td><a href="{{ route('userEdit', ['user' => $user->id]) }}">{{ $user->login }}</a></td>
+                    <td>{{ $user->full_name }}</td>
                     <td>{{ $user->group_name }}</td>
                     <td>{{ $user->role_name }}</td>
                     <td>{{ $user->created_at }}</td>

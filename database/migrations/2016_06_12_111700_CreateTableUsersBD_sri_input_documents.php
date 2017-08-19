@@ -16,7 +16,7 @@ class CreateTableUsersBDSriInputDocuments extends Migration
         Schema::connection("mysql_input_doc")->create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->timestamps();
+//            $table->timestamps();
         });
 
         /**

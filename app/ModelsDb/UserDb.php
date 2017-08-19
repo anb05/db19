@@ -17,6 +17,8 @@ class UserDb extends Model
 
     protected $fillable = ['id', 'name'];
 
+    public $timestamps = false;
+
     /**
      * This method returns a collection of Control models
      *

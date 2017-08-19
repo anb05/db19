@@ -6,6 +6,7 @@
 
 @section('content')
     @if($oldUserData)
+        {{-- dd($oldUserData) --}}
 
         <div class="container">
             <div class="row">
@@ -40,6 +41,20 @@
                                         @if ($errors->has('login'))
                                             <span class="help-block">
                                         <strong>{{ $errors->first('login') }}</strong>
+                                    </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-group{{ $errors->has('full_name') ? ' has-error' : '' }}">
+                                    <label for="full_name" class="col-md-4 control-label">{{ trans('ua.FullName') }}</label>
+
+                                    <div class="col-md-6">
+                                        <input id="full_name" type="text" class="form-control" name="full_name" value="{{ $oldUserData['full_name'] }}">
+
+                                        @if ($errors->has('full_name'))
+                                            <span class="help-block">
+                                        <strong>{{ $errors->first('full_name') }}</strong>
                                     </span>
                                         @endif
                                     </div>

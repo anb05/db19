@@ -34,7 +34,7 @@ class CreateTableResolutions extends Migration
             /**
              * This column keeps with instruction from the senior manager
              */
-            $table->string('resolution', 512);
+            $table->string('resolution');
 
             /**
              * Date of registration and modification of documents.
@@ -42,7 +42,9 @@ class CreateTableResolutions extends Migration
              * First column call create_at.
              * Second column call update_at.
              */
-            $table->timestamps();
+//            $table->timestamps();
+
+            $table->date('date');
         });
 
         /**

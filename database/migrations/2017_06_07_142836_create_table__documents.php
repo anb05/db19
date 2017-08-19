@@ -29,15 +29,14 @@ class CreateTableDocuments extends Migration
             $table->timestamps();
 
             /**
-             * This column keeps in store about outside serial numbers of incoming of documents.
+             * This column caters soft deleting
              */
-            $table->string('outside_serial', 255);
+            $table->softDeletes();
 
             /**
-             * This method is building column for keeping in store of date outside of registration.
-             * But it does not work. For created this column used method placed below.
+             * This column for keeping in store date when the document returned back.
              */
-            $table->timestamp('outside_date')->nullable();
+            $table->date('return_date');
 
             /**
              * This method is building column for keeping in store information about author of document.
@@ -51,20 +50,15 @@ class CreateTableDocuments extends Migration
             $table->text('header');
 
             /**
-             * This is foreign key from correspondents table.
-             */
-            $table->unsignedInteger('correspondent_id');
-
-            /**
-             * This is foreign key from types_of_document
-             */
-            $table->unsignedInteger('type_id');
-
-            /**
              * This method creates columns for storing keywords in the repository.
              * These words provide a search in the database.
              */
-            $table->string('key_words', 255);
+            $table->text('key_words');
+
+            /**
+             * This column keeps in store description about document
+             */
+            $table->text('description');
 
             /**
              * This column stores the copy number.
@@ -75,6 +69,11 @@ class CreateTableDocuments extends Migration
              * This column stores information about number of pages in the document.
              */
             $table->unsignedInteger('number_of_pages');
+
+            /**
+             * This column stores in detail information about everyone copy of the document.
+             */
+            $table->text('description_copy');
 
             /**
              * This column stores the number of appendix.
@@ -99,12 +98,33 @@ class CreateTableDocuments extends Migration
             /**
              * If this document is response, this column store information about parent document.
              */
-            $table->string('output_document')->nullable();
+            $table->unsignedInteger('relation_document', false)->nullable();
 
             /**
-             * This column caters soft deleting
+             * This column is a foreign key. It refers to the user who created this record.
              */
-            $table->softDeletes();
+            $table->unsignedInteger('creator_id');
+
+            /**
+             * This is foreign key from types_of_document
+             */
+            $table->string('state_name', 50);
+
+            /**
+             * This column keeps in store about outside serial numbers of incoming of documents.
+             */
+            $table->string('outside_num', 255);
+
+            /**
+             * This method is building column for keeping in store of date outside of registration.
+             * But it does not work. For created this column used method placed below.
+             */
+            $table->date('outside_date')->nullable();
+
+            /**
+             * This column keeps in store about correspondents.
+             */
+            $table->text('correspondent');
         });
 
         /**

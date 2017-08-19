@@ -14,6 +14,11 @@ use Db19\Http\Controllers\MainController;
  */
 class HomeController extends MainController
 {
+    private $withDelete = false;
+
+    private $columnSort = 'updated_at';
+
+    private $directionSort = 'desc'; //asc
     /**
      * Create a new controller instance.
      */
@@ -58,10 +63,12 @@ class HomeController extends MainController
         if ($withDelete) {
             $users = User::withTrashed()
                 ->where('id', '!=', $oneself_id)
+                ->orderBy($this->columnSort, $this->directionSort)
                 ->paginate(Config::get('db19.paginate'));
             return $users;
         }
         $users = User::where('id', '!=', $oneself_id)
+            ->orderBy($this->columnSort, $this->directionSort)
             ->paginate(Config::get('db19.paginate'));
         return $users;
     }

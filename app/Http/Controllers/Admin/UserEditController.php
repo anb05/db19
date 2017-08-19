@@ -61,10 +61,14 @@ class UserEditController extends MainController
         $inputData = $this->request->except('_token');
         $oldData = $this->data['oldUserData'];
 
+        if ($this->user_rep->changeFullName($this->request)) {
+            $status .= trans('ua.FullNameChanged');
+        }
+
         if ($this->user_rep->changeAppPassword($this->request)) {
-            $status = trans('ua.changed App password');
+            $status .= "<br>\n" . trans('ua.changed App password');
         } else {
-            $status = trans('ua.Password was not changed');
+            $status .= "<br>\n" . trans('ua.Password was not changed');
         }
 
         if ($this->user_rep->changeGroupAndRole($this->request, $this->user_rep->getInstance())) {

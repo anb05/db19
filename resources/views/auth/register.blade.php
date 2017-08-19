@@ -28,6 +28,20 @@
                                 </div>
                             </div>
 
+                            <div class="form-group{{ $errors->has('fullname') ? ' has-error' : '' }}">
+                                <label for="fullname" class="col-md-4 control-label">Full Name</label>
+
+                                <div class="col-md-6">
+                                    <input id="fullname" type="text" class="form-control" name="fullname" value="{{ old('fullname') }}" required>
+
+                                    @if ($errors->has('fullname'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('fullname') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
                             <div class="form-group{{ $errors->has('login') ? ' has-error' : '' }}">
                                 <label for="login" class="col-md-4 control-label">Login</label>
 
