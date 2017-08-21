@@ -47,7 +47,6 @@ class HomeController extends MainController
 
     public function showUsers($withDelete = false)
     {
-        $this->data['mainMenu'] = $this->getMenu();
         $this->data['users'] = $this->getUsers($withDelete);
         return $this->render();
     }
