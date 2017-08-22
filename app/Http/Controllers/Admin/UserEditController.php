@@ -19,13 +19,15 @@ class UserEditController extends MainController
     private $request;
 
     public function __construct(
-        MenuRepository $menu_rep,
+//        MenuRepository $menu_rep,
         GroupRepository $group_rep,
         RoleRepository $role_rep,
         UserRepository $user_rep,
         Request $request
     ) {
-        $this->menu_rep = $menu_rep;
+        parent::__construct();
+
+//        $this->menu_rep = $menu_rep;
 
         $this->group_rep = $group_rep;
 
