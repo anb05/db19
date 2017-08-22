@@ -3,7 +3,7 @@
     {{--</div>--}}
     <div class="row">
         <ul class="pager">
-            <li class="next"><a href="{{ route('read_user', ['withDelete' => true]) }}"><span aria-hidden="true">@lang('ua.viewDelete')</span> </a></li>
+            <li class="next"><a href="{{ route('read_user', ['param' => 'withDelete']) }}"><span aria-hidden="true">@lang('ua.viewDelete')</span> </a></li>
         </ul>
         {{--<div class="col-lg-12">--}}
         <table class="table table-hover">

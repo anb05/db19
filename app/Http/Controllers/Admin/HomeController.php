@@ -6,7 +6,7 @@ namespace Db19\Http\Controllers\Admin;
 //use Db19\Repositories\MenuRepository;
 use Db19\User;
 use Config;
-//use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use Db19\Http\Controllers\MainController;
 
 /**
@@ -14,6 +14,22 @@ use Db19\Http\Controllers\MainController;
  */
 class HomeController extends MainController
 {
+    const ID_SORT = 'idSort';
+
+    const LOGIN_SORT = 'loginSort';
+
+    const FULL_NAME_SORT = 'fullNameSort';
+
+    const GROUP_SORT = 'groupSort';
+
+    const ROLE_SORT = 'roleSort';
+
+    const CREATED_SORT = 'createdSort';
+
+    const UPDATED_SORT = 'updatedSort';
+
+    const WITH_DELETE = 'withDelete';
+
     private $withDelete = false;
 
     private $columnSort = 'updated_at';
@@ -45,9 +61,64 @@ class HomeController extends MainController
         return $this->render();
     }
 
-    public function showUsers($withDelete = false)
+    public function showUsers(Request $request, $param = false)
     {
-        $this->data['users'] = $this->getUsers($withDelete);
+        if($request->session()->has('withDelete')) {
+            $this->withDelete = $request->session()->get('withDelete');
+        }
+        if ($request->session()->has('columnSort')) {
+            $this->columnSort = $request->session()->get('columnSort');
+        }
+        if ($request->session()->has('directionSort')) {
+            $this->directionSort = $request->session()->get('directionSort');
+        }
+
+        if ($param &&
+            ((self::ID_SORT === $param) ||
+                (self::LOGIN_SORT === $param) ||
+                (self::FULL_NAME_SORT === $param) ||
+                (self::GROUP_SORT === $param) ||
+                (self::ROLE_SORT === $param) ||
+                (self::CREATED_SORT === $param) ||
+                (self::UPDATED_SORT === $param) ||
+                (self::WITH_DELETE === $param)
+            )) {
+            if ($param === self::WITH_DELETE) {
+                $this->withDelete = (($this->withDelete === true) ? false : true);
+                $request->session()->put(self::WITH_DELETE, $this->withDelete);
+            } else if ($param === $this->columnSort) {
+                $this->directionSort = (($this->directionSort === 'desc') ? 'asc' : 'desc');
+                $request->session()->put('directionSort', $this->directionSort);
+            } else {
+                $this->columnSort = $param;
+                $request->session()->put('columnSort', $this->columnSort);
+                $this->directionSort = 'asc';
+                $request->session()->put('directionSort', $this->directionSort);
+            }
+        }
+        /*
+        if ($param) {
+            switch ($param) {
+                case 'withDelete':
+                    $this->withDelete = (($this->withDelete === true) ? false : true);
+                    $request->session()->put('withDelete', $this->withDelete);
+                    break;
+
+                case 'idSort':
+                    if ('idSort' === $this->columnSort) {
+                        $this->directionSort = (($this->directionSort === 'desc') ? 'asc' : 'desc');
+                        $request->session()->put('directionSort', $this->directionSort);
+                    } else {
+                        $this->columnSort = 'idSort';
+                        $request->session()->put('columnSort', 'idSort');
+                        $this->directionSort = 'asc';
+                        $request->session()->put('directionSort', 'asc');
+                    }
+            }
+        }
+        */
+
+        $this->data['users'] = $this->getUsers();
         return $this->render();
     }
 
@@ -56,10 +127,10 @@ class HomeController extends MainController
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function getUsers($withDelete = false)
+    public function getUsers()
     {
         $oneself_id = \Auth::user()->id;
-        if ($withDelete) {
+        if ($this->withDelete) {
             $users = User::withTrashed()
                 ->where('id', '!=', $oneself_id)
                 ->orderBy($this->columnSort, $this->directionSort)
