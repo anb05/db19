@@ -123,6 +123,7 @@ class UserRepository extends Repository
                 break;
 
             case 'viewer':
+                /*
                 $query = "GRANT SELECT ON confidential_inventorys TO '" . $objectUser->name . "'@'localhost'";
                 \DB::connection("mysql_input_doc")->unprepared($query);
 
@@ -150,6 +151,7 @@ class UserRepository extends Repository
                 $query = "GRANT SELECT (header) ON documents TO '" . $objectUser->name . "'@'localhost'";
                 \DB::connection("mysql_input_doc")->unprepared($query);
                 break;
+                */
 
             case 'regular':
                 $query = "GRANT SELECT ON db19_input_doc.* TO '" . $objectUser->name . "'@'localhost'";

@@ -14,8 +14,8 @@ class CreateTableOrderColumns extends Migration
     public function up()
     {
         Schema::create('order_columns', function (Blueprint $table) {
-            $table->string('name', 255);
-            $table->foreign('name')->references('name')->on('types');
+            $table->string('type_name', 255)->primary();
+            $table->foreign('type_name')->references('name')->on('types');
             $table->unsignedInteger('num', false)->nullable();
             $table->unsignedInteger('date', false)->nullable();
             $table->unsignedInteger('author', false)->nullable();
@@ -41,9 +41,9 @@ class CreateTableOrderColumns extends Migration
         /**
          * Create a unique key for document registration.
          */
-        Schema::table('order_columns', function (Blueprint $table) {
-            $table->unique('name');
-        });
+//        Schema::table('order_columns', function (Blueprint $table) {
+//            $table->unique('type_name');
+//        });
     }
 
     /**

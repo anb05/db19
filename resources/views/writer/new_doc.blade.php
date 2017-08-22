@@ -1,22 +1,38 @@
 <div class="container" id="main">
     <div class="row" id="create-new-doc">
         <div class="col-md-3">
-            <div class="tabbable left-aside">
-                <ul class="nav nav-tabs nav-justified">
-                    <li class="active"><a href="#aside-tab1" data-toggle="tab">@lang('ua.NoConfident')</a> </li>
-                    <li><a href="#aside-tab2" data-toggle="tab">@lang('ua.Confident')</a> </li>
-                </ul>
+            <div class="left-aside">
+                <div class="panel panel-primary">
+                    <div class="panel-heading"><h3 class="panel-title">Оберить тип запису</h3></div>
+                    <div class="panel-body">
+                        {!! $aside !!}
+                        {{--@include('writer.aside_menu')--}}
+                    </div>
+                </div>
+                {{--<ul class="nav nav-tabs nav-justified" role="tablist">--}}
+                    {{--<li class="active" role="presentation">--}}
+                        {{--<a href="#aside-tab1" aria-controls="aside-tab1" role="tab" data-toggle="tab">--}}
+                            {{--@lang('ua.NoConfident')--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
 
-                <div class="tab-content">
-                    <div class="tab-pane active context-panel" id="aside-tab1">
-                        @include('writer.aside_menu')
-                    </div> {{-- End tab-pane active --}}
+                    {{--<li role="presentation">--}}
+                        {{--<a href="#aside-tab2" aria-controls="aside-tab2" role="tab" data-toggle="tab">--}}
+                            {{--@lang('ua.Confident')--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
+                {{--</ul>--}}
 
-                    <div class="tab-pane context-panel" id="aside-tab2">
-                        @include('writer.aside_menu')
-                    </div> {{-- End tab-pane --}}
-                </div> {{-- End tab-content --}}
-            </div> {{-- End tabbable --}}
+                {{--<div class="tab-content">--}}
+                    {{--<div role="tabpanel" class="tab-pane active context-panel" id="aside-tab1">--}}
+                        {{--@include('writer.aside_menu')--}}
+                    {{--</div> --}}{{-- End tab-pane active --}}
+
+                    {{--<div role="tabpanel" class="tab-pane context-panel" id="aside-tab2">--}}
+                        {{--@include('writer.aside_menu')--}}
+                    {{--</div> --}}{{-- End tab-pane --}}
+                {{--</div> --}}{{-- End tab-content --}}
+            </div>  {{-- End left-aside --}}
         </div> {{-- End col-lg-4 --}}
 
         <div class="col-md-9">
