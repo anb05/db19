@@ -61,6 +61,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereStateName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int $hard_deletion
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereHardDeletion($value)
  */
 class Document extends Model
 {

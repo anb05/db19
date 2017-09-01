@@ -16,6 +16,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\DocBody whereDocumentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\DocBody whereId($value)
  * @mixin \Eloquent
+ * @property string|null $original_name
+ * @property string|null $mime_type
+ * @property int $size
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\DocBody whereMimeType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\DocBody whereOriginalName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\DocBody whereSize($value)
  */
 class DocBody extends Model
 {
@@ -25,7 +31,7 @@ class DocBody extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = ['id', 'document_id', 'appendix'];
+    protected $fillable = ['id', 'document_id', 'appendix', 'original_name', 'mime_type', 'size'];
 
     public $timestamps = false;
 

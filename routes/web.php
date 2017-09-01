@@ -57,7 +57,7 @@ Route::group(['prefix' => 'writer', 'middleware' => 'auth'], function () {
     Route::get('/', 'Writer\HomeController@index')->name('writer');
 
     Route::group(['middleware' => 'db19'], function () {
-        Route::get('/create', 'Writer\CreateDocument@index')->name('create_doc');
+        Route::get('/create/{document_type?}', 'Writer\CreateDocument@index')->name('create_doc');
         Route::post('/create', 'Writer\CreateDocument@create')->name('handle_form');
     });
 });

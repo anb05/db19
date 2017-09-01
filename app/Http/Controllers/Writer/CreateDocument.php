@@ -3,9 +3,7 @@
 namespace Db19\Http\Controllers\Writer;
 
 use Db19\Http\Controllers\MainController;
-use Db19\ModelsDb\State;
-use Db19\Repositories\AsideRepository;
-use Db19\Repositories\CreateFormRepository;
+use Db19\Repositories\CreateDocRepository;
 use Illuminate\Http\Request;
 
 /**
@@ -15,18 +13,16 @@ use Illuminate\Http\Request;
  */
 class CreateDocument extends MainController
 {
-    private $aside_rep;
-
-    private $form_rep;
-
-    private $asideTemplate = 'writer.aside_menu';
+    private $doc_rep;
 
     /**
-     * HomeController constructor.
+     * CreateDocument constructor.
      *
-     * @param CreateFormRepository $createForm_rep
+     * @param CreateDocRepository $createDoc_rep
+     *
+     * @internal param CreateDocRepository $createForm_rep
      */
-    public function __construct(CreateFormRepository $createForm_rep)
+    public function __construct(CreateDocRepository $createDoc_rep)
     {
         parent::__construct();
 
@@ -38,33 +34,91 @@ class CreateDocument extends MainController
 
         $this->metaDesc = 'For create a new document';
 
-        $this->form_rep = $createForm_rep;
+        $this->doc_rep = $createDoc_rep;
     }
 
     /**
+     * @param bool $document_type
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function index($document_type = false)
     {
+        $type = $this->doc_rep->verifyType($document_type);
+
         if (view()->exists($this->template)) {
-            $this->data['aside'] = $this->form_rep->createAside();
+            $this->data['aside'] = $this->doc_rep->createAside($type);
 
-            $this->data['menu_panel'] = $this->form_rep->createMenuPanel();
+            $this->data['menu_panel'] = $this->doc_rep->createMenuPanel();
 
-            $this->data['form_create_doc'] = $this->form_rep->createForm();
+            $this->data['form_create_doc'] = $this->doc_rep->createForm($type);
 
             return $this->render();
         }
 
-        abort(404);
+        return abort(404);
     }
 
+    /**
+     * This method creates new record in database
+     *
+     * @param Request $request
+     *
+     * @return $this|bool
+     */
     public function create(Request $request)
     {
-        echo "<h1>" . __METHOD__ . "</h1>";
-        if ($request->isMethod('post')) {
-            echo "<h1>" . __METHOD__ . "</h1>";
-            dd('POST');
+        $validate = $this->doc_rep->validateInput($request);
+
+        if ($validate) {
+            return $validate;
         }
+
+        $data = $this->doc_rep->prepareDataDoc($request);
+        try {
+            $docId = $this->doc_rep->insertDoc($data);
+            \Session::put('document_id', $docId);
+
+            $reg = $this->doc_rep->prepareRegData($request, $docId);
+            $this->doc_rep->insertReg($reg);
+            if ($request->hasFile('doc_body')) {
+                try {
+                    $this->doc_rep->insertBody($request, $docId);
+                    if ($request->hasFile('appendices')) {
+                        try {
+                            $this->doc_rep->insertAppendices($request, $docId);
+                        } catch (\Exception $exception) {
+                            $this->doc_rep->deleteDocBody($docId);
+                            $this->doc_rep->deleteReg($docId);
+                            $this->doc_rep->deleteDoc($docId);
+
+                            return redirect()
+                                ->route('create_doc', ['document_type' => $request->type_name])
+                                ->with('error', trans('ua.errorUploadsAppendices'))
+                                ->withInput();
+                        }
+                    }
+                } catch (\Exception $exception) {
+                    $this->doc_rep->deleteReg($docId);
+                    $this->doc_rep->deleteDoc($docId);
+
+                    return redirect()
+                        ->route('create_doc', ['document_type' => $request->type_name])
+                        ->with('error', trans('ua.errorUploadsDocument'))
+                        ->withInput();
+                }
+            }
+        } catch (\Exception $d) {
+            return redirect()
+                ->route('create_doc', ['document_type' => $request->type_name])
+                ->with('error', trans('ua.errorCreateDocument'))
+                ->withInput();
+            abort(404);
+        }
+
+        return redirect()
+            ->route('create_doc', ['document_type' => $request->type_name]) // заменить маршрут на страницу редактирования
+            ->with(['message' => trans('ua.createTrash')])
+            ->withInput();
     }
 }

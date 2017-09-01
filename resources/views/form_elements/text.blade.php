@@ -6,7 +6,7 @@
 
     <input name="{{ $column }}"
            id="{{ $column }}"
-           type="date"
+           type="text"
            class="form-control"
            placeholder="{{ $allColumnName->$column }}"
            value="{{ old($column) }}">

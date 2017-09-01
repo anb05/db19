@@ -16,6 +16,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Appendix whereDocumentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Appendix whereId($value)
  * @mixin \Eloquent
+ * @property string|null $original_name
+ * @property string|null $mime_type
+ * @property int $size
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Appendix whereMimeType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Appendix whereOriginalName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Appendix whereSize($value)
  */
 class Appendix extends Model
 {
@@ -25,7 +31,7 @@ class Appendix extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = ['id', 'document_id', 'appendix'];
+    protected $fillable = ['id', 'document_id', 'appendix', 'original_name', 'mime_type', 'size'];
 
     public $timestamps = false;
 

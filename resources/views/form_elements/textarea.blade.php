@@ -4,12 +4,10 @@
         {{ $allColumnName->$column }}:
     </label>
 
-    <input name="{{ $column }}"
-           id="{{ $column }}"
-           type="date"
-           class="form-control"
-           placeholder="{{ $allColumnName->$column }}"
-           value="{{ old($column) }}">
+    <textarea name="{{ $column }}"
+              id="{{ $column }}"
+              class="form-control"
+              placeholder="{{ $allColumnName->$column }}">{{ old($column) }}</textarea>
 
     @if ($errors->has($column))
         <span class="help-block">

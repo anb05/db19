@@ -1,17 +1,32 @@
 <div>
     {{-- Nav tabs to form_create_doc --}}
-    <ul class="nav nav-pills nav-stacked" role="tablist">
-        @for($count = 0; $count < count($types); $count++)
-            <li class="{{ ($count == \Config::get('db19.startBook')) ? 'active' : '' }}" role="presentation">
-                <a href="#{{ $types[$count]->name }}"
-                   aria-controls="{{ $types[$count]->name }}"
-                   role="tab"
-                   data-toggle="pill">
+    <ul class="nav nav-pills nav-stacked">
 
-                    {{ $types[$count]->alias }}
+        @foreach($types as $type)
+            <li class="{{ ($defaultType == $type->name) ? 'active' : '' }}"
+                role="presentation">
+
+                <a href="{{ route('create_doc', ['document_type' => $type->name]) }}">
+
+                    {{ $type->alias }}
 
                 </a>
             </li>
-        @endfor
+        @endforeach
+
+
+
+
+        {{--@for($count = 0; $count < count($types); $count++)--}}
+            {{--<li class="{{ ($count == \Config::get('db19.startBook')) ? 'active' : '' }}"--}}
+                {{--role="presentation">--}}
+{{----}}
+                {{--<a href="{{ route('create_doc', ['document_type' => $types[$count]->name]) }}">--}}
+{{----}}
+                    {{--{{ $types[$count]->alias }}--}}
+{{----}}
+                {{--</a>--}}
+            {{--</li>--}}
+        {{--@endfor--}}
     </ul>
 </div>

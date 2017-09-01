@@ -36,64 +36,64 @@ class CreateTableDocuments extends Migration
             /**
              * This column for keeping in store date when the document returned back.
              */
-            $table->date('return_date');
+            $table->date('return_date')->nullable();
 
             /**
              * This method is building column for keeping in store information about author of document.
              */
-            $table->string('author', 255);
+            $table->string('author', 255)->nullable();
 
             /**
              * This method is building column for keeping in store information
              * about annotation ore/and title of document
              */
-            $table->text('header');
+            $table->text('header')->nullable();
 
             /**
              * This method creates columns for storing keywords in the repository.
              * These words provide a search in the database.
              */
-            $table->text('key_words');
+            $table->text('key_words')->nullable();
 
             /**
              * This column keeps in store description about document
              */
-            $table->text('description');
+            $table->text('description')->nullable();
 
             /**
              * This column stores the copy number.
              */
-            $table->unsignedInteger('number_of_copies');
+            $table->unsignedInteger('number_of_copies')->nullable();
 
             /**
              * This column stores information about number of pages in the document.
              */
-            $table->unsignedInteger('number_of_pages');
+            $table->unsignedInteger('number_of_pages')->nullable();
 
             /**
              * This column stores in detail information about everyone copy of the document.
              */
-            $table->text('description_copy');
+            $table->text('description_copy')->nullable();
 
             /**
              * This column stores the number of appendix.
              */
-            $table->unsignedInteger('number_of_appendix')->default(0);
+            $table->unsignedInteger('number_of_appendix')->nullable();
 
             /**
              * This column stores information about total of pages in all appendixes.
              */
-            $table->unsignedInteger('number_of_pages_appendix')->default(0);
+            $table->unsignedInteger('number_of_pages_appendix')->nullable();
 
             /**
              * This column stores information about case number where the document is stored.
              */
-            $table->string('case_number', 255);
+            $table->string('case_number', 255)->nullable();
 
             /**
              * This column stores information about page number in the case.
              */
-            $table->unsignedInteger('page_in_case');
+            $table->unsignedInteger('page_in_case')->nullable();
 
             /**
              * If this document is response, this column store information about parent document.
@@ -113,7 +113,7 @@ class CreateTableDocuments extends Migration
             /**
              * This column keeps in store about outside serial numbers of incoming of documents.
              */
-            $table->string('outside_num', 255);
+            $table->string('outside_num', 255)->nullable();
 
             /**
              * This method is building column for keeping in store of date outside of registration.
@@ -124,7 +124,12 @@ class CreateTableDocuments extends Migration
             /**
              * This column keeps in store about correspondents.
              */
-            $table->text('correspondent');
+            $table->text('correspondent')->nullable();
+
+            /**
+             * This column stores the hard delete flag.
+             */
+            $table->boolean('hard_deletion')->default(true);
         });
 
         /**
