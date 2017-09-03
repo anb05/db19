@@ -14,19 +14,19 @@ use Db19\Http\Controllers\MainController;
  */
 class HomeController extends MainController
 {
-    const ID_SORT = 'idSort';
+    const ID_SORT = 'id';
 
-    const LOGIN_SORT = 'loginSort';
+    const LOGIN_SORT = 'login';
 
-    const FULL_NAME_SORT = 'fullNameSort';
+    const FULL_NAME_SORT = 'full_name';
 
-    const GROUP_SORT = 'groupSort';
+    const GROUP_SORT = 'group_name';
 
-    const ROLE_SORT = 'roleSort';
+    const ROLE_SORT = 'role_name';
 
-    const CREATED_SORT = 'createdSort';
+    const CREATED_SORT = 'created_at';
 
-    const UPDATED_SORT = 'updatedSort';
+    const UPDATED_SORT = 'updated_at';
 
     const WITH_DELETE = 'withDelete';
 
@@ -117,6 +117,9 @@ class HomeController extends MainController
             }
         }
         */
+
+        $this->data['columnSort'] = $this->columnSort;
+        $this->data['directionSort'] = $this->directionSort;
 
         $this->data['users'] = $this->getUsers();
         return $this->render();
