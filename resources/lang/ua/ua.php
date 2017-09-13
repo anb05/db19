@@ -38,8 +38,8 @@ return [
     'regular' => 'звичайний користувач',
     'viewer' => 'оглядач',
     'writer' => 'письме́нник',
-    'delete' => 'видалити',
-    'restore' => 'відновити',
+    'delete' => 'Видалити',
+    'restore' => 'Відновити',
     'user deleted' => 'коритувача видалено',
     'new user registered' => 'нового користувача зареєстровано',
     'changed App password' => 'пароль для входу в додаток змінено',
@@ -72,4 +72,6 @@ return [
     'errorUploadsAppendices' => 'Збій завантаження додатків',
     'errorUploadsDocument' => 'Збій завантаженя тіла документа',
     'errorCreateDocument' => 'Збій створення чернетки документа',
+    'fullName' => 'Прізвище ім\'я та по батькові',
+    'Prepared' => 'Підготовленно',
 ];

@@ -4,7 +4,10 @@
 
 namespace Db19\Repositories;
 
+use Carbon\Carbon;
+use Db19\ModelsDb\Control;
 use Db19\ModelsDb\Document;
+use Db19\ModelsDb\Resolution;
 use Validator;
 use Illuminate\Http\Request;
 use Db19\ModelsApp\OrderColumn;
@@ -20,9 +23,15 @@ use Db19\ModelsDb\DocBody;
  */
 class CreateDocRepository extends Repository
 {
+    private $columnSort;// = 'documents.updated_at';
+
+    private $directionSort;// = 'desc'; //asc
+
     private $orderColumn;
 
     private $asideTemplate = 'writer.aside_menu';
+
+    private $draftsTemplate = 'writer.drafts';
 
     /**
      * CreateDocRepository constructor.
@@ -35,6 +44,207 @@ class CreateDocRepository extends Repository
         parent::__construct($type);
 
         $this->orderColumn = $orderColumn;
+    }
+
+    public function viewChecks()
+    {
+        return true;
+    }
+
+    public function viewPrepares()
+    {
+        return true;
+    }
+
+    /**
+     * @param Request $request
+     * @param         $type string The document type. It stored in registrations.type_name.
+     *
+     * @return string
+     */
+    public function viewDrafts(Request $request, $type)
+    {
+        if (view()->exists($this->draftsTemplate)) {
+            $orderColumns = $this->getAllOrders($type);
+            $allColumnName = $this->model->where('name', $type)->get()[0];
+
+            if ($request->has('activeColumn')) {
+                $sortBy = in_array($request->activeColumn, $orderColumns) ? $request->activeColumn : false;
+            } else {
+                $sortBy = false;
+            }
+
+            $data['allColumnName'] = $allColumnName;
+            $data['orders'] = $orderColumns;
+
+            $drafts = $this->getDrafts($request, $type, $sortBy);
+
+            $data['view_drafts'] = $drafts;
+            $data['type'] = $type;
+            $data['columnSort'] = $request->has('glyphSort') ? $request->glyphSort : $sortBy;
+            $data['directionSort'] = $this->directionSort;
+
+            return view($this->draftsTemplate, $data)->render();
+        }
+
+        abort(404);
+    }
+
+    /**
+     * This method take drafts in the database.
+     *
+     * @param Request $request
+     * @param string         $type   This param is a type name of documents in registrations table.
+     * @param bool|string    $sortBy This param indicate sorting direction.
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function getDrafts(Request $request, $type, $sortBy = false)
+    {
+        $this->changeDirectionSelect($request, $sortBy);
+        return $this->getSortedDrafts($type);
+    }
+
+    /**
+     * @param string $type
+     * @param string $state
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @internal param Request $request
+     */
+    private function getSortedDrafts($type, $state = 'draft')
+    {
+        $userId = \Auth::user()->id;
+
+        $select[] = 'documents.id';
+        $drafts[] = 'documents.updated_at';
+        $orders = $this->getAllOrders($type);
+        foreach ($orders as $key) {
+            $select[] = $this->getFullColumnName($key);
+        }
+
+        $drafts = \DB::connection('mysql_input_doc')
+            ->table('documents')
+            ->join('registrations', 'documents.id', '=', 'registrations.document_id')
+            ->select($select)
+            ->orderBy($this->columnSort, $this->directionSort)
+            ->where('hard_deletion', '=', true)
+            ->where('documents.creator_id', '=', $userId)
+            ->where('registrations.type_name', '=', $type)
+            ->where('state_name', '=', $state)
+            ->paginate(\Config::get('db19.paginate'));
+
+        return $drafts;
+    }
+
+    /**
+     * This method returns the column name in format TABLE.COLUMN
+     *
+     * @param string $name The column name in the table DOCUMENTS or REGISTRATIONS
+     *
+     * @return string
+     */
+    private function getFullColumnName($name)
+    {
+        switch ($name) {
+            case 'num':
+                return 'registrations.num';
+
+            case 'date':
+                return 'registrations.date';
+
+            case 'type_name':
+                return 'registrations.type_name';
+
+            case 'return_date':
+                return 'documents.return_date';
+
+            case 'author':
+                return 'documents.author';
+
+            case 'header':
+                return 'documents.header';
+
+            case 'key_words':
+                return 'documents.key_words';
+
+            case 'description':
+                return 'documents.description';
+
+            case 'number_of_copies':
+                return 'documents.number_of_copies';
+
+            case 'number_of_pages':
+                return 'documents.number_of_pages';
+
+            case 'description_copy':
+                return 'documents.description_copy';
+
+            case 'number_of_appendix':
+                return 'documents.number_of_appendix';
+
+            case 'number_of_pages_appendix':
+                return 'documents.number_of_pages';
+
+            case 'case_number':
+                return 'documents.case_number';
+
+            case 'page_in_case':
+                return 'documents.page_in_case';
+
+            case 'relation_document':
+                return 'documents.relation_document';
+
+            case 'creator_id':
+                return 'documents.creator_id';
+
+            case 'state_name':
+                return 'documents.state_name';
+
+            case 'outside_num':
+                return 'documents.outside_num';
+
+            case 'outside_date':
+                return 'documents.outside_date';
+
+            case 'correspondent':
+                return 'documents.correspondent';
+        }
+    }
+
+    /**
+     * This method changes ore sets column and direction to select drafts.
+     *
+     * @param Request $request
+     * @param         $sortBy string Column name to sort drafts.
+     *
+     * @return void
+     */
+    private function changeDirectionSelect(Request $request, $sortBy)
+    {
+        $sortBy = $this->getFullColumnName($sortBy);
+
+        if ($request->session()->has('draftsSort')) {
+            $this->columnSort = $request->session()->get('draftsSort');
+        } else {
+            $this->columnSort = 'documents.updated_at';
+        }
+        if ($request->session()->has('directionDrafts')) {
+            $this->directionSort = $request->session()->get('directionDrafts');
+        } else {
+            $this->directionSort = 'desc';
+        }
+
+        if ($this->columnSort === $sortBy) {
+            $this->directionSort = (($this->directionSort === 'asc') ? 'desc' : 'asc');
+            $request->session()->put('directionDrafts', $this->directionSort);
+        } else {
+            if ($sortBy) {
+                $this->columnSort = $sortBy;
+            }
+            $request->session()->put('draftsSort', $this->columnSort);
+            $request->session()->put('directionDrafts', $this->directionSort);
+        }
     }
 
     /**
@@ -75,6 +285,42 @@ class CreateDocRepository extends Repository
     public function deleteDocBody($document_id)
     {
         return DocBody::where('document_id', $document_id)->delete();
+    }
+
+    /**
+     * This method deletes the all Appendix models
+     *
+     * @param $document_id
+     *
+     * @return bool|mixed|null
+     */
+    public function deleteAppendices($document_id)
+    {
+        return Appendix::whereDocumentId($document_id)->delete();
+    }
+
+    /**
+     * This method deletes the all Control models
+     *
+     * @param $document_id
+     *
+     * @return bool|mixed|null
+     */
+    public function deleteControls($document_id)
+    {
+        return Control::whereDocumentId($document_id)->delete();
+    }
+
+    /**
+     * This method deletes the all Resolution models
+     *
+     * @param $document_id
+     *
+     * @return bool|mixed|null
+     */
+    public function deleteResolutions($document_id)
+    {
+        return Resolution::whereDocumentId($document_id)->delete();
     }
 
     /**
@@ -176,6 +422,8 @@ class CreateDocRepository extends Repository
         $data = $request->except(['_token', 'num', 'date', 'type_name', 'doc_body', 'appendices']);
         $data['creator_id'] = \Auth::user()->id;
         $data['state_name'] = 'draft';
+        $data['created_at'] = Carbon::now();
+        $data['updated_at'] = Carbon::now();
 
         return $data;
     }
@@ -241,31 +489,39 @@ class CreateDocRepository extends Repository
     /**
      * @param $type string Type of document to be created
      *
+     * @param $routeName string The name of the route to create a link in Asidemenu.
+     *
      * @return string
      */
-    public function createAside($type)
+    public function createAside($type, $routeName)
     {
         if (view()->exists($this->asideTemplate)) {
+            $data =[];
             $types = $this->getAllTypeName();
+            $data['types'] = $types;
+            $data['defaultType'] = $type;
+            $data['routeName'] = $routeName;
 
-            return view('writer.aside_menu', ['types' => $types, 'defaultType' => $type])->render();
+            return view('writer.aside_menu', $data)->render();
         }
 
-        return abort(404);
+        abort(404);
     }
 
     /**
      * This method creates a menu of the right sidebar
      *
+     * @param $routeName string The name of the route to create a link in menu_panel.
+     *
      * @return string
      */
-    public function createMenuPanel()
+    public function createMenuPanel($routeName)
     {
         if (view()->exists('writer.menu_panel')) {
-            return view('writer.menu_panel')->render();
+            return view('writer.menu_panel', ['routeName' => $routeName])->render();
         }
 
-        return abort(404);
+        abort(404);
     }
 
     /**
@@ -283,7 +539,7 @@ class CreateDocRepository extends Repository
             return view('writer.form_create_doc', ['allColumnName' => $allColumnName, 'orders' => $orderColumns]);
         }
 
-        return abort(404);
+        abort(404);
     }
 
     /**
@@ -297,7 +553,7 @@ class CreateDocRepository extends Repository
     /**
      * This method returns an array with column sorted like as in directive template
      *
-     * @param $type
+     * @param $type string <This is a document type>
      *
      * @return array
      */

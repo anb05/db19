@@ -1,37 +1,33 @@
 <ul class="nav nav-tabs nav-justified" role="tablist">
-    <li class="active" role="presentation">
-        <a href="#new-tab"
-           aria-controls="new-tab"
-           role="tab"
-           data-toggle="tab">
+    <li class="{{ $routeName == 'create_doc' ? 'active' : '' }}" role="presentation">
+        <a href="{{ route('create_doc') }}">
+
             @lang('ua.newDocument')
+
         </a>
     </li>
 
-    <li role="presentation">
-        <a href="#draft-tab"
-           aria-controls="draft-tab"
-           role="tab"
-           data-toggle="tab">
+    <li class="{{ $routeName == 'show_drafts' ? 'active' : '' }}" role="presentation">
+        <a href="{{ route('show_drafts') }}">
+
             @lang('ua.draftDocument')
+
         </a>
     </li>
 
-    <li role="presentation">
-        <a href="#prepared-tab"
-           aria-controls="prepared-tab"
-           role="tab"
-           data-toggle="tab">
+    <li class="{{ $routeName == 'show_prepares' ? 'active' : '' }}" role="presentation">
+        <a href="">
+
             @lang('ua.preparedDocument')
+
         </a>
     </li>
 
-    <li role="presentation">
-        <a href="#checked-tab"
-           aria-controls="checked-tab"
-           role="tab"
-           data-toggle="tab">
+    <li class="{{ $routeName == 'show_checked' ? 'active' : '' }}" role="presentation">
+        <a href="">
+
             @lang('ua.checkedDocument')
+
         </a>
     </li>
 </ul>

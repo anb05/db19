@@ -14,19 +14,19 @@ use Db19\Http\Controllers\MainController;
  */
 class HomeController extends MainController
 {
-    const ID_SORT = 'idSort';
+    const ID_SORT = 'id';
 
-    const LOGIN_SORT = 'loginSort';
+    const LOGIN_SORT = 'login';
 
-    const FULL_NAME_SORT = 'fullNameSort';
+    const FULL_NAME_SORT = 'full_name';
 
-    const GROUP_SORT = 'groupSort';
+    const GROUP_SORT = 'group_name';
 
-    const ROLE_SORT = 'roleSort';
+    const ROLE_SORT = 'role_name';
 
-    const CREATED_SORT = 'createdSort';
+    const CREATED_SORT = 'created_at';
 
-    const UPDATED_SORT = 'updatedSort';
+    const UPDATED_SORT = 'updated_at';
 
     const WITH_DELETE = 'withDelete';
 
@@ -54,16 +54,12 @@ class HomeController extends MainController
      */
     public function index()
     {
-//        $menu = $this->getMenu();
-//        dd($menu);
-//        $this->data['users'] = $this->getUsers();
-//        dd($data);
         return $this->render();
     }
 
     public function showUsers(Request $request, $param = false)
     {
-        if($request->session()->has('withDelete')) {
+        if ($request->session()->has('withDelete')) {
             $this->withDelete = $request->session()->get('withDelete');
         }
         if ($request->session()->has('columnSort')) {
@@ -73,20 +69,20 @@ class HomeController extends MainController
             $this->directionSort = $request->session()->get('directionSort');
         }
 
-        if ($param &&
-            ((self::ID_SORT === $param) ||
-                (self::LOGIN_SORT === $param) ||
+        if ($param && (
+                (self::ID_SORT        === $param) ||
+                (self::LOGIN_SORT     === $param) ||
                 (self::FULL_NAME_SORT === $param) ||
-                (self::GROUP_SORT === $param) ||
-                (self::ROLE_SORT === $param) ||
-                (self::CREATED_SORT === $param) ||
-                (self::UPDATED_SORT === $param) ||
-                (self::WITH_DELETE === $param)
+                (self::GROUP_SORT     === $param) ||
+                (self::ROLE_SORT      === $param) ||
+                (self::CREATED_SORT   === $param) ||
+                (self::UPDATED_SORT   === $param) ||
+                (self::WITH_DELETE    === $param)
             )) {
             if ($param === self::WITH_DELETE) {
                 $this->withDelete = (($this->withDelete === true) ? false : true);
                 $request->session()->put(self::WITH_DELETE, $this->withDelete);
-            } else if ($param === $this->columnSort) {
+            } elseif ($param === $this->columnSort) {
                 $this->directionSort = (($this->directionSort === 'desc') ? 'asc' : 'desc');
                 $request->session()->put('directionSort', $this->directionSort);
             } else {
@@ -96,27 +92,9 @@ class HomeController extends MainController
                 $request->session()->put('directionSort', $this->directionSort);
             }
         }
-        /*
-        if ($param) {
-            switch ($param) {
-                case 'withDelete':
-                    $this->withDelete = (($this->withDelete === true) ? false : true);
-                    $request->session()->put('withDelete', $this->withDelete);
-                    break;
 
-                case 'idSort':
-                    if ('idSort' === $this->columnSort) {
-                        $this->directionSort = (($this->directionSort === 'desc') ? 'asc' : 'desc');
-                        $request->session()->put('directionSort', $this->directionSort);
-                    } else {
-                        $this->columnSort = 'idSort';
-                        $request->session()->put('columnSort', 'idSort');
-                        $this->directionSort = 'asc';
-                        $request->session()->put('directionSort', 'asc');
-                    }
-            }
-        }
-        */
+        $this->data['columnSort'] = $this->columnSort;
+        $this->data['directionSort'] = $this->directionSort;
 
         $this->data['users'] = $this->getUsers();
         return $this->render();

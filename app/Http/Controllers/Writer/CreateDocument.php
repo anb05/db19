@@ -45,11 +45,12 @@ class CreateDocument extends MainController
     public function index($document_type = false)
     {
         $type = $this->doc_rep->verifyType($document_type);
+        $routeName = 'create_doc';
 
         if (view()->exists($this->template)) {
-            $this->data['aside'] = $this->doc_rep->createAside($type);
+            $this->data['aside'] = $this->doc_rep->createAside($type, $routeName);
 
-            $this->data['menu_panel'] = $this->doc_rep->createMenuPanel();
+            $this->data['menu_panel'] = $this->doc_rep->createMenuPanel($routeName);
 
             $this->data['form_create_doc'] = $this->doc_rep->createForm($type);
 
@@ -57,6 +58,24 @@ class CreateDocument extends MainController
         }
 
         return abort(404);
+    }
+
+    public function showDrafts(Request $request, $document_type = false)
+    {
+        $type = $this->doc_rep->verifyType($document_type);
+        $routeName = 'show_drafts';
+        $this->template = 'writer.show_drafts';
+
+        if (view()->exists($this->template)) {
+            $this->data['aside'] = $this->doc_rep->createAside($type, $routeName);
+
+            $this->data['menu_panel'] = $this->doc_rep->createMenuPanel($routeName);
+
+            $this->data['view_drafts'] = $this->doc_rep->viewDrafts($request, $type);
+
+            return $this->render();
+        }
+        abort(404);
     }
 
     /**
@@ -116,8 +135,11 @@ class CreateDocument extends MainController
             abort(404);
         }
 
+        $request->session()->put('draftsSort', 'documents.updated_at');
+        $request->session()->put('directionDrafts', 'desc');
+
         return redirect()
-            ->route('create_doc', ['document_type' => $request->type_name]) // заменить маршрут на страницу редактирования
+            ->route('show_drafts', ['document_type' => $request->type_name])
             ->with(['message' => trans('ua.createTrash')])
             ->withInput();
     }

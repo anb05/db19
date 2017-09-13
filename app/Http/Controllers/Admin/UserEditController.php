@@ -18,16 +18,21 @@ class UserEditController extends MainController
 
     private $request;
 
+    /**
+     * UserEditController constructor.
+     *
+     * @param GroupRepository $group_rep
+     * @param RoleRepository  $role_rep
+     * @param UserRepository  $user_rep
+     * @param Request         $request
+     */
     public function __construct(
-//        MenuRepository $menu_rep,
         GroupRepository $group_rep,
         RoleRepository $role_rep,
         UserRepository $user_rep,
         Request $request
     ) {
         parent::__construct();
-
-//        $this->menu_rep = $menu_rep;
 
         $this->group_rep = $group_rep;
 
@@ -46,6 +51,13 @@ class UserEditController extends MainController
         $this->metaDesc = 'For changed users data';
     }
 
+    /**
+     * This is a router Actions.
+     *
+     * @param $id
+     *
+     * @return mixed
+     */
     public function execute($id/*User $user*/)
     {
         $user = User::withTrashed()->find($id);

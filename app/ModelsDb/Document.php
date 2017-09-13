@@ -3,6 +3,7 @@
 namespace Db19\ModelsDb;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Document
@@ -63,9 +64,16 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property int $hard_deletion
  * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereHardDeletion($value)
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Query\Builder|\Db19\ModelsDb\Document onlyTrashed()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Query\Builder|\Db19\ModelsDb\Document withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\Db19\ModelsDb\Document withoutTrashed()
  */
 class Document extends Model
 {
+    use SoftDeletes;
+
     protected $connection = 'mysql_input_doc';
 
     protected $table = 'documents';
@@ -74,6 +82,9 @@ class Document extends Model
 
     protected $fillable = [
         'id',
+        'created_at',
+        'updated_at',
+        'deleted_at',
         'return_date',
         'author',
         'header',
@@ -93,6 +104,13 @@ class Document extends Model
         'outside_date',
         'correspondent',
         ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     /**
      * This method returns a collection of Control models

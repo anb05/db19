@@ -57,8 +57,20 @@ Route::group(['prefix' => 'writer', 'middleware' => 'auth'], function () {
     Route::get('/', 'Writer\HomeController@index')->name('writer');
 
     Route::group(['middleware' => 'db19'], function () {
-        Route::get('/create/{document_type?}', 'Writer\CreateDocument@index')->name('create_doc');
-        Route::post('/create', 'Writer\CreateDocument@create')->name('handle_form');
+        Route::get('/create/{document_type?}', 'Writer\CreateDocument@index')
+            ->name('create_doc');
+
+        Route::get('/show_drafts/{document_type?}', 'Writer\CreateDocument@showDrafts')
+            ->name('show_drafts');
+
+        Route::post('/create', 'Writer\CreateDocument@create')
+            ->name('handle_form');
+
+        Route::match(
+            ['get', 'post', 'delete', 'prepared'],
+            '/edit/{draft}',
+            'Writer\DraftEditController@execute'
+        )->name('edit_draft');
     });
 });
 
