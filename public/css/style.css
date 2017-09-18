@@ -1,13 +1,3 @@
-/* add glyphicons*/
-@font-face {
-    font-family:'Glyphicons Halflings';
-    src:url(/fonts/glyphicons-halflings-regular.eot);
-    src:url(/fonts/glyphicons-halflings-regular.eot) format("embedded-opentype"),
-    url(/fonts/glyphicons-halflings-regular.woff2) format("woff2"),
-    url(/fonts/glyphicons-halflings-regular.woff) format("woff"),
-    url(/fonts/glyphicons-halflings-regular.ttf) format("truetype"),
-    url(/fonts/glyphicons-halflings-regular.svg) format("svg")
-}
 .db-brand {
     background-image: url("/assets/images/Logo_100.png");
     background-size: 100%;
@@ -36,4 +26,19 @@
 
 .add-space-top {
     margin-top: 15px;
+}
+
+hr {
+    width: 100%;
+    height: 2px;
+    background-color: yellow;
+    box-shadow: 0 -2px 8px 0 greenyellow;
+}
+
+table {
+    background-color: #d7ebf6;
+}
+
+#show-drafts {
+    margin: 10px 0;
 }

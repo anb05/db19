@@ -56,7 +56,7 @@
         <div class="row add-space-top">
             <div class="col-md-12">
                 <button type="submit" class="btn btn-primary btn-lg btn-block">
-                    @lang('ua.Create')
+                    @lang('ua.CreateDraft')
                 </button>
             </div>
         </div>

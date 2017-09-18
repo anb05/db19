@@ -4,8 +4,10 @@ namespace Db19\Http\Controllers\Writer;
 
 use Db19\Http\Controllers\MainController;
 use Db19\ModelsDb\Document;
+use Db19\ModelsDb\Registration;
 use Illuminate\Http\Request;
 use Db19\Repositories\CreateDocRepository;
+use PhpParser\Comment\Doc;
 
 /**
  * Class DraftEditController
@@ -16,6 +18,11 @@ class DraftEditController extends MainController
 {
     private $doc_rep;
 
+    /**
+     * DraftEditController constructor.
+     *
+     * @param CreateDocRepository $doc_rep
+     */
     public function __construct(CreateDocRepository $doc_rep)
     {
         parent::__construct();
@@ -32,6 +39,81 @@ class DraftEditController extends MainController
     }
 
     /**
+     * @param Request  $request
+     * @param Document $draft
+     *
+     * @return $this|bool|\Illuminate\Http\RedirectResponse
+     */
+    public function postAction(Request $request, Document $draft)
+    {
+        $validate = $this->doc_rep->validateInput($request);
+
+        if ($validate) {
+            return $validate;
+        }
+
+        if ($request->id != $draft->id) {
+            abort(404);
+        }
+
+        $docData = $this->doc_rep->prepareDataDoc($request);
+        foreach ($docData as $key => $value) {
+            $draft->$key = $value;
+        }
+
+        try {
+            $draft->save();
+            try {
+//                $regData = Registration::;
+            } catch (\Exception $exception) {
+                abort(404);
+            }
+        } catch (\Exception $exception) {
+            abort(404);
+        }
+
+
+
+        echo "<h4>docData</h4>";
+        dump($docData);
+
+//        echo "<h4>regData</h4>";
+//        dump($regData);
+
+
+
+
+        echo "<h1> DRAFT</h1>";
+
+        dd($draft);
+        return redirect()->back()->with('message', trans('ua.ReloadedDraft'));
+    }
+
+    /**
+     * @param Document $draft
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    private function viewEditFormAction(Document $draft)
+    {
+        if (view()->exists($this->template)) {
+            $this->data['nativeTypeName'] = $this->doc_rep->getNativeTypeName($draft);
+            $this->data['docTitle'] = $draft->header;
+            if (view()->exists('writer.title_edit')) {
+                $pageTitle = view('writer.title_edit', $this->data);
+            } else {
+                $pageTitle = '';
+            }
+            $this->data['nativeTypeName'] = $pageTitle;
+
+            $this->data['docFields'] = $this->doc_rep->editFieldsDraft($draft);
+
+            return $this->render();
+        }
+        abort(404);
+    }
+
+    /**
      * This is a router Actions.
      *
      * @param Request $request
@@ -45,21 +127,20 @@ class DraftEditController extends MainController
 
         switch ($request->method()) {
             case 'POST':
-                $action = 'postAction';
+                $result = $this->postAction($request, $draft);
                 break;
 
             case 'DELETE':
-                $action = 'deleteAction';
+                $result = $this->deleteAction($draft);
                 break;
 
             case 'PREPARED':
-                $action = 'prepareAction';
+                $result = $this->prepareAction($draft);
                 break;
 
             default:
-                $action = 'viewEditFormAction';
+                $result = $this->viewEditFormAction($draft);
         }
-        $result = $this->$action($draft);
 
         return $result;
     }
@@ -101,19 +182,5 @@ class DraftEditController extends MainController
         }
 
         return redirect()->back()->with(['message' => trans('ua.The Documents deleted')]);
-    }
-
-    private function viewEditFormAction(Document $draft)
-    {
-        if (view()->exists($this->template)) {
-            dump($draft);
-
-            echo "<h1>EDIT</h1>";
-
-            echo __METHOD__;
-
-            return $this->render();
-        }
-        abort(404);
     }
 }

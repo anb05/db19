@@ -39,7 +39,7 @@ return [
             'prefix' => '',
         ],
 
-        'mysql' => [
+/*        'mysql' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
@@ -74,7 +74,7 @@ return [
             'prefix' => '',
             'strict' => true,
             'engine' => null,
-        ],
+        ], */
 
         'pgsql' => [
             'driver' => 'pgsql',
@@ -89,17 +89,30 @@ return [
             'sslmode' => 'prefer',
         ],
 
-        'sqlsrv' => [
+        'mysql' => [
             'driver' => 'sqlsrv',
-            'host' => env('DB_HOST', 'localhost'),
+            'host' => env('DB_HOST'),
             'port' => env('DB_PORT', '1433'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'database' => env('DB_DATABASE', 'db19'),
+            'username' => env('DB_USERNAME', 'db19'),
+            'password' => env('DB_PASSWORD', 'db19'),
             'charset' => 'utf8',
             'prefix' => '',
         ],
 
+        'mysql_input_doc' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_HOST'),
+            'port' => env('DB_PORT', '1433'),
+//            'database' => env('DB_DATABASE', 'forge'),
+            'database' => 'db19_input_doc',
+            'username' => env('DB_USERNAME', 'db19'),
+            'password' => env('DB_PASSWORD', 'db19'),
+//            'username' => env('DB_USERNAME', 'forge'),
+//            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+        ],
     ],
 
     /*

@@ -48,6 +48,7 @@ class CreateDocRepository extends Repository
 
     public function viewChecks()
     {
+
         return true;
     }
 
@@ -55,6 +56,23 @@ class CreateDocRepository extends Repository
     {
         return true;
     }
+
+
+    /**
+     * @param Document $doc
+     *
+     * @return string        Returns Native Name of documents.
+     */
+    public function getNativeTypeName(Document $doc)
+    {
+        $typeName = Registration::whereDocumentId($doc->id)->first()->type_name;
+        $this->model = Type::find($typeName);
+        $nativeTypeName = str_replace('\n', "<br>", $this->getInstance()->native_name);
+
+        return $nativeTypeName;
+    }
+
+
 
     /**
      * @param Request $request
@@ -429,27 +447,6 @@ class CreateDocRepository extends Repository
     }
 
     /**
-     * This method validates the input data
-     *
-     * @param Request $request
-     *
-     * @return $this|bool
-     */
-    public function validateInput(Request $request)
-    {
-        $rules = $this->createRule($request->type_name);
-
-        $validator = Validator::make($request->all(), $rules/*, $messages*/);
-
-        if ($validator->fails()) {
-            return redirect()
-                ->route('create_doc', ['document_type' => $request->type_name])
-                ->withErrors($validator)
-                ->withInput();
-        }
-        return false;
-    }
-    /**
      * This method checks the type of document
      *
      * @param $document_type
@@ -542,6 +539,37 @@ class CreateDocRepository extends Repository
         abort(404);
     }
 
+
+    public function editFieldsDraft(Document $draft)
+    {
+        if (view()->exists('writer.draft_edit_form')) {
+            $draftId = $draft->id;
+            $reg = Registration::whereDocumentId($draftId)->first();
+            $orderColumns = $this->getAllOrders($reg->type_name);
+            $orderColumns[] = 'id';
+            $allColumnName = $this->model->where('name', $reg->type_name)->get()[0];
+
+            $prepareData = [];
+            foreach ($orderColumns as $column) {
+                if (($column === 'num') || ($column === 'date') || ($column === 'type_name')) {
+                    continue;
+                }
+                $prepareData[$column] = $draft->$column;
+            }
+            $prepareData['num'] = $reg->num;
+            $prepareData['date'] = $reg->date;
+            $prepareData['type_name'] = $reg->type_name;
+
+            $data['orders'] = $orderColumns;
+            $data['allColumnName'] = $allColumnName;
+            $data['prepareData'] = $prepareData;
+
+            return view('writer.draft_edit_form', $data)->render();
+        }
+
+        abort(404);
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
@@ -569,6 +597,29 @@ class CreateDocRepository extends Repository
         ksort($columnFiltered);
 
         return $columnFiltered;
+    }
+
+    /**
+     * This method validates the input data
+     *
+     * @param Request $request
+     *
+     * @return $this|bool
+     */
+    public function validateInput(Request $request)
+    {
+        $rules = $this->createRule($request->type_name);
+
+        $validator = Validator::make($request->all(), $rules/*, $messages*/);
+
+        if ($validator->fails()) {
+            return redirect()
+//                ->route('create_doc', ['document_type' => $request->type_name])
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        return false;
     }
 
     /**

@@ -9,7 +9,7 @@
            type="date"
            class="form-control"
            placeholder="{{ $allColumnName->$column }}"
-           value="{{ old($column) }}">
+           value="{!! (!empty($prepareData)) ? $prepareData[$column] : old($column) !!}">
 
     @if ($errors->has($column))
         <span class="help-block">

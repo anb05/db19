@@ -82,9 +82,9 @@ class Document extends Model
 
     protected $fillable = [
         'id',
-        'created_at',
-        'updated_at',
-        'deleted_at',
+//        'created_at',
+//        'updated_at',
+//        'deleted_at',
         'return_date',
         'author',
         'header',

@@ -44,7 +44,7 @@
                     <?php $index = $orders[$count]; ?>
                     <td>
                         <a href="{{ route('edit_draft', ['draft' => $draft->id]) }}">
-                            {!! $draft->$index !!}
+                            {!! str_limit(strip_tags($draft->$index), 100) !!}
                         </a>
                     </td>
                 @endfor
