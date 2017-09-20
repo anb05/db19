@@ -39,81 +39,6 @@ class DraftEditController extends MainController
     }
 
     /**
-     * @param Request  $request
-     * @param Document $draft
-     *
-     * @return $this|bool|\Illuminate\Http\RedirectResponse
-     */
-    public function postAction(Request $request, Document $draft)
-    {
-        $validate = $this->doc_rep->validateInput($request);
-
-        if ($validate) {
-            return $validate;
-        }
-
-        if ($request->id != $draft->id) {
-            abort(404);
-        }
-
-        $docData = $this->doc_rep->prepareDataDoc($request);
-        foreach ($docData as $key => $value) {
-            $draft->$key = $value;
-        }
-
-        try {
-            $draft->save();
-            try {
-//                $regData = Registration::;
-            } catch (\Exception $exception) {
-                abort(404);
-            }
-        } catch (\Exception $exception) {
-            abort(404);
-        }
-
-
-
-        echo "<h4>docData</h4>";
-        dump($docData);
-
-//        echo "<h4>regData</h4>";
-//        dump($regData);
-
-
-
-
-        echo "<h1> DRAFT</h1>";
-
-        dd($draft);
-        return redirect()->back()->with('message', trans('ua.ReloadedDraft'));
-    }
-
-    /**
-     * @param Document $draft
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    private function viewEditFormAction(Document $draft)
-    {
-        if (view()->exists($this->template)) {
-            $this->data['nativeTypeName'] = $this->doc_rep->getNativeTypeName($draft);
-            $this->data['docTitle'] = $draft->header;
-            if (view()->exists('writer.title_edit')) {
-                $pageTitle = view('writer.title_edit', $this->data);
-            } else {
-                $pageTitle = '';
-            }
-            $this->data['nativeTypeName'] = $pageTitle;
-
-            $this->data['docFields'] = $this->doc_rep->editFieldsDraft($draft);
-
-            return $this->render();
-        }
-        abort(404);
-    }
-
-    /**
      * This is a router Actions.
      *
      * @param Request $request
@@ -139,10 +64,79 @@ class DraftEditController extends MainController
                 break;
 
             default:
-                $result = $this->viewEditFormAction($draft);
+                $result = $this->viewEditFormAction($request, $draft);
         }
 
         return $result;
+    }
+
+    /**
+     * @param Request  $request
+     * @param Document $draft
+     *
+     * @return $this|bool|\Illuminate\Http\RedirectResponse
+     */
+    private function postAction(Request $request, Document $draft)
+    {
+        $validate = $this->doc_rep->validateInput($request);
+
+        if ($validate) {
+            return $validate;
+        }
+
+        if (($request->id != $request->session()->get('draftId'))
+            || ($request->type_name != $request->session()->get('type_name'))) {
+            abort(404);
+        }
+
+        $docData = $this->doc_rep->prepareDataDoc($request);
+        foreach ($docData as $key => $value) {
+            $draft->$key = $value;
+        }
+
+        try {
+            $regData = Registration::whereDocumentId($request->id)->get()->last();
+            $regData->num = $request->num;
+            $regData->date = $request->date;
+            $regData->save();
+            try {
+                $draft->save();
+            } catch (\Exception $exception) {
+                abort(404);
+            }
+        } catch (\Exception $exception) {
+            return redirect()->back()->with('error', trans('ua.The draft do not reloaded. Check the input data.'));
+//            abort(404);
+        }
+
+        return redirect()->back()->with('message', trans('ua.ReloadedDraft'));
+    }
+
+    /**
+     * @param Request  $request
+     * @param Document $draft
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    private function viewEditFormAction(Request $request, Document $draft)
+    {
+        if (view()->exists($this->template)) {
+            $this->data['nativeTypeName'] = $this->doc_rep->getNativeTypeName($draft);
+            $this->data['docTitle'] = $draft->header;
+            if (view()->exists('writer.title_edit')) {
+                $pageTitle = view('writer.title_edit', $this->data);
+            } else {
+                $pageTitle = '';
+            }
+            $this->data['nativeTypeName'] = $pageTitle;
+            $this->data['bodiesInfo'] = $this->doc_rep->viewBodyInfo($draft);
+            $this->data['controlInfo'] = $this->doc_rep->viewControlAndResolution($draft);
+
+            $this->data['docFields'] = $this->doc_rep->editFieldsDraft($request, $draft);
+
+            return $this->render();
+        }
+        abort(404);
     }
 
     /**
@@ -178,7 +172,7 @@ class DraftEditController extends MainController
             $this->doc_rep->deleteReg($docId);
             $this->doc_rep->deleteDoc($docId);
         } catch (\Exception $exception) {
-            return redirect()->back()->with(['message' => trans('ua.Do not deletion')]);
+            return redirect()->back()->with(['error' => trans('ua.Do not deletion')]);
         }
 
         return redirect()->back()->with(['message' => trans('ua.The Documents deleted')]);

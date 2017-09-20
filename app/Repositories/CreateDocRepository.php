@@ -346,6 +346,8 @@ class CreateDocRepository extends Repository
      *
      * @param Request $request
      * @param         $docId
+     *
+     * @return string
      */
     public function insertAppendices(Request $request, $docId)
     {
@@ -360,6 +362,8 @@ class CreateDocRepository extends Repository
                 $prepareAppendix->size = $appendix->getSize();
 
                 $prepareAppendix->save();
+            } else {
+                return redirect()->back()->with('error', trans('ua.errorUploadsAppendices'));
             }
         }
     }
@@ -369,10 +373,12 @@ class CreateDocRepository extends Repository
      *
      * @param Request $request
      * @param         $docId
+     *
+     * @return string
      */
     public function insertBody(Request $request, $docId)
     {
-        if ($request->file('doc_body')->isValid()) {
+        if (($request->hasFile('doc_body')) && ($request->file('doc_body')->isValid())) {
             $docBody = $request->file('doc_body');
             $prepareBody = new DocBody();
             $prepareBody->document_id = $docId;
@@ -382,6 +388,9 @@ class CreateDocRepository extends Repository
             $prepareBody->size = $docBody->getSize();
 
             $prepareBody->save();
+            return;
+        } else {
+            return redirect()->back()->with('error', trans('ua.ErrorInsertDocumentBody'));
         }
     }
 
@@ -540,11 +549,19 @@ class CreateDocRepository extends Repository
     }
 
 
-    public function editFieldsDraft(Document $draft)
+    /**
+     * @param Request  $request
+     * @param Document $draft
+     *
+     * @return string
+     */
+    public function editFieldsDraft(Request $request, Document $draft)
     {
         if (view()->exists('writer.draft_edit_form')) {
             $draftId = $draft->id;
-            $reg = Registration::whereDocumentId($draftId)->first();
+            $request->session()->flash('draftId', $draftId);
+            $reg = Registration::whereDocumentId($draftId)->get()->last();//first();
+            $request->session()->flash('type_name', $reg->type_name);
             $orderColumns = $this->getAllOrders($reg->type_name);
             $orderColumns[] = 'id';
             $allColumnName = $this->model->where('name', $reg->type_name)->get()[0];
@@ -567,6 +584,43 @@ class CreateDocRepository extends Repository
             return view('writer.draft_edit_form', $data)->render();
         }
 
+        abort(404);
+    }
+
+    /**
+     * @param Document $draft
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function viewBodyInfo(Document $draft)
+    {
+        if (view()->exists('writer.body_info')) {
+            $body = DocBody::whereDocumentId($draft->id)->get();
+            $appendices = Appendix::whereDocumentId($draft->id)->get();
+            $data['draftId'] = $draft->id;
+            $data['body'] = $body;
+            $data['appendices'] = $appendices;
+
+            return view('writer.body_info', $data)->render();
+        }
+        abort(404);
+    }
+
+    /**
+     * @param Document $draft
+     *
+     * @return string
+     */
+    public function viewControlAndResolution(Document $draft)
+    {
+        if (view()->exists('writer.control_info')) {
+            $controls = Control::whereDocumentId($draft->id)->get();
+            $resolutions = Resolution::whereDocumentId($draft)->get();
+            $data['draftId'] = $draft->id;
+            $data['controls'] = $controls;
+            $data['resolutions'] = $resolutions;
+            return view('writer.control_info', $data)->render();
+        }
         abort(404);
     }
 

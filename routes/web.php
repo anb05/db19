@@ -71,6 +71,24 @@ Route::group(['prefix' => 'writer', 'middleware' => 'auth'], function () {
             '/edit/{draft}',
             'Writer\DraftEditController@execute'
         )->name('edit_draft');
+
+        Route::match(
+            ['post', 'delete'],
+            '/body/{body?}',
+            'Writer\BodyController@execute'
+        )->name('manipulate_body');
+
+        Route::match(
+            ['post', 'delete'],
+            '/appendices/{appendix?}',
+            'Writer\AppendixController@execute'
+        )->name('manipulate_appendices');
+
+        Route::match(
+            ['post', 'delete'],
+            '/control/{control?}',
+            'Writer\ControlController@execute'
+        )->name('manipulate_control');
     });
 });
 

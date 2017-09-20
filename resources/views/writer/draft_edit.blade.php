@@ -25,8 +25,9 @@
         </div>
 
         {!! $nativeTypeName !!}
-        @include('writer.control_info')
-        @include('writer.body_info')
+{{--        @include('writer.control_info')--}}
+        {!! $controlInfo !!}
+        {!! $bodiesInfo !!}
         {!! $docFields !!}
     </div>
 @endsection
