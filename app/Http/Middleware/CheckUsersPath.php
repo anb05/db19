@@ -3,9 +3,8 @@
 namespace Db19\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
 
-class RedirectIfEntranceDb
+class CheckUsersPath
 {
     /**
      * Handle an incoming request.
@@ -16,10 +15,9 @@ class RedirectIfEntranceDb
      */
     public function handle($request, Closure $next)
     {
-        if ($request->session()->has('login_db') && $request->session()->has('password_db')) {
-            $group = Auth::user()->role_name;
-
-            return redirect('/' . $group);
+        $pathExplode = explode('/', $request->path());
+        if ($pathExplode[0] != \Auth::user()->role_name) {
+            abort(404);
         }
         return $next($request);
     }

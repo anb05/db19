@@ -1,33 +1,40 @@
+@if(Auth::user()->role_name === 'moderator')
+    <?php $prefix = 'moderator_'; ?>
+@else
+    <?php $prefix = ''; ?>
+@endif
 <ul class="nav nav-tabs nav-justified" role="tablist">
-    <li class="{{ $routeName == 'create_doc' ? 'active' : '' }}" role="presentation">
-        <a href="{{ route('create_doc') }}">
+    <li class="{{ $routeName == $prefix . 'create_doc' ? 'active' : '' }}" role="presentation">
+        <a href="{{ route($prefix . 'create_doc') }}">
 
             @lang('ua.newDocument')
 
         </a>
     </li>
 
-    <li class="{{ $routeName == 'show_drafts' ? 'active' : '' }}" role="presentation">
-        <a href="{{ route('show_drafts') }}">
+    <li class="{{ $routeName == $prefix . 'show_drafts' ? 'active' : '' }}" role="presentation">
+        <a href="{{ route($prefix . 'show_drafts') }}">
 
             @lang('ua.draftDocument')
 
         </a>
     </li>
 
-    <li class="{{ $routeName == 'show_prepares' ? 'active' : '' }}" role="presentation">
-        <a href="">
+    @if(Auth::user()->role_name == 'moderator')
+        <li class="{{ $routeName == $prefix . 'show_prepares' ? 'active' : '' }}" role="presentation">
+            <a href="">
 
-            @lang('ua.preparedDocument')
+                @lang('ua.preparedDocument')
 
-        </a>
-    </li>
+            </a>
+        </li>
 
-    <li class="{{ $routeName == 'show_checked' ? 'active' : '' }}" role="presentation">
-        <a href="">
+        <li class="{{ $routeName == $prefix . 'show_checked' ? 'active' : '' }}" role="presentation">
+            <a href="">
 
-            @lang('ua.checkedDocument')
+                @lang('ua.checkedDocument')
 
-        </a>
-    </li>
+            </a>
+        </li>
+    @endif
 </ul>

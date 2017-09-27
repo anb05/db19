@@ -1,6 +1,6 @@
 <?php
 
-namespace Db19\Http\Controllers\Writer;
+namespace Db19\Http\Controllers\Moderator;
 
 use Db19\Http\Controllers\MainController;
 use Db19\ModelsDb\Control;

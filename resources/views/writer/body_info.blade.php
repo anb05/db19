@@ -1,3 +1,9 @@
+@if(Auth::user()->role_name === 'moderator')
+    <?php $prefix = 'moderator_'; ?>
+@else
+    <?php $prefix = ''; ?>
+@endif
+
 <div class="row">
     <div class="col-sm-10 col-sm-offset-1 col-md-offset-1 col-md-5">
         <div class="table-responsive">
@@ -40,7 +46,7 @@
                         </td>
 
                         <td class="text-center">
-                            <form action="{{ route('manipulate_body', ['bodyId' => $item->id]) }}"
+                            <form action="{{ route($prefix . 'manipulate_body', ['bodyId' => $item->id]) }}"
                                   method="post"
                                   class="form-horizontal">
                                 {{ csrf_field() }}
@@ -61,20 +67,20 @@
                 </button>
 
                 {{--<!-- Modal -->--}}
-                <div class="modal fade" id="addBody" tabindex="-1" role="dialog" aria-labelledby="addBody">
+                <div class="modal fade" id="addBody" tabindex="-1" role="dialog" aria-labelledby="addBodyLabel">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
 
                             <form class="form"
                                   method="post"
-                                  action="{{ route('manipulate_body') }}"
+                                  action="{{ route($prefix . 'manipulate_body') }}"
                                   enctype="multipart/form-data">
 
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                    <h4 class="modal-title" id="myModalLabel">Форма завантаження документа</h4>
+                                    <h4 class="modal-title" id="addBodyLabel">Форма завантаження документа</h4>
                                 </div>
                                 <div class="modal-body">
 
@@ -151,7 +157,7 @@
                             </td>
 
                             <td class="text-center">
-                                <form action="{{ route('manipulate_appendices', ['appendixId' => $appendix->id]) }}"
+                                <form action="{{ route($prefix . 'manipulate_appendices', ['appendixId' => $appendix->id]) }}"
                                       method="post"
                                       class="form-horizontal">
                                     {{ csrf_field() }}
@@ -173,20 +179,20 @@
                 </button>
 
                 {{--<!-- Modal -->--}}
-                <div class="modal fade" id="addAppendices" tabindex="-1" role="dialog" aria-labelledby="addAppendices">
+                <div class="modal fade" id="addAppendices" tabindex="-1" role="dialog" aria-labelledby="addAppendicesLabel">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
 
                             <form class="form"
                                   method="post"
-                                  action="{{ route('manipulate_appendices') }}"
+                                  action="{{ route($prefix . 'manipulate_appendices') }}"
                                   enctype="multipart/form-data">
 
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                    <h4 class="modal-title" id="myModalLabel">Форма завантаження додатків</h4>
+                                    <h4 class="modal-title" id="addAppendicesLabel">Форма завантаження додатків</h4>
                                 </div>
                                 <div class="modal-body">
 

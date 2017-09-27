@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Db19\ModelsDb\Control;
 use Db19\ModelsDb\Document;
 use Db19\ModelsDb\Resolution;
+use Db19\User;
 use Validator;
 use Illuminate\Http\Request;
 use Db19\ModelsApp\OrderColumn;
@@ -615,10 +616,11 @@ class CreateDocRepository extends Repository
     {
         if (view()->exists('writer.control_info')) {
             $controls = Control::whereDocumentId($draft->id)->get();
-            $resolutions = Resolution::whereDocumentId($draft)->get();
+            $resolutions = Resolution::whereDocumentId($draft->id)->get();
             $data['draftId'] = $draft->id;
             $data['controls'] = $controls;
             $data['resolutions'] = $resolutions;
+            $data['users'] = User::all();//->groupBy('group_name');
             return view('writer.control_info', $data)->render();
         }
         abort(404);

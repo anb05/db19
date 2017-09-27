@@ -1,23 +1,18 @@
 <?php
 
-namespace Db19\Http\Controllers\Writer;
+namespace Db19\Http\Controllers\Moderator;
 
 use Db19\Http\Controllers\MainController;
-use Db19\ModelsDb\Appendix;
+use Db19\ModelsDb\DocBody;
 use Db19\Repositories\CreateDocRepository;
 use Illuminate\Http\Request;
 
-/**
- * Class AppendixController
- *
- * @package Db19\Http\Controllers\Writer
- */
-class AppendixController extends MainController
+class BodyController extends MainController
 {
     private $doc_rep;
 
     /**
-     * AppendixController constructor.
+     * BodyController constructor.
      *
      * @param CreateDocRepository $doc_rep
      */
@@ -30,13 +25,13 @@ class AppendixController extends MainController
 
     /**
      * @param Request $request
-     * @param bool    $appendix
+     * @param bool    $body
      *
-     * @return string
+     * @return \Illuminate\Http\RedirectResponse|string
      */
-    public function execute(Request $request, $appendix = false)
+    public function execute(Request $request, $body = false)
     {
-        $appendix = Appendix::find($appendix);
+        $docBody = DocBody::find($body);
         $result = '';
 
         switch ($request->method()) {
@@ -45,7 +40,7 @@ class AppendixController extends MainController
                 break;
 
             case 'DELETE':
-                $result = $this->deleteAction($appendix);
+                $result = $this->deleteAction($docBody);
                 break;
 
             default:
@@ -63,26 +58,26 @@ class AppendixController extends MainController
     private function postAction(Request $request)
     {
         try {
-            $this->doc_rep->insertAppendices($request, $request->draftId);
+            $this->doc_rep->insertBody($request, $request->draftId);
         } catch (\Exception $exception) {
-            return redirect()->back()->with('error', 'The appendices do not insert');
+            abort(404);
         }
 
-        return redirect()->back()->with('message', 'The document appendices added');
+        return redirect()->back()->with('message', 'The document body added');
     }
 
     /**
-     * @param Appendix $appendix
+     * @param DocBody $docBody
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    private function deleteAction(Appendix $appendix)
+    private function deleteAction(DocBody $docBody)
     {
         try {
-            $appendix->delete();
+            $docBody->delete();
+            return redirect()->back()->with('message', 'The Body deleted!');
         } catch (\Exception $exception) {
-            return redirect()->back()->with('error', 'The Appendix do not deleted!');
+            return redirect()->back()->with('error', 'The Body do not deleted!');
         }
-        return redirect()->back()->with('message', 'The Appendix deleted!');
     }
 }

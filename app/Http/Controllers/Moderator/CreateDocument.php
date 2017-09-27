@@ -1,6 +1,6 @@
 <?php
 
-namespace Db19\Http\Controllers\Writer;
+namespace Db19\Http\Controllers\Moderator;
 
 use Db19\Http\Controllers\MainController;
 use Db19\Repositories\CreateDocRepository;
@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 /**
  * Class CreateDocument
  *
- * @package Db19\Http\Controllers\Writer
+ * @package Db19\Http\Controllers\Moderator
  */
 class CreateDocument extends MainController
 {
@@ -45,7 +45,7 @@ class CreateDocument extends MainController
     public function index($document_type = false)
     {
         $type = $this->doc_rep->verifyType($document_type);
-        $routeName = 'create_doc';
+        $routeName = 'moderator_create_doc';
 
         if (view()->exists($this->template)) {
             $this->data['aside'] = $this->doc_rep->createAside($type, $routeName);
@@ -60,10 +60,16 @@ class CreateDocument extends MainController
         return abort(404);
     }
 
+    /**
+     * @param Request $request
+     * @param bool    $document_type
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showDrafts(Request $request, $document_type = false)
     {
         $type = $this->doc_rep->verifyType($document_type);
-        $routeName = 'show_drafts';
+        $routeName = 'moderator_show_drafts';
         $this->template = 'writer.show_drafts';
 
         if (view()->exists($this->template)) {
@@ -112,7 +118,7 @@ class CreateDocument extends MainController
                             $this->doc_rep->deleteDoc($docId);
 
                             return redirect()
-                                ->route('create_doc', ['document_type' => $request->type_name])
+                                ->route('moderator_create_doc', ['document_type' => $request->type_name])
                                 ->with('error', trans('ua.errorUploadsAppendices'))
                                 ->withInput();
                         }
@@ -122,14 +128,14 @@ class CreateDocument extends MainController
                     $this->doc_rep->deleteDoc($docId);
 
                     return redirect()
-                        ->route('create_doc', ['document_type' => $request->type_name])
+                        ->route('moderator_create_doc', ['document_type' => $request->type_name])
                         ->with('error', trans('ua.errorUploadsDocument'))
                         ->withInput();
                 }
             }
-        } catch (\Exception $exception) {
+        } catch (\Exception $d) {
             return redirect()
-                ->route('create_doc', ['document_type' => $request->type_name])
+                ->route('moderator_create_doc', ['document_type' => $request->type_name])
                 ->with('error', trans('ua.errorCreateDocument'))
                 ->withInput();
         }
@@ -138,7 +144,7 @@ class CreateDocument extends MainController
         $request->session()->put('directionDrafts', 'desc');
 
         return redirect()
-            ->route('show_drafts', ['document_type' => $request->type_name])
+            ->route('moderator_show_drafts', ['document_type' => $request->type_name])
             ->with(['message' => trans('ua.createTrash')])
             ->withInput();
     }

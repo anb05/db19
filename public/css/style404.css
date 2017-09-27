@@ -1,5 +1,5 @@
-@import url(http://db19/css/google_fonts1.css);
-@import url(http://db19/css/google_fonts2.css);
+@import url(./css/google_fonts1.css);
+@import url(./css/google_fonts2.css);
 
 body { line-height: 1; }
 ol, ul { list-style: none; }

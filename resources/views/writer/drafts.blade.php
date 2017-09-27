@@ -1,3 +1,9 @@
+@if(Auth::user()->role_name === 'moderator')
+    <?php $prefix = 'moderator_'; ?>
+@else
+    <?php $prefix = ''; ?>
+@endif
+
 <div class="row" id="show-drafts">
 
     @if(session('error'))
@@ -15,7 +21,7 @@
         <tr>
             @for($count = 0; $count < 5; $count++)
                 <th class="col-md-1 text-center">
-                    <a href="{{ route('show_drafts',
+                    <a href="{{ route($prefix . 'show_drafts',
                      ['document_type' => $type ,'activeColumn' => $orders[$count]]) }}">
                         {{ $allColumnName[$orders[$count]] }}
                     </a>
@@ -43,13 +49,13 @@
                 @for($count = 0; $count < 5; $count++)
                     <?php $index = $orders[$count]; ?>
                     <td>
-                        <a href="{{ route('edit_draft', ['draft' => $draft->id]) }}">
+                        <a href="{{ route($prefix . 'edit_draft', ['draft' => $draft->id]) }}">
                             {!! str_limit(strip_tags($draft->$index), 100) !!}
                         </a>
                     </td>
                 @endfor
                 <td>
-                    <form action="{{ route('edit_draft', ['draft' => $draft->id]) }}"
+                    <form action="{{ route($prefix . 'edit_draft', ['draft' => $draft->id]) }}"
                           method="post"
                           class="form-horizontal">
                         {{ csrf_field() }}
@@ -60,7 +66,7 @@
                 </td>
 
                 <td>
-                    <form action="{{ route('edit_draft', ['draft' => $draft->id]) }}"
+                    <form action="{{ route($prefix . 'edit_draft', ['draft' => $draft->id]) }}"
                           method="post"
                           class="form-horizontal">
                         {{ csrf_field() }}

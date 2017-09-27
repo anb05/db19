@@ -16,7 +16,11 @@
 
     <form class="form"
           method="post"
+          @if(Auth::user()->role_name === 'moderator')
+          action="{{ route('moderator_handle_form') }}"
+          @else
           action="{{ route('handle_form') }}"
+          @endif
           enctype="multipart/form-data">
 
         {{ csrf_field() }}
