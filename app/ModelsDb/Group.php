@@ -36,7 +36,7 @@ class Group extends Model
     public function documents()
     {
         return $this->belongsToMany(
-            '\Db19\ModelsDb\Document',
+            'Db19\ModelsDb\Document',
             'document_group',
             'group_name',
             'document_id'

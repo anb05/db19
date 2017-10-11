@@ -165,7 +165,8 @@ Route::group(['prefix' => 'moderator', 'middleware' => 'auth'], function () {
             ->name('detail_survey_info');
 
         Route::post('binding/{documentId}', 'Moderator\BindingWithGroup@execute')
-            ->name('bind_document_with_group');
+            ->name('bind_document_with_group')
+        ->where('documentId', '[0-9]+');
     });
 
 
