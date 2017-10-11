@@ -45,7 +45,7 @@ class CreateDocument extends MainController
     public function index($document_type = false)
     {
         $type = $this->doc_rep->verifyType($document_type);
-        $routeName = 'create_doc';
+        $routeName = 'writer_create_doc';
 
         if (view()->exists($this->template)) {
             $this->data['aside'] = $this->doc_rep->createAside($type, $routeName);
@@ -63,7 +63,7 @@ class CreateDocument extends MainController
     public function showDrafts(Request $request, $document_type = false)
     {
         $type = $this->doc_rep->verifyType($document_type);
-        $routeName = 'show_drafts';
+        $routeName = 'writer_show_drafts';
         $this->template = 'writer.show_drafts';
 
         if (view()->exists($this->template)) {
@@ -112,7 +112,7 @@ class CreateDocument extends MainController
                             $this->doc_rep->deleteDoc($docId);
 
                             return redirect()
-                                ->route('create_doc', ['document_type' => $request->type_name])
+                                ->route('writer_create_doc', ['document_type' => $request->type_name])
                                 ->with('error', trans('ua.errorUploadsAppendices'))
                                 ->withInput();
                         }
@@ -122,14 +122,14 @@ class CreateDocument extends MainController
                     $this->doc_rep->deleteDoc($docId);
 
                     return redirect()
-                        ->route('create_doc', ['document_type' => $request->type_name])
+                        ->route('writer_create_doc', ['document_type' => $request->type_name])
                         ->with('error', trans('ua.errorUploadsDocument'))
                         ->withInput();
                 }
             }
         } catch (\Exception $exception) {
             return redirect()
-                ->route('create_doc', ['document_type' => $request->type_name])
+                ->route('writer_create_doc', ['document_type' => $request->type_name])
                 ->with('error', trans('ua.errorCreateDocument'))
                 ->withInput();
         }
@@ -138,7 +138,7 @@ class CreateDocument extends MainController
         $request->session()->put('directionDrafts', 'desc');
 
         return redirect()
-            ->route('show_drafts', ['document_type' => $request->type_name])
+            ->route('writer_show_drafts', ['document_type' => $request->type_name])
             ->with(['message' => trans('ua.createTrash')])
             ->withInput();
     }

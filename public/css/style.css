@@ -39,6 +39,6 @@ table {
     background-color: #d7ebf6;
 }
 
-#show-drafts {
+#show-drafts, #show-prepareds {
     margin: 10px 0;
 }

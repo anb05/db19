@@ -1,8 +1,4 @@
-@if(Auth::user()->role_name === 'moderator')
-    <?php $prefix = 'moderator_'; ?>
-@else
-    <?php $prefix = ''; ?>
-@endif
+<?php $prefix = Auth::user()->role_name . "_"; ?>
 
 <div class="row">
     <div class="col-sm-10 col-sm-offset-1 col-md-offset-1 col-md-5">

@@ -1,9 +1,11 @@
+<?php $prefix = Auth::user()->role_name . "_"; ?>
+
 <div class="row add-space-top">
     <h2 class="text-center">Редагування відомостей</h2>
     <div class="col-sm-10 col-sm-offset-1 col-md-offset-1 col-md-10">
         <form class="form"
               method="post"
-              action="{{ route('edit_draft', ['draft' => $prepareData['id']]) }}"
+              action="{{ route($prefix . 'edit_draft', ['draft' => $prepareData['id']]) }}"
               enctype="multipart/form-data">
 
             {{ csrf_field() }}

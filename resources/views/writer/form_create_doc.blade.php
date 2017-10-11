@@ -1,3 +1,5 @@
+<?php $prefix = Auth::user()->role_name . "_"; ?>
+
 <div class="tab-content">
 
     <div class="page-header text-center">
@@ -16,11 +18,7 @@
 
     <form class="form"
           method="post"
-          @if(Auth::user()->role_name === 'moderator')
-          action="{{ route('moderator_handle_form') }}"
-          @else
-          action="{{ route('handle_form') }}"
-          @endif
+          action="{{ route($prefix . 'handle_form') }}"
           enctype="multipart/form-data">
 
         {{ csrf_field() }}

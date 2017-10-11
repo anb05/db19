@@ -1,9 +1,6 @@
+<?php $prefix = Auth::user()->role_name . "_"; ?>
+
 @if($mainMenu)
-    @if(Auth::user()->role_name === 'moderator')
-        <?php $prefix = 'moderator_'; ?>
-    @else
-        <?php $prefix = ''; ?>
-    @endif
     @foreach($mainMenu as $name => $path)
         <li>
             <a href="{{ route($prefix . $path) }}"

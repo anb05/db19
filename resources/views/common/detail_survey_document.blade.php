@@ -25,8 +25,14 @@
         </div>
 
         {!! $nativeTypeName !!}
-        {!! $controlInfo !!}
-        {!! $bodiesInfo !!}
-        {!! $docFields !!}
+        {!! $informationAboutControls !!}
+        {!! $informationAboutResolutions !!}
+        {!! $informationAboutDocument !!}
+        {!! $viewingElectronicsCopies !!}
+        {!! $bindWithGroups !!}
+
+        @if(Auth::user()->role_name === 'moderator')
+            {!! $moveTo !!}
+        @endif
     </div>
 @endsection

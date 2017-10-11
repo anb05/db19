@@ -91,4 +91,7 @@ return [
     'ReloadDraft' => 'Оновити чернетку',
     'ReloadedDraft' => 'Чернетку оновлено',
     'Cancel' => 'Відмінити',
+    'BackToDrafts' => 'У чернетки',
+    'CheckedToWork' => 'Перевірено',
+    'Period' => 'Залишилось днів',
 ];

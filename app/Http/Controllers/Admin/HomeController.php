@@ -57,6 +57,12 @@ class HomeController extends MainController
         return $this->render();
     }
 
+    /**
+     * @param Request $request
+     * @param bool    $param
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showUsers(Request $request, $param = false)
     {
         if ($request->session()->has('withDelete')) {

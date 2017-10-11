@@ -85,6 +85,30 @@ class CreateDocument extends MainController
     }
 
     /**
+     * @param Request $request
+     * @param bool    $document_type
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showPrepareds(Request $request, $document_type = false)
+    {
+        $type = $this->doc_rep->verifyType($document_type);
+        $routeName = 'moderator_show_prepareds';
+        $this->template = 'moderator.show_prepareds';
+
+        if (view()->exists($this->template)) {
+            $this->data['aside'] = $this->doc_rep->createAside($type, $routeName);
+
+            $this->data['menu_panel'] = $this->doc_rep->createMenuPanel($routeName);
+
+            $this->data['view_prepareds'] = $this->doc_rep->viewPrepareds($request, $type);
+
+            return $this->render();
+        }
+        abort(404);
+    }
+
+    /**
      * This method creates new record in database
      *
      * @param Request $request

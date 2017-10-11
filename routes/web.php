@@ -42,15 +42,24 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth']], function ()
 
     // This Route group was defined to protect the general database.
     Route::group(['middleware' => ['db19', 'checkPath']], function () {
-        Route::get('/register', 'Admin\RegisterController@showRegistrationForm')->name('create_user');
+        Route::get('/register', 'Admin\RegisterController@showRegistrationForm')
+            ->name('admin_create_user');
+
         Route::post('/register', 'Admin\RegisterController@register');
-        Route::get('/show/{withDelete?}', 'Admin\HomeController@showUsers')->name('read_user');
+
+        Route::get('/show/{withDelete?}', 'Admin\HomeController@showUsers')
+            ->name('admin_read_user');
+
         Route::match(
             ['get', 'post', 'delete', 'restore'],
             '/edit/{user}',
             ['uses' => 'Admin\UserEditController@execute', 'as' => 'userEdit']
         );
     });
+
+    Route::get('/open', 'Open\OpenResources@execute')->name('admin_read_open');
+    Route::get('/mi', 'Open\OpenResources@execute')->name('admin_read_mi');
+    Route::get('/doc', 'Open\OpenResources@execute')->name('admin_read_doc');
 });
 
 Route::group(['prefix' => 'writer', 'middleware' => 'auth'], function () {
@@ -58,44 +67,49 @@ Route::group(['prefix' => 'writer', 'middleware' => 'auth'], function () {
 
     Route::group(['middleware' => ['db19', 'checkPath']], function () {
         Route::get('/create/{document_type?}', 'Writer\CreateDocument@index')
-            ->name('create_doc');
+            ->name('writer_create_doc');
 
         Route::get('/show_drafts/{document_type?}', 'Writer\CreateDocument@showDrafts')
-            ->name('show_drafts');
+            ->name('writer_show_drafts');
 
         Route::post('/create', 'Writer\CreateDocument@create')
-            ->name('handle_form');
+            ->name('writer_handle_form');
 
         Route::match(
             ['get', 'post', 'delete', 'prepared'],
             '/edit/{draft}',
             'Writer\DraftEditController@execute'
-        )->name('edit_draft');
+        )->name('writer_edit_draft');
 
         Route::match(
             ['post', 'delete'],
             '/body/{body?}',
             'Writer\BodyController@execute'
-        )->name('manipulate_body');
+        )->name('writer_manipulate_body');
 
         Route::match(
             ['post', 'delete'],
             '/appendices/{appendix?}',
             'Writer\AppendixController@execute'
-        )->name('manipulate_appendices');
+        )->name('writer_manipulate_appendices');
 
         Route::match(
             ['post', 'delete'],
             '/control/{control?}',
             'Writer\ControlController@execute'
-        )->name('manipulate_control');
+        )->name('writer_manipulate_control');
 
         Route::match(
             ['post', 'delete'],
             '/resolution/{resolution?}',
             'Writer\ResolutionController@execute'
-        )->name('manipulate_resolution');
+        )->name('writer_manipulate_resolution');
     });
+
+
+    Route::get('/open', 'Open\OpenResources@execute')->name('writer_read_open');
+    Route::get('/mi', 'Open\OpenResources@execute')->name('writer_read_mi');
+    Route::get('/doc', 'Open\OpenResources@execute')->name('writer_read_doc');
 });
 
 Route::group(['prefix' => 'moderator', 'middleware' => 'auth'], function () {
@@ -107,6 +121,9 @@ Route::group(['prefix' => 'moderator', 'middleware' => 'auth'], function () {
 
         Route::get('/show_drafts/{document_type?}', 'Moderator\CreateDocument@showDrafts')
             ->name('moderator_show_drafts');
+
+        Route::get('/show_prepareds/{document_type?}', 'Moderator\CreateDocument@showPrepareds')
+            ->name('moderator_show_prepareds');
 
         Route::post('/create', 'Moderator\CreateDocument@create')
             ->name('moderator_handle_form');
@@ -140,46 +157,32 @@ Route::group(['prefix' => 'moderator', 'middleware' => 'auth'], function () {
             '/resolution/{resolution?}',
             'Moderator\ResolutionController@execute'
         )->name('moderator_manipulate_resolution');
+
+        Route::post('direct/{prepared}', 'Moderator\PreparedDirectTo@execute')
+            ->name('prepared_to');
+
+        Route::get('detail_view/{documentId}', 'Moderator\DetailSurveyDocument@execute')
+            ->name('detail_survey_info');
+
+        Route::post('binding/{documentId}', 'Moderator\BindingWithGroup@execute')
+            ->name('bind_document_with_group');
     });
 
 
     Route::get('/open', 'Open\OpenResources@execute')->name('moderator_read_open');
     Route::get('/mi', 'Open\OpenResources@execute')->name('moderator_read_mi');
     Route::get('/doc', 'Open\OpenResources@execute')->name('moderator_read_doc');
-
-
-
-
-
-
-
-
-//
-//    Route::get('/guest', function () {
-//        return redirect('/open');
-//    });
 });
+
+
 
 
 
 
 Route::group(['prefix' => 'guest', 'middleware' => ['auth',]], function () {
-    Route::get('/', 'Open\OpenResources@execute')->name('read_open');
+    Route::get('/', 'Open\OpenResources@execute')->name('guest');
 
-    Route::get('/{mi?}', function () {
-        return url('/open/index.html');
-    })->name('read_mi');
-
-    Route::get('/{open?}', function () {
-        return url('/open/index.html');
-    })->name('read_doc');
-//
-    Route::get('/guest', function () {
-        return redirect('/open');
-    });
+    Route::get('/open', 'Open\OpenResources@execute')->name('guest_read_open');
+    Route::get('/mi', 'Open\OpenResources@execute')->name('guest_read_mi');
+    Route::get('/doc', 'Open\OpenResources@execute')->name('guest_read_doc');
 });
-
-
-//Route::any('/{somePrefix?}', function () {
-//    return view('errors.404');
-//});

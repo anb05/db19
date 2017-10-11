@@ -1,6 +1,6 @@
 <?php $prefix = Auth::user()->role_name . "_"; ?>
 
-<div class="row" id="show-drafts">
+<div class="row" id="show-prepareds">
 
     @if(session('error'))
         <div class="alert alert-danger text-center">
@@ -17,7 +17,7 @@
         <tr>
             @for($count = 0; $count < 5; $count++)
                 <th class="col-md-1 text-center">
-                    <a href="{{ route($prefix . 'show_drafts',
+                    <a href="{{ route($prefix . 'show_prepareds',
                      ['document_type' => $type ,'activeColumn' => $orders[$count]]) }}">
                         {{ $allColumnName[$orders[$count]] }}
                     </a>
@@ -35,49 +35,51 @@
                 </th>
             @endfor
 
-                <th class="col-md-1 text-center">{{ trans('ua.Prepared') }}</th>
+                {{--<th class="col-md-1 text-center">{{ trans('ua.BackToDrafts') }}</th>--}}
 
-                <th class="col-md-1 text-center">{{ trans('ua.Delete') }}</th>
+                {{--<th class="col-md-1 text-center">{{ trans('ua.CheckedToWork') }}</th>--}}
         </tr>
         </thead>
-        @foreach($view_drafts as $draft)
+        @foreach($view_prepareds as $prepared)
             <tr class="text-center">
                 @for($count = 0; $count < 5; $count++)
                     <?php $index = $orders[$count]; ?>
                     <td>
-                        <a href="{{ route($prefix . 'edit_draft', ['draft' => $draft->id]) }}">
-                            {!! str_limit(strip_tags($draft->$index), 100) !!}
+                        <a href="{{ route('detail_survey_info', ['$prepared' => $prepared->id]) }}">
+                            {!! str_limit(strip_tags($prepared->$index), 100) !!}
                         </a>
                     </td>
                 @endfor
-                <td>
-                    <form action="{{ route($prefix . 'edit_draft', ['draft' => $draft->id]) }}"
-                          method="post"
-                          class="form-horizontal">
-                        {{ csrf_field() }}
+                {{--<td>--}}
+                    {{--<form action="{{ route('prepared_to', ['prepared' => $prepared->id]) }}"--}}
+                          {{--method="post"--}}
+                          {{--class="form-horizontal">--}}
 
-                        <input type="hidden" name="_method" value="prepared">
-                        <button class="btn btn-success" type="submit">@lang('ua.Prepared')</button>
-                    </form>
-                </td>
+                        {{--{{ csrf_field() }}--}}
 
-                <td>
-                    <form action="{{ route($prefix . 'edit_draft', ['draft' => $draft->id]) }}"
-                          method="post"
-                          class="form-horizontal">
-                        {{ csrf_field() }}
+                        {{--<input type="hidden" name="direct_to" value="to_draft">--}}
+                        {{--<button class="btn btn-warning" type="submit">@lang('ua.BackToDrafts')</button>--}}
+                    {{--</form>--}}
+                {{--</td>--}}
 
-                        <input type="hidden" name="_method" value="delete">
-                        <button class="btn btn-danger" type="submit">@lang('ua.delete')</button>
-                    </form>
-                </td>
+                {{--<td>--}}
+                    {{--<form action="{{ route('prepared_to', ['prepared' => $prepared->id]) }}"--}}
+                          {{--method="post"--}}
+                          {{--class="form-horizontal">--}}
+
+                        {{--{{ csrf_field() }}--}}
+
+                        {{--<input type="hidden" name="direct_to" value="to_checked">--}}
+                        {{--<button class="btn btn-primary" type="submit">@lang('ua.CheckedToWork')</button>--}}
+                    {{--</form>--}}
+                {{--</td>--}}
             </tr>
         @endforeach
     </table>
 
         <nav aria-label="Page navigation" class="navbar navbar-fixed-bottom">
             <div class="container">
-                {{ $view_drafts->appends(['glyphSort' => $columnSort])->links() }}
+                {{ $view_prepareds->appends(['glyphSort' => $columnSort])->links() }}
             </div>
         </nav>
 </div>

@@ -34,6 +34,8 @@ class CreateDocRepository extends Repository
 
     private $draftsTemplate = 'writer.drafts';
 
+    private $preparedsTemplate = 'moderator.prepareds';
+
     /**
      * CreateDocRepository constructor.
      *
@@ -47,15 +49,42 @@ class CreateDocRepository extends Repository
         $this->orderColumn = $orderColumn;
     }
 
-    public function viewChecks()
+    /**
+     * @param Request $request
+     * @param         $type
+     *
+     * @return string
+     */
+    public function viewPrepareds(Request $request, $type)
     {
+        if (view()->exists($this->preparedsTemplate)) {
+            $orderColumns = $this->getAllOrders($type);
+            $allColumnName = $this->model->where('name', $type)->get()[0];
 
-        return true;
-    }
+            if ($request->has('activeColumn')) {
+                $sortBy = in_array($request->activeColumn, $orderColumns) ? $request->activeColumn : false;
+            } else {
+                $sortBy = false;
+            }
 
-    public function viewPrepares()
-    {
-        return true;
+            $data['allColumnName'] = $allColumnName;
+            $data['orders'] = $orderColumns;
+
+            $this->changeDirectionSelect($request, $sortBy);
+
+
+            $prepareds = $this->getSortedDrafts($type, 'prepared');
+
+
+            $data['view_prepareds'] = $prepareds;
+            $data['type'] = $type;
+            $data['columnSort'] = $request->has('glyphSort') ? $request->glyphSort : $sortBy;
+            $data['directionSort'] = $this->directionSort;
+
+            return view($this->preparedsTemplate, $data)->render();
+        }
+
+        abort(404);
     }
 
 
@@ -133,7 +162,13 @@ class CreateDocRepository extends Repository
      */
     private function getSortedDrafts($type, $state = 'draft')
     {
-        $userId = \Auth::user()->id;
+        if ((\Auth::user()->role_name === 'moderator') && ($state === 'prepared')) {
+            $userId = 0;
+            $operator = '<>';
+        } else {
+            $userId = \Auth::user()->id;
+            $operator = '=';
+        }
 
         $select[] = 'documents.id';
         $drafts[] = 'documents.updated_at';
@@ -148,7 +183,7 @@ class CreateDocRepository extends Repository
             ->select($select)
             ->orderBy($this->columnSort, $this->directionSort)
             ->where('hard_deletion', '=', true)
-            ->where('documents.creator_id', '=', $userId)
+            ->where('documents.creator_id', $operator, $userId)
             ->where('registrations.type_name', '=', $type)
             ->where('state_name', '=', $state)
             ->paginate(\Config::get('db19.paginate'));
