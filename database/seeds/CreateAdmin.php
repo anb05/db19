@@ -18,10 +18,16 @@ class CreateAdmin extends Seeder
         $data[] = 'admin temp';
         $data[] = 'admin';
         $data[] = 'admin';
-//        $data[] = time();
-//        $data[] = time();
-//        $data[] = 100;
 
         DB::insert('insert into users (id, login, password, full_name, group_name, role_name) values (?, ?, ?, ?, ?, ?)', $data);
+
+        $query = "CREATE USER 'admin'@'localhost' IDENTIFIED BY '" . $password . "'";
+        \DB::/*connection("mysql_input_doc")->*/unprepared($query);
+
+        $query  = "GRANT ALL PRIVILEGES ON db19_input_doc.* TO 'admin'@'localhost'";
+        \DB::/*connection("mysql_input_doc")->*/unprepared($query);
+
+        $query = "GRANT CREATE USER ON *.* TO 'admin'@'localhost' WITH GRANT OPTION";
+        \DB::/*connection("mysql_input_doc")->*/unprepared($query);
     }
 }
