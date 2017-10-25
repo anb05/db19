@@ -26,7 +26,9 @@
                                            name="select_group[]"
                                            value="{{ $group->name }}"
                                            form="change_access"
-                                            {{ ($group->name === 'leadership') ? 'checked' : '' }} >
+                                           {{ $activeGroups->contains($group->name) ? 'checked' : '' }}
+
+                                            {{-- ($group->name === 'leadership') ? 'checked' : '' --}} >
                                 </th>
                             </tr>
                         @endforeach

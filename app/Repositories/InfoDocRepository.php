@@ -60,9 +60,11 @@ class InfoDocRepository extends Repository
     public function bindDocWitGroup(Document $document)
     {
         if (view()->exists($this->viewBindDocGroup)) {
+            $activeGroups = $document->groups()->get();
             $groups = Group::all();
             $data['groups'] = $groups;
             $data['document'] = $document;
+            $data['activeGroups'] = $activeGroups;
 
             return view($this->viewBindDocGroup, $data)->render();
         }

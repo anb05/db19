@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class BindingWithGroup extends MainController
 {
+    private $connection = 'mysql_input_doc';
+
+    private $table = 'document_group';
+
     public function __construct()
     {
         parent::__construct();
@@ -16,39 +20,32 @@ class BindingWithGroup extends MainController
 
     public function execute(Request $request)
     {
-//        $this->validate($request, [
-//            'documentId' => 'required|unique:mysql_input_doc.documents:id'
-//        ]);
-//        echo "<h1>Validate with</h1>";
-
-        echo "<h1> Document </h1>";
         $document = Document::find($request->documentId);
-        dump($document);
+        if (empty($document)) {
+            return redirect()->back()->with('error', trans('ua.Document not found'));
+        }
 
-        $gr = $document->groups()->get();
-        echo "<h1>gr belong && get</h1>";
-        dump($gr);
+        // Удалить все записи в таблице "document_group" с полем "document_id" = $request->documentId
+        $groups = $document->groups()->get();
+        if ($groups->isNotEmpty()) {
+            foreach ($groups as $group) {
+                $group->pivot->delete();
+            }
+        }
 
-        $bindings = \DB::connection('mysql_input_doc')
-            ->table('document_group')
-            ->where('document_id', '=', $request->documentId)
-            ->get();
-        echo "<h1>binding</h1>";
-        dump($bindings);
+        if ($request->has('select_group')) {
+            foreach ($request->select_group as $groupName) {
+                $single['group_name'] = $groupName;
+                $single['document_id'] = $request->documentId;
+                $data[] = $single;
+            }
+            try {
+                $result = \DB::connection($this->connection)->table($this->table)->insert($data);
+            } catch (\Exception $exception) {
+                return redirect()->back()->with('error', trans('ua.ErrorAccess'));
+            }
+        }
 
-//        $bindings = \DB::connection('mysql_input_doc')
-//            ->table('document_group')
-//            ->where('document_id', '=', $documentId)
-//            ->delete();
-//
-//        echo "<h1>binding DEL</h1>";
-//        dump($bindings);
-
-        $groups = Group::all();
-        echo "<h1>Groups</h1>";
-        dump($groups);
-
-        echo "<h1> Request </h1>";
-        dd($request->documentId);
+        return redirect()->back()->with('message', trans('ua.AccessChanged'));
     }
 }
