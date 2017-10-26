@@ -11,11 +11,6 @@
 |
 */
 
-//Route::get('/', function () {
-//    return redirect('/home');
-//    return view('welcome');
-//});
-
 Artisan::call('view:clear'); // Удалить строку после завершения разработки.
 
 Route::get('/', ['middleware' => 'web', 'uses' => 'Auth\LoginController@showLoginForm']);
@@ -166,7 +161,15 @@ Route::group(['prefix' => 'moderator', 'middleware' => 'auth'], function () {
 
         Route::post('binding/{documentId}', 'Moderator\BindingWithGroup@execute')
             ->name('bind_document_with_group')
-        ->where('documentId', '[0-9]+');
+            ->where('documentId', '[0-9]+');
+
+        Route::post('view_body/{bodyId}', 'Moderator\ViewBody@execute')
+            ->name('view_body')
+            ->where('bodyId', '[0-9]+');
+
+        Route::post('view_appendix/{appendixId}', 'Moderator\ViewAppendix@execute')
+            ->name('view_appendix')
+            ->where('appendixId', '[0-9]+');
     });
 
 

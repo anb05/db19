@@ -30,13 +30,14 @@
                                         {!! $body->size !!}
                                     </td>
                                     <td>
-                                        <form action="#"
+                                        <form action="{{ route('view_body',['bodyId' => $body->id]) }}"
                                               method="post"
+                                              target="_blank"
                                               class="form-horizontal">
 
                                             {{ csrf_field() }}
 
-                                            <input type="hidden" name="view_body" value="{{ $body->id }}">
+                                            <input type="hidden" name="body_id" value="{{ $body->id }}">
                                             <button class="btn btn-primary" type="submit">Переглянути</button>
                                         </form>
                                     </td>
@@ -72,13 +73,14 @@
                                             {!! $appendix->size !!}
                                         </td>
                                         <td>
-                                            <form action="#"
+                                            <form action="{{ route('view_appendix', ['$appendixId' => $appendix->id]) }}"
                                                   method="post"
+                                                  target="_blank"
                                                   class="form-horizontal">
 
                                                 {{ csrf_field() }}
 
-                                                <input type="hidden" name="view_appendix" value="{{ $appendix->id }}">
+                                                <input type="hidden" name="appendix_id" value="{{ $appendix->id }}">
                                                 <button class="btn btn-primary" type="submit">Переглянути</button>
                                             </form>
                                         </td>

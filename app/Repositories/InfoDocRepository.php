@@ -13,6 +13,7 @@ use Db19\ModelsDb\Document;
 use Db19\ModelsDb\Registration;
 use Db19\ModelsDb\Resolution;
 use Db19\User;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class InfoDocRepository
@@ -55,6 +56,27 @@ class InfoDocRepository extends Repository
             return view($this->viewPreparedMoveTo, $data)->render();
         }
         return false;
+    }
+
+    public function viewBinary(Model $model)
+    {
+        $blob = $model->appendix;
+        $mimeType = $model->mime_type;
+        $title = $model->original_name;
+
+//        echo "<h1>mimeType</h1>";
+//        dump($mimeType);
+//
+//        echo "<h1>title</h1>";
+//        dd($title);
+
+        /*
+         header('Content-Disposition: attachment; filename=' . basename($file));
+         */
+
+        return response($blob)
+            ->header('Content-Type', $mimeType)
+            ->header('Content-Disposition', 'attachment; filename=' . $title);
     }
 
     public function bindDocWitGroup(Document $document)
