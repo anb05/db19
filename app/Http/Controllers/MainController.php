@@ -20,25 +20,59 @@ class MainController extends Controller
      */
     protected $template = '';
 
+    /**
+     * This variable stores the Title of the Page
+     *
+     * @var string
+     */
     protected $title = '';
 
+    /**
+     * This variable contains a key words for Meta header
+     *
+     * @var string
+     */
     protected $keyWords = '';
 
+    /**
+     * This variable contains a Page Description for Meta header
+     *
+     * @var string
+     */
     protected $metaDesc = '';
 
+    /**
+     * Top additional navigation bar on the page
+     *
+     * @var bool | string
+     */
     protected $bar = false;
 
+    /**
+     * The Left Aside bar
+     *
+     * @var bool | string
+     */
     protected $contentLeftBar = false;
 
+    /**
+     * The Right Aside bar
+     *
+     * @var bool | string
+     */
     protected $contentRightBar = false;
 
+    /**
+     * Association array of data for view
+     *
+     * @var array
+     */
     protected $data = [];
 
+    /**
+     * @var \Db19\Repositories\MenuRepository
+     */
     protected $menu_rep;
-
-    protected $group_rep;
-
-    protected $role_rep;
 
     /**
      * MainController constructor.
@@ -53,10 +87,13 @@ class MainController extends Controller
      */
     public function render()
     {
-        $this->data['mainMenu'] = $this->getMenu();
+        $this->data['mainMenu']   = $this->getMenu();
+        $this->data['leftAside']  = $this->contentLeftBar;
+        $this->data['rightAside'] = $this->contentRightBar;
+
         \Config::set('app.name', $this->title);
 
-        return view($this->template, $this->data);
+        return view($this->template, $this->data)->render();
     }
 
     protected function getMenu()

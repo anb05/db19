@@ -504,6 +504,7 @@ class CreateDocRepository extends Repository
 
         foreach ($allTypeNames as $type) {
             if ($type === $document_type) {
+                session(['docType' => $document_type]);
                 return $document_type;
             }
         }
@@ -511,9 +512,14 @@ class CreateDocRepository extends Repository
         $defaultNumType = \Config::get('db19.startBook');
 
         if ($defaultNumType >= count($allTypeNames)) {
-            return $allTypeNames[0];
+//            return $allTypeNames[0];
+            $defaultType = $allTypeNames[0];
+        } else {
+            $defaultType = $allTypeNames[$defaultNumType];
         }
-        return $allTypeNames[$defaultNumType];
+//        return $allTypeNames[$defaultNumType];
+
+        return session('docType', $defaultType);
     }
 
     /**

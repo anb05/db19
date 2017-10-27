@@ -43,6 +43,12 @@ class PreparedDirectTo extends MainController
             }
         } elseif ($request->direct_to === 'to_checked') {
             try {
+                $groups = $prepared->groups;
+                if ($groups->isEmpty()) {
+                    return redirect()
+                        ->back()
+                        ->with('error', trans('ua.You must select at least one group'));
+                }
                 $prepared->state_name = 'checked';
                 $prepared->hard_deletion = false;
                 $prepared->save();
