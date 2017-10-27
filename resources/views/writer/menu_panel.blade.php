@@ -26,12 +26,12 @@
             </a>
         </li>
 
-        {{--<li class="{{ $routeName == $prefix . 'show_checked' ? 'active' : '' }}" role="presentation">--}}
-            {{--<a href="">--}}
+        <li class="{{ $routeName == $prefix . 'show_checked' ? 'active' : '' }}" role="presentation">
+            <a href="">
 
-                {{--@lang('ua.checkedDocument')--}}
+                @lang('ua.checkedDocument')
 
-            {{--</a>--}}
-        {{--</li>--}}
+            </a>
+        </li>
     @endif
 </ul>
