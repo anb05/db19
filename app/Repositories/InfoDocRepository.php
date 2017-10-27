@@ -76,7 +76,8 @@ class InfoDocRepository extends Repository
 
         return response($blob)
             ->header('Content-Type', $mimeType)
-            ->header('Content-Disposition', 'attachment; filename=' . $title);
+//            ->header('Content-Disposition', 'attachment; filename=' . $title); //Только скачать
+            ->header('Content-Disposition', 'inline; filename=' . $title); // Отобразить в браузере
     }
 
     public function bindDocWitGroup(Document $document)

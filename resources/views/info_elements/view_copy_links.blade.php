@@ -19,29 +19,31 @@
                                     <th>Розмір файлу</th>
                                     <th>Переглянути</th>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        {!! $body->original_name !!}
-                                    </td>
-                                    <td>
-                                        {!! $body->mime_type !!}
-                                    </td>
-                                    <td>
-                                        {!! $body->size !!}
-                                    </td>
-                                    <td>
-                                        <form action="{{ route('view_body',['bodyId' => $body->id]) }}"
-                                              method="post"
-                                              target="_blank"
-                                              class="form-horizontal">
+                                @if($body)
+                                    <tr>
+                                        <td>
+                                            {!! $body->original_name !!}
+                                        </td>
+                                        <td>
+                                            {!! $body->mime_type !!}
+                                        </td>
+                                        <td>
+                                            {!! $body->size !!}
+                                        </td>
+                                        <td>
+                                            <form action="{{ route('view_body',['bodyId' => $body->id]) }}"
+                                                  method="post"
+                                                  target="_blank"
+                                                  class="form-horizontal">
 
-                                            {{ csrf_field() }}
+                                                {{ csrf_field() }}
 
-                                            <input type="hidden" name="body_id" value="{{ $body->id }}">
-                                            <button class="btn btn-primary" type="submit">Переглянути</button>
-                                        </form>
-                                    </td>
-                                </tr>
+                                                <input type="hidden" name="body_id" value="{{ $body->id }}">
+                                                <button class="btn btn-primary" type="submit">Переглянути</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endif
                             </table>
                         </div>
                     </div>
