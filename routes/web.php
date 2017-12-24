@@ -120,6 +120,9 @@ Route::group(['prefix' => 'moderator', 'middleware' => 'auth'], function () {
         Route::get('/show_prepareds/{document_type?}', 'Moderator\CreateDocument@showPrepareds')
             ->name('moderator_show_prepareds');
 
+        Route::get('/show_checked/{document_type?}', 'Moderator\CheckedDocument@viewChecked')
+            ->name('moderator_show_checked');
+
         Route::post('/create', 'Moderator\CreateDocument@create')
             ->name('moderator_handle_form');
 

@@ -3,7 +3,6 @@
 namespace Db19\Http\Controllers;
 
 use Db19\ModelsApp\Privilege;
-use Illuminate\Http\Request;
 use Db19\Repositories\MenuRepository;
 
 /**
@@ -87,9 +86,12 @@ class MainController extends Controller
      */
     public function render()
     {
+
+//        $this->data['mainMenu']   = $this->bar;
         $this->data['mainMenu']   = $this->getMenu();
         $this->data['leftAside']  = $this->contentLeftBar;
         $this->data['rightAside'] = $this->contentRightBar;
+        $this->data['bar']        = $this->bar;
 
         \Config::set('app.name', $this->title);
 
@@ -98,6 +100,7 @@ class MainController extends Controller
 
     protected function getMenu()
     {
+//        $this->bar = $this->menu_rep->get();
         $menu = $this->menu_rep->get();
 
         return $menu;

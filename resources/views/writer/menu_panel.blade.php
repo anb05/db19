@@ -27,7 +27,7 @@
         </li>
 
         <li class="{{ $routeName == $prefix . 'show_checked' ? 'active' : '' }}" role="presentation">
-            <a href="">
+            <a href="{{ route($prefix . 'show_checked') }}">
 
                 @lang('ua.checkedDocument')
 
