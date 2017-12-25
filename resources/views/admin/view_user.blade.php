@@ -12,13 +12,8 @@
         <table class="table table-hover">
             <thead>
             <tr>
-<<<<<<< HEAD
-                <th class="col-md-2 text-center">
-                    <a href="{{ route('read_user', ['param' => 'id']) }}">
-=======
                 <th class="col-md-1 text-center">
                     <a href="{{ route('admin_read_user', ['param' => 'id']) }}">
->>>>>>> writer_fix
                         {{ trans('ua.id') }}
                     </a>
                     @if($columnSort == 'id')
@@ -33,11 +28,7 @@
                 </th>
 
                 <th class="col-md-2 text-center">
-<<<<<<< HEAD
-                    <a href="{{ route('read_user', ['param' => 'login']) }}">
-=======
                     <a href="{{ route('admin_read_user', ['param' => 'login']) }}">
->>>>>>> writer_fix
                         {{ trans('ua.Login') }}
                     </a>
                     @if($columnSort == 'login')
@@ -51,15 +42,9 @@
                     @endif
                 </th>
 
-<<<<<<< HEAD
-                <th class="col-md-2 text-center">
-                    <a href="{{ route('read_user', ['param' => 'full_name']) }}">
-                        {{ trans('ua.FullName') }}
-=======
                 <th class="col-md-3 text-center">
                     <a href="{{ route('admin_read_user', ['param' => 'full_name']) }}">
                         {{ trans('ua.fullName') }}
->>>>>>> writer_fix
                     </a>
                     @if($columnSort == 'full_name')
                         @if($directionSort === 'desc')
@@ -73,11 +58,7 @@
                 </th>
 
                 <th class="col-md-1 text-center">
-<<<<<<< HEAD
-                    <a href="{{ route('read_user', ['param' => 'group_name']) }}">
-=======
                     <a href="{{ route('admin_read_user', ['param' => 'group_name']) }}">
->>>>>>> writer_fix
                         {{ trans('ua.Group') }}
                     </a>
                     @if($columnSort == 'group_name')
@@ -92,11 +73,7 @@
                 </th>
 
                 <th class="col-md-1 text-center">
-<<<<<<< HEAD
-                    <a href="{{ route('read_user', ['param' => 'role_name']) }}">
-=======
                     <a href="{{ route('admin_read_user', ['param' => 'role_name']) }}">
->>>>>>> writer_fix
                         {{ trans('ua.Roles') }}
                     </a>
                     @if($columnSort == 'role_name')
@@ -111,11 +88,7 @@
                 </th>
 
                 <th class="col-md-2 text-center">
-<<<<<<< HEAD
-                    <a href="{{ route('read_user', ['param' => 'created_at']) }}">
-=======
                     <a href="{{ route('admin_read_user', ['param' => 'created_at']) }}">
->>>>>>> writer_fix
                         {{ trans('ua.Registered') }}
                     </a>
                     @if($columnSort == 'created_at')
@@ -130,11 +103,7 @@
                 </th>
 
                 <th class="col-md-2 text-center">
-<<<<<<< HEAD
-                    <a href="{{ route('read_user', ['param' => 'updated_at']) }}">
-=======
                     <a href="{{ route('admin_read_user', ['param' => 'updated_at']) }}">
->>>>>>> writer_fix
                         {{ trans('ua.Updated') }}
                     </a>
                     @if($columnSort == 'updated_at')
