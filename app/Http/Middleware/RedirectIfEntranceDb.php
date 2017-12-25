@@ -16,7 +16,7 @@ class RedirectIfEntranceDb
      */
     public function handle($request, Closure $next)
     {
-        if($request->session()->has('login_db') && $request->session()->has('password_db')) {
+        if ($request->session()->has('login_db') && $request->session()->has('password_db')) {
             $group = Auth::user()->role_name;
 
             return redirect('/' . $group);

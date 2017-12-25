@@ -34,6 +34,7 @@ class EntranceDb19 extends MainController
 
             $group = \Auth::user()->role_name;
             return redirect('/' . $group)->with('status', 'You were entered');
+//            return redirect()->intended('/' . $group)->with('status', 'You were entered');
         }
 
         $errors = [$this->username() => trans('auth.failed')];

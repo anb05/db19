@@ -39,3 +39,18 @@
 .add-space-top {
     margin-top: 15px;
 }
+
+hr {
+    width: 100%;
+    height: 2px;
+    background-color: yellow;
+    box-shadow: 0 -2px 8px 0 greenyellow;
+}
+
+table {
+    background-color: #d7ebf6;
+}
+
+#show-drafts, #show-prepareds {
+    margin: 10px 0;
+}

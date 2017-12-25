@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
  * Db19\ModelsDb\UserDb
  *
  * @mixin \Eloquent
+ * @property int $id
+ * @property string $name
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Db19\ModelsDb\Control[] $controls
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Db19\ModelsDb\Document[] $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Db19\ModelsDb\Resolution[] $resolutions
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\UserDb whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\UserDb whereName($value)
  */
 class UserDb extends Model
 {
@@ -43,6 +50,15 @@ class UserDb extends Model
         return $this->hasMany(
             '\Db19\ModelsDb\Resolution',
             'human_id',
+            'id'
+        );
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(
+            '\Db19\ModelsDb\Document',
+            'creator_id',
             'id'
         );
     }

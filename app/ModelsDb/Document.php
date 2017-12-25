@@ -3,14 +3,77 @@
 namespace Db19\ModelsDb;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Document
  *
  * @package Db19\ModelsDb
+ * @property int $id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @property string $return_date
+ * @property string $author
+ * @property string $header
+ * @property string $key_words
+ * @property string $description
+ * @property int $number_of_copies
+ * @property int $number_of_pages
+ * @property string $description_copy
+ * @property int $number_of_appendix
+ * @property int $number_of_pages_appendix
+ * @property string $case_number
+ * @property int $page_in_case
+ * @property int|null $relation_document
+ * @property int $creator_id
+ * @property string $state_name
+ * @property string $outside_num
+ * @property string|null $outside_date
+ * @property string $correspondent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Db19\ModelsDb\Appendix[] $appendices
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Db19\ModelsDb\Registration[] $confidentialOutputs
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Db19\ModelsDb\Control[] $controls
+ * @property-read \Db19\ModelsDb\DocBody $docBody
+ * @property-read \Db19\ModelsDb\State $documentState
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Db19\ModelsDb\Group[] $groups
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Db19\ModelsDb\Resolution[] $resolutions
+ * @property-read \Db19\ModelsDb\UserDb $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereAuthor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereCaseNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereCorrespondent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereDescriptionCopy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereHeader($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereKeyWords($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereNumberOfAppendix($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereNumberOfCopies($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereNumberOfPages($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereNumberOfPagesAppendix($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereOutsideDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereOutsideNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document wherePageInCase($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereRelationDocument($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereReturnDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereStateName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereUpdatedAt($value)
+ * @mixin \Eloquent
+ * @property int $hard_deletion
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\ModelsDb\Document whereHardDeletion($value)
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Query\Builder|\Db19\ModelsDb\Document onlyTrashed()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Query\Builder|\Db19\ModelsDb\Document withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\Db19\ModelsDb\Document withoutTrashed()
  */
 class Document extends Model
 {
+    use SoftDeletes;
+
     protected $connection = 'mysql_input_doc';
 
     protected $table = 'documents';
@@ -19,21 +82,35 @@ class Document extends Model
 
     protected $fillable = [
         'id',
-        'outside_serial',
-        'outside_date',
+//        'created_at',
+//        'updated_at',
+//        'deleted_at',
+        'return_date',
         'author',
         'header',
-        'correspondent_id',
-        'type_id',
         'key_words',
+        'description',
         'number_of_copies',
         'number_of_pages',
+        'description_copy',
         'number_of_appendix',
         'number_of_pages_appendix',
         'case_number',
         'page_in_case',
-        'output_document',
+        'relation_document',
+        'creator_id',
+        'state_name',
+        'outside_num',
+        'outside_date',
+        'correspondent',
         ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     /**
      * This method returns a collection of Control models
@@ -64,30 +141,30 @@ class Document extends Model
     }
 
     /**
-     * This method returns an object of Correspondent class
+     * This method returns an object of UserDb class
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function correspondent()
+    public function user()
     {
         return $this->belongsTo(
-            '\Db19\ModelsDb\Correspondent',
-            'correspondent_id',
+            '\Db19\ModelsDb\UserDb',
+            'creator_id',
             'id'
         );
     }
 
     /**
-     * This method returns an object of TypeOfDocument class
+     * This method returns an object of State class
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function documentType()
+    public function documentState()
     {
         return $this->belongsTo(
-            '\Db19\ModelsDb\TypeOfDocument',
-            'type_id',
-            'id'
+            '\Db19\ModelsDb\State',
+            'state_name',
+            'name'
         );
     }
 
@@ -99,7 +176,7 @@ class Document extends Model
     public function groups()
     {
         return $this->belongsToMany(
-            '\Db19\ModelsDb\Group',
+            'Db19\ModelsDb\Group',
             'document_group',
             'document_id',
             'group_name'
@@ -123,11 +200,11 @@ class Document extends Model
     /**
      * This method returns a collection of DocBody models
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function docBody()
     {
-        return $this->hasMany(
+        return $this->hasOne(
             '\Db19\ModelsDb\DocBody',
             'document_id',
             'id'
@@ -142,105 +219,7 @@ class Document extends Model
     public function confidentialOutputs()
     {
         return $this->hasMany(
-            '\Db19\ModelsDb\ConfidentialOutput',
-            'document_id',
-            'id'
-        );
-    }
-
-    /**
-     * This method returns a collection of NoConfidentialOutput models
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function noConfidentialOutputs()
-    {
-        return $this->hasMany(
-            '\Db19\ModelsDb\NoConfidentialOutput',
-            'document_id',
-            'id'
-        );
-    }
-
-    /**
-     * This method returns a collection of ConfidentialInventory models
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function confidentialInventory()
-    {
-        return $this->hasMany(
-            '\Db19\ModelsDb\ConfidentialInventory',
-            'document_id',
-            'id'
-        );
-    }
-
-    /**
-     * This method returns a collection of NoConfidentialInventory models
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function noConfidentialInventory()
-    {
-        return $this->hasMany(
-            '\Db19\ModelsDb\NoConfidentialInventory',
-            'document_id',
-            'id'
-        );
-    }
-
-    /**
-     * This method returns a collection of ConfidentialNumber models
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function confidentialNumbers()
-    {
-        return $this->hasMany(
-            '\Db19\ModelsDb\ConfidentialNumber',
-            'document_id',
-            'id'
-        );
-    }
-
-    /**
-     * This method returns a collection of NoConfidentialNumber models
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function noConfidentialNumbers()
-    {
-        return $this->hasMany(
-            '\Db19\ModelsDb\NoConfidentialNumber',
-            'document_id',
-            'id'
-        );
-    }
-
-    /**
-     * This method returns a collection of ConfidentialDisk models
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function confidentialDisk()
-    {
-        return $this->hasMany(
-            '\Db19\ModelsDb\ConfidentialDisk',
-            'document_id',
-            'id'
-        );
-    }
-
-    /**
-     * This method returns a collection of NoConfidentialDisk models
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function noConfidentialDisk()
-    {
-        return $this->hasMany(
-            '\Db19\ModelsDb\NoConfidentialDisk',
+            '\Db19\ModelsDb\Registration',
             'document_id',
             'id'
         );

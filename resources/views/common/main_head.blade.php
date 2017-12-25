@@ -9,6 +9,10 @@
 
 <!-- Styles -->
 <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
-<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-<script src="{{asset('js/jquery-3.2.1.min.js')}}"></script>
+
+<!-- Scripts -->
+<script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>

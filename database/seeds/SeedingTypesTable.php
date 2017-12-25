@@ -14,7 +14,9 @@ class SeedingTypesTable extends Seeder
         DB::table('types')->insert(
             [
                 [
-                    'name' => 'ЖУРНАЛ \n реєстрації вихідних документів',
+                    'name' => 'output_document',
+                    'alias' => 'Вихідні',
+                    'native_name' => 'ЖУРНАЛ \n реєстрації вихідних документів',
                     'num' => 'Індекс документа',
                     'date' => 'Дата',
                     'author' => null,
@@ -36,7 +38,9 @@ class SeedingTypesTable extends Seeder
                 ],
 
                 [
-                    'name' => 'КНИГА \n обліку наказів і директив',
+                    'name' => 'command_directive',
+                    'alias' => 'Накази',
+                    'native_name' => 'КНИГА \n обліку наказів і директив',
                     'num' => 'Порядкові номери наказів і директив',
                     'date' => 'Дата підписання',
                     'author' => 'Хто підписав чи звідки одержано документ. Номер і дата супроводного листа',
@@ -58,7 +62,9 @@ class SeedingTypesTable extends Seeder
                 ],
 
                 [
-                    'name' => 'ЖУРНАЛ \n оголошення наказів, директив та інших \n службових документів особовому складу',
+                    'name' => 'declaration_directive',
+                    'alias' => 'Доведення',
+                    'native_name' => 'ЖУРНАЛ \n оголошення наказів, директив та інших \n службових документів особовому складу',
                     'num' => 'Номер службового документа',
                     'date' => 'Дата службового документа',
                     'author' => null,
@@ -80,7 +86,9 @@ class SeedingTypesTable extends Seeder
                 ],
 
                 [
-                    'name' => 'ЖУРНАЛ \n реєстрації документів з гриформ "Для службового користування"',
+                    'name' => 'register_confidential_doc',
+                    'alias' => 'Реєстрація ДСК',
+                    'native_name' => 'ЖУРНАЛ \n реєстрації документів з гриформ "Для службового користування"',
                     'num' => 'Індекс документа',
                     'date' => 'Дата надходження документа',
                     'author' => null,
@@ -102,7 +110,9 @@ class SeedingTypesTable extends Seeder
                 ],
 
                 [
-                    'name' => 'ЖУРНАЛ \n реєстрації вхідних документів',
+                    'name' => 'input_doc',
+                    'alias' => 'Вхідні',
+                    'native_name' => 'ЖУРНАЛ \n реєстрації вхідних документів',
                     'num' => 'Індекс документа',
                     'date' => 'Дата надходження документа',
                     'author' => null,
@@ -124,7 +134,9 @@ class SeedingTypesTable extends Seeder
                 ],
 
                 [
-                    'name' => 'КНИГА \n обліку робочих зошитів',
+                    'name' => 'register_copybook',
+                    'alias' => 'Зошити',
+                    'native_name' => 'КНИГА \n обліку робочих зошитів',
                     'num' => 'Номер за порядком',
                     'date' => null,
                     'author' => 'Призвище та ініціали виконавця',
@@ -146,7 +158,9 @@ class SeedingTypesTable extends Seeder
                 ],
 
                 [
-                    'name' => 'ЖУРНАЛ \n обліку електронних носіїв інформації',
+                    'name' => 'register_disk',
+                    'alias' => 'Диски',
+                    'native_name' => 'ЖУРНАЛ \n обліку електронних носіїв інформації',
                     'num' => 'Обліковий номер носія',
                     'date' => 'Дата взяття на облік',
                     'author' => 'Призвище та ініціали виконавця',

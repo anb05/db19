@@ -30,8 +30,29 @@ class CreateTableDocBodies extends Migration
              */
             $table->binary('appendix');
 
+            /**
+             * This column contains the original name of the uploaded file.
+             */
+            $table->string('original_name', 255)->nullable();
+
+            /**
+             * This column contains the mime type of the uploaded file.
+             */
+            $table->string('mime_type', 255)->nullable();
+
+            /**
+             * This column contains the size of the uploaded file.
+             */
+            $table->unsignedInteger('size')->default(0);
+
 //            $table->timestamps();
         });
+
+        /**
+         * In these lines change data type in the columns appendix tables of the doc_bodies and appendices.
+         */
+        DB::connection("mysql_input_doc")
+            ->unprepared('ALTER TABLE doc_bodies MODIFY COLUMN appendix LONGBLOB ');
     }
 
     /**

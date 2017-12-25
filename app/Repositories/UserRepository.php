@@ -87,15 +87,18 @@ class UserRepository extends Repository
                         $userApp->role_name = $request->role;
                     }
                     $userApp->save();
+                } else {
+                    return redirect()->route('admin')->with('error', 'Такого користувача немає');
                 }
 
                 if ($objectUser = UserDb::find($user->id)) {
                     $this->deleteUserDb($objectUser);
+                } else {
+                    $userData = ['id' => $user->id, 'name' => $user->login];
+                    $objectUser = new UserDb($userData);
+                    $objectUser->save();
                 }
 
-                $userData = ['id' => $user->id, 'name' => $user->login];
-                $objectUser = new UserDb($userData);
-                $objectUser->save();
 
                 $query = "CREATE USER '" . $objectUser->name . "'@'localhost' IDENTIFIED BY '" . $request->passwordDb . "'";
                 \DB::connection("mysql_input_doc")->unprepared($query);
@@ -107,8 +110,8 @@ class UserRepository extends Repository
             $userApp->role_name = 'guest';
             $userApp->save();
 
-            $objectUser->delete();
-            $this->deleteUserDb($objectUser);
+//            $objectUser->delete();
+//            $this->deleteUserDb($objectUser);
             return false;
         }
     }
@@ -123,6 +126,7 @@ class UserRepository extends Repository
                 break;
 
             case 'viewer':
+                /*
                 $query = "GRANT SELECT ON confidential_inventorys TO '" . $objectUser->name . "'@'localhost'";
                 \DB::connection("mysql_input_doc")->unprepared($query);
 
@@ -150,6 +154,7 @@ class UserRepository extends Repository
                 $query = "GRANT SELECT (header) ON documents TO '" . $objectUser->name . "'@'localhost'";
                 \DB::connection("mysql_input_doc")->unprepared($query);
                 break;
+                */
 
             case 'regular':
                 $query = "GRANT SELECT ON db19_input_doc.* TO '" . $objectUser->name . "'@'localhost'";
@@ -157,7 +162,7 @@ class UserRepository extends Repository
                 break;
 
             case 'writer':
-                $query = "GRANT SELECT, INSERT ON db19_input_doc.* TO '" . $objectUser->name . "'@'localhost'";
+                $query = "GRANT SELECT, INSERT, UPDATE ON db19_input_doc.* TO '" . $objectUser->name . "'@'localhost'";
                 \DB::connection("mysql_input_doc")->unprepared($query);
                 break;
 
@@ -186,6 +191,6 @@ class UserRepository extends Repository
         $query = "DROP USER '". $userDb->name . "'@'localhost'";
         \DB::connection("mysql_input_doc")->unprepared($query);
         //************************************************************
-        $userDb->delete();
+//        $userDb->delete();
     }
 }

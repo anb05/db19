@@ -18,6 +18,8 @@ class Db19CreateTableTypes extends Migration
          */
         Schema::create('types', function (Blueprint $table) {
             $table->string('name', 255)->primary();
+            $table->string('alias');
+            $table->string('native_name');
             $table->string('num', 255)->nullable();
             $table->string('date', 255)->nullable();
             $table->string('author', 255)->nullable();

@@ -54,16 +54,18 @@ class HomeController extends MainController
      */
     public function index()
     {
-//        $menu = $this->getMenu();
-//        dd($menu);
-//        $this->data['users'] = $this->getUsers();
-//        dd($data);
         return $this->render();
     }
 
+    /**
+     * @param Request $request
+     * @param bool    $param
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showUsers(Request $request, $param = false)
     {
-        if($request->session()->has('withDelete')) {
+        if ($request->session()->has('withDelete')) {
             $this->withDelete = $request->session()->get('withDelete');
         }
         if ($request->session()->has('columnSort')) {
@@ -73,20 +75,20 @@ class HomeController extends MainController
             $this->directionSort = $request->session()->get('directionSort');
         }
 
-        if ($param &&
-            ((self::ID_SORT === $param) ||
-                (self::LOGIN_SORT === $param) ||
+        if ($param && (
+                (self::ID_SORT        === $param) ||
+                (self::LOGIN_SORT     === $param) ||
                 (self::FULL_NAME_SORT === $param) ||
-                (self::GROUP_SORT === $param) ||
-                (self::ROLE_SORT === $param) ||
-                (self::CREATED_SORT === $param) ||
-                (self::UPDATED_SORT === $param) ||
-                (self::WITH_DELETE === $param)
+                (self::GROUP_SORT     === $param) ||
+                (self::ROLE_SORT      === $param) ||
+                (self::CREATED_SORT   === $param) ||
+                (self::UPDATED_SORT   === $param) ||
+                (self::WITH_DELETE    === $param)
             )) {
             if ($param === self::WITH_DELETE) {
                 $this->withDelete = (($this->withDelete === true) ? false : true);
                 $request->session()->put(self::WITH_DELETE, $this->withDelete);
-            } else if ($param === $this->columnSort) {
+            } elseif ($param === $this->columnSort) {
                 $this->directionSort = (($this->directionSort === 'desc') ? 'asc' : 'desc');
                 $request->session()->put('directionSort', $this->directionSort);
             } else {
@@ -96,27 +98,9 @@ class HomeController extends MainController
                 $request->session()->put('directionSort', $this->directionSort);
             }
         }
-        /*
-        if ($param) {
-            switch ($param) {
-                case 'withDelete':
-                    $this->withDelete = (($this->withDelete === true) ? false : true);
-                    $request->session()->put('withDelete', $this->withDelete);
-                    break;
 
-                case 'idSort':
-                    if ('idSort' === $this->columnSort) {
-                        $this->directionSort = (($this->directionSort === 'desc') ? 'asc' : 'desc');
-                        $request->session()->put('directionSort', $this->directionSort);
-                    } else {
-                        $this->columnSort = 'idSort';
-                        $request->session()->put('columnSort', 'idSort');
-                        $this->directionSort = 'asc';
-                        $request->session()->put('directionSort', 'asc');
-                    }
-            }
-        }
-        */
+        $this->data['columnSort'] = $this->columnSort;
+        $this->data['directionSort'] = $this->directionSort;
 
         $this->data['columnSort'] = $this->columnSort;
         $this->data['directionSort'] = $this->directionSort;

@@ -38,6 +38,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property-read \Db19\ModelsApp\Role $role
  * @method static \Illuminate\Database\Eloquent\Builder|\Db19\User whereGroupName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Db19\User whereRoleName($value)
+ * @property string $full_name
+ * @property int $attempt
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\User whereAttempt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Db19\User whereFullName($value)
  */
 class User extends Authenticatable
 {

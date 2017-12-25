@@ -14,7 +14,7 @@ class SeedingTableOrderColumns extends Seeder
         DB::table('order_columns')->insert(
             [
                 [
-                    'name' => 'ЖУРНАЛ \n реєстрації вихідних документів',
+                    'type_name' => 'output_document',
                     'num' => 0,
                     'date' => 1,
                     'author' => null,
@@ -36,7 +36,7 @@ class SeedingTableOrderColumns extends Seeder
                 ],
 
                 [
-                    'name' => 'КНИГА \n обліку наказів і директив',
+                    'type_name' => 'command_directive',
                     'num' => 0,
                     'date' => 1,
                     'author' => 2,
@@ -58,7 +58,7 @@ class SeedingTableOrderColumns extends Seeder
                 ],
 
                 [
-                    'name' => 'ЖУРНАЛ \n оголошення наказів, директив та інших \n службових документів особовому складу',
+                    'type_name' => 'declaration_directive',
                     'num' => 0,
                     'date' => 1,
                     'author' => null,
@@ -80,7 +80,7 @@ class SeedingTableOrderColumns extends Seeder
                 ],
 
                 [
-                    'name' => 'ЖУРНАЛ \n реєстрації документів з гриформ "Для службового користування"',
+                    'type_name' => 'register_confidential_doc',
                     'num' => 1,
                     'date' => 0,
                     'author' => null,
@@ -102,7 +102,7 @@ class SeedingTableOrderColumns extends Seeder
                 ],
 
                 [
-                    'name' => 'ЖУРНАЛ \n реєстрації вхідних документів',
+                    'type_name' => 'input_doc',
                     'num' => 1,
                     'date' => 0,
                     'author' => null,
@@ -124,7 +124,7 @@ class SeedingTableOrderColumns extends Seeder
                 ],
 
                 [
-                    'name' => 'КНИГА \n обліку робочих зошитів',
+                    'type_name' => 'register_copybook',
                     'num' => 0,
                     'date' => null,
                     'author' => 2,
@@ -146,7 +146,7 @@ class SeedingTableOrderColumns extends Seeder
                 ],
 
                 [
-                    'name' => 'ЖУРНАЛ \n обліку електронних носіїв інформації',
+                    'type_name' => 'register_disk',
                     'num' => 0,
                     'date' => 1,
                     'author' => 4,

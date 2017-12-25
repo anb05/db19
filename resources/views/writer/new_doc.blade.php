@@ -1,47 +1,30 @@
-<div class="container" id="main">
+<div class="container-fluid" id="main">
     <div class="row" id="create-new-doc">
-        <div class="col-md-3">
-            <div class="tabbable left-aside">
-                <ul class="nav nav-tabs nav-justified">
-                    <li class="active"><a href="#aside-tab1" data-toggle="tab">@lang('ua.NoConfident')</a> </li>
-                    <li><a href="#aside-tab2" data-toggle="tab">@lang('ua.Confident')</a> </li>
-                </ul>
+        <div class="col-md-2">
+            <div class="left-aside">
+                <div class="panel panel-primary">
+                    <div class="panel-heading"><h3 class="panel-title">Оберить тип запису</h3></div>
+                    <div class="panel-body">
 
-                <div class="tab-content">
-                    <div class="tab-pane active context-panel" id="aside-tab1">
-                        @include('writer.aside_menu')
-                    </div> {{-- End tab-pane active --}}
+                        {!! $aside !!}
 
-                    <div class="tab-pane context-panel" id="aside-tab2">
-                        @include('writer.aside_menu')
-                    </div> {{-- End tab-pane --}}
-                </div> {{-- End tab-content --}}
-            </div> {{-- End tabbable --}}
-        </div> {{-- End col-lg-4 --}}
+                    </div>
+                </div>
+            </div>  {{-- End left-aside --}}
+        </div> {{-- End col-md-3 --}}
 
-        <div class="col-md-9">
-            <div class="tabbable create-doc-panel">
-                <ul class="nav nav-tabs nav-justified">
-                    <li class="active"><a href="#new-tab" data-toggle="tab">@lang('ua.newDocument')</a> </li>
-                    <li><a href="#draft-tab" data-toggle="tab">@lang('ua.draftDocument')</a> </li>
-                    <li><a href="#prepared-tab" data-toggle="tab">@lang('ua.preparedDocument')</a> </li>
-                </ul>
+        <div class="col-md-10">
+            <div class="create-doc-panel">
 
-                <div class="tab-content">
-                    <div class="tab-pane active context-panel" id="new-tab">
-                        @include('writer.form_create_doc')
-                    </div> {{-- End tab-pane active --}}
+                {!! $menu_panel !!}
 
-                    <div class="tab-pane context-panel" id="draft-tab">
-                        <h4>Перегляд чернеток</h4>
-                    </div> {{-- End tab-pane --}}
+                <div class="tab-pane context-panel" role="tabpanel">
 
-                    <div class="tab-pane context-panel" id="prepared-tab">
-                        <h4>перегляд підготовлених</h4>
-                    </div> {{-- End tab-pane --}}
-                </div> {{-- End tab-content --}}
+                    {!! $form_create_doc !!}
+
+                </div>  {{-- End tab-pane active --}}
             </div>
 
-        </div> {{-- End col-lg-6 --}}
+        </div> {{-- End col-md-9 --}}
     </div>
 </div> {{-- end Container --}}
